@@ -7,12 +7,12 @@ import {
   TextField,
   Typography,
   Box,
-  Link,
   Alert,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@/components/ui/Button";
+import Link from "next/link";
 
 const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
   fontSize: 40,
@@ -140,10 +140,8 @@ export default function LoginCard() {
             >
               Iniciar Sesión
             </Button>
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <Link href="#" variant="body2">
-                ¿Olvidaste tu contraseña?
-              </Link>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Link href="#">¿Olvidaste tu contraseña?</Link>
             </Box>
           </Box>
         </Box>
