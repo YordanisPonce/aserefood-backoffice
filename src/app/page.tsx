@@ -71,7 +71,7 @@ export default function Component() {
               mb: 4,
             }}
           >
-            Gestiona tu tienda online
+            Gestiona Asere Food
             <br />
             con herramientas poderosas.
           </Typography>
