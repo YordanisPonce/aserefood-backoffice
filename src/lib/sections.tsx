@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import { MoveToInbox as InboxIcon } from "@mui/icons-material";
 interface Section {
   name: string;
   path: string;
@@ -37,5 +37,5 @@ export const sections: Section[] = [
     name: "Usuarios",
     path: "/admin-panel/users",
     icon: <InboxIcon />, // icon for exmaple
-  }
+  },
 ];

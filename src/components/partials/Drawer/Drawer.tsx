@@ -17,7 +17,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { sections } from "../../lib/sections";
+import { sections } from "../../../lib/sections";
 import { usePathname, useRouter } from "next/navigation";
 import { Typography } from "@mui/material";
 
@@ -94,7 +94,9 @@ export default function Drawer({ open, setOpen }: Props) {
   return (
     <DrawerStyle variant="permanent" open={open}>
       <DrawerHeader>
-        <Typography sx={{ml: 7}} typography={'h5'}>Sections</Typography>
+        <Typography sx={{ ml: 7 }} typography={"h5"}>
+          Sections
+        </Typography>
         <IconButton onClick={handleDrawerClose}>
           {theme.direction === "rtl" ? (
             <ChevronRightIcon />
@@ -120,7 +122,7 @@ export default function Drawer({ open, setOpen }: Props) {
                   ? theme.palette.info.main
                   : "black",
               borderRadius: 2,
-              mt: 1
+              mt: 1,
             }}
           >
             <ListItemButton
@@ -131,7 +133,7 @@ export default function Drawer({ open, setOpen }: Props) {
                 {
                   minHeight: 48,
                   px: 2.5,
-                  borderRadius: 2
+                  borderRadius: 2,
                 },
                 open
                   ? {

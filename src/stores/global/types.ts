@@ -1,0 +1,3 @@
+export const TOGGLE_DRAWER_OPEN = "TOGGLE_DRAWER_OPEN";
+export type TOGGLE_DRAWER_OPEN = typeof TOGGLE_DRAWER_OPEN;
+

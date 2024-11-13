@@ -1,5 +1,5 @@
 import React from "react";
-import LoginCard from "./components/LoginCard/LoginCard";
+import LoginCard from "../../components/partials/LoginCard/LoginCard";
 import { Box } from "@mui/material";
 
 export default function Login() {

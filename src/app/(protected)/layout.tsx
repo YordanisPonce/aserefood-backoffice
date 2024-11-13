@@ -1,9 +1,9 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 
 import { Box } from "@mui/material";
-import AppBar from "./components/AppBar/AppBar";
-import Drawer from "./components/Drawer/Drawer";
+import AppBar from "../../components/partials/AppBar/AppBar";
+import Drawer from "../../components/partials/Drawer/Drawer";
 
 export default function layout({
   children,
@@ -17,7 +17,7 @@ export default function layout({
       <Drawer open={drawerOpen} setOpen={setDrawerOpen} />
       {/* Main Content */}
       <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: `85px` }}>
-      {children}
+        {children}
       </Box>
     </Box>
   );
