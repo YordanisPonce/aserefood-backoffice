@@ -1,95 +1,195 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
 
-export default function Home() {
+import {
+  Box,
+  Button,
+  Container,
+  Typography,
+  useTheme,
+  Fade,
+  Slide,
+} from "@mui/material";
+import { motion } from "framer-motion";
+import { ShoppingBag, TrendingUp, Inventory } from "@mui/icons-material";
+import Link from "next/link";
+
+export default function Component() {
+  const theme = useTheme();
+
+  const statsVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const statItemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <Container maxWidth="lg">
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          gap: 4,
+          py: 8,
+        }}
+      >
+        <Fade in timeout={1000}>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: theme.palette.text.secondary,
+              textAlign: "center",
+              letterSpacing: 1,
+            }}
+          >
+            BIENVENIDO AL PANEL DE CONTROL DE ASERE FOOD
+          </Typography>
+        </Fade>
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <Slide in direction="up" timeout={1000}>
+          <Typography
+            variant="h2"
+            sx={{
+              fontWeight: "bold",
+              textAlign: "center",
+              background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              mb: 4,
+            }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            Gestiona tu tienda online
+            <br />
+            con herramientas poderosas.
+          </Typography>
+        </Slide>
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: 2,
+            justifyContent: "center",
+            mb: 8,
+          }}
+        >
+          <Button
+            variant="contained"
+            size="large"
+            sx={{
+              bgcolor: theme.palette.primary.main,
+              color: "white",
+              px: 4,
+              py: 1.5,
+              "&:hover": {
+                bgcolor: theme.palette.primary.dark,
+              },
+            }}
+          >
+            <Link href={"/login"}>Iniciar Sesion</Link>
+          </Button>
+        </Box>
+
+        <Box
+          component={motion.div}
+          variants={statsVariants}
+          initial="hidden"
+          animate="visible"
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "1fr",
+              md: "repeat(3, 1fr)",
+            },
+            gap: 4,
+            mt: 4,
+          }}
+        >
+          <Box
+            component={motion.div}
+            variants={statItemVariants}
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              bgcolor: "background.paper",
+              boxShadow: 1,
+              textAlign: "center",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": {
+                transform: "translateY(-5px)",
+              },
+            }}
+          >
+            <ShoppingBag
+              sx={{ fontSize: 40, color: theme.palette.primary.main, mb: 2 }}
             />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
+            <Typography variant="h4" fontWeight="bold" mb={1}>
+              2,451
+            </Typography>
+            <Typography color="text.secondary">Total Orders</Typography>
+          </Box>
+
+          <Box
+            component={motion.div}
+            variants={statItemVariants}
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              bgcolor: "background.paper",
+              boxShadow: 1,
+              textAlign: "center",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": {
+                transform: "translateY(-5px)",
+              },
+            }}
           >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+            <TrendingUp
+              sx={{ fontSize: 40, color: theme.palette.secondary.main, mb: 2 }}
+            />
+            <Typography variant="h4" fontWeight="bold" mb={1}>
+              $12.5k
+            </Typography>
+            <Typography color="text.secondary">Monthly Revenue</Typography>
+          </Box>
+
+          <Box
+            component={motion.div}
+            variants={statItemVariants}
+            sx={{
+              p: 4,
+              borderRadius: 2,
+              bgcolor: "background.paper",
+              boxShadow: 1,
+              textAlign: "center",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": {
+                transform: "translateY(-5px)",
+              },
+            }}
+          >
+            <Inventory
+              sx={{ fontSize: 40, color: theme.palette.primary.main, mb: 2 }}
+            />
+            <Typography variant="h4" fontWeight="bold" mb={1}>
+              847
+            </Typography>
+            <Typography color="text.secondary">Productos Activos</Typography>
+          </Box>
+        </Box>
+      </Box>
+    </Container>
   );
 }
