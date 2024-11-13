@@ -63,7 +63,7 @@ export default function LoginCard() {
     }
 
     if (isValid) {
-      router.push("/admin-panel/dashboard")
+      router.push("/dashboard")
     } else {
       setFormError("Por favor, corrija los errores en el formulario");
     }

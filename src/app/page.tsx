@@ -1,37 +1,21 @@
 "use client";
 
+import React from "react";
 import {
   Box,
-  Button,
   Container,
   Typography,
   useTheme,
   Fade,
-  Slide,
+  Grow,
+  Zoom,
 } from "@mui/material";
-import { motion } from "framer-motion";
 import { ShoppingBag, TrendingUp, Inventory } from "@mui/icons-material";
 import Link from "next/link";
+import Button from "@/components/ui/Button";
 
-export default function Component() {
+export default function HomePage() {
   const theme = useTheme();
-
-  const statsVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  const statItemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
-  };
 
   return (
     <Container maxWidth="lg">
@@ -58,7 +42,7 @@ export default function Component() {
           </Typography>
         </Fade>
 
-        <Slide in direction="up" timeout={1000}>
+        <Grow in timeout={1500}>
           <Typography
             variant="h2"
             sx={{
@@ -75,38 +59,28 @@ export default function Component() {
             <br />
             con herramientas poderosas.
           </Typography>
-        </Slide>
+        </Grow>
 
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            justifyContent: "center",
-            mb: 8,
-          }}
-        >
-          <Button
-            variant="contained"
-            size="large"
+        <Fade in timeout={2000}>
+          <Box
             sx={{
-              bgcolor: theme.palette.primary.main,
-              color: "white",
-              px: 4,
-              py: 1.5,
-              "&:hover": {
-                bgcolor: theme.palette.primary.dark,
-              },
+              display: "flex",
+              gap: 2,
+              justifyContent: "center",
+              mb: 8,
             }}
           >
-            <Link href={"/login"}>Iniciar Sesion</Link>
-          </Button>
-        </Box>
+          <Button
+              type="button"
+              variant="contained"
+              color="primary"
+            >
+              <Link href={"/login"}>Iniciar Sesión</Link>
+            </Button>
+          </Box>
+        </Fade>
 
         <Box
-          component={motion.div}
-          variants={statsVariants}
-          initial="hidden"
-          animate="visible"
           sx={{
             display: "grid",
             gridTemplateColumns: {
@@ -117,77 +91,57 @@ export default function Component() {
             mt: 4,
           }}
         >
-          <Box
-            component={motion.div}
-            variants={statItemVariants}
-            sx={{
-              p: 4,
-              borderRadius: 2,
-              bgcolor: "background.paper",
-              boxShadow: 1,
-              textAlign: "center",
-              transition: "transform 0.3s ease-in-out",
-              "&:hover": {
-                transform: "translateY(-5px)",
-              },
-            }}
-          >
-            <ShoppingBag
-              sx={{ fontSize: 40, color: theme.palette.primary.main, mb: 2 }}
-            />
-            <Typography variant="h4" fontWeight="bold" mb={1}>
-              2,451
-            </Typography>
-            <Typography color="text.secondary">Total Orders</Typography>
-          </Box>
-
-          <Box
-            component={motion.div}
-            variants={statItemVariants}
-            sx={{
-              p: 4,
-              borderRadius: 2,
-              bgcolor: "background.paper",
-              boxShadow: 1,
-              textAlign: "center",
-              transition: "transform 0.3s ease-in-out",
-              "&:hover": {
-                transform: "translateY(-5px)",
-              },
-            }}
-          >
-            <TrendingUp
-              sx={{ fontSize: 40, color: theme.palette.secondary.main, mb: 2 }}
-            />
-            <Typography variant="h4" fontWeight="bold" mb={1}>
-              $12.5k
-            </Typography>
-            <Typography color="text.secondary">Monthly Revenue</Typography>
-          </Box>
-
-          <Box
-            component={motion.div}
-            variants={statItemVariants}
-            sx={{
-              p: 4,
-              borderRadius: 2,
-              bgcolor: "background.paper",
-              boxShadow: 1,
-              textAlign: "center",
-              transition: "transform 0.3s ease-in-out",
-              "&:hover": {
-                transform: "translateY(-5px)",
-              },
-            }}
-          >
-            <Inventory
-              sx={{ fontSize: 40, color: theme.palette.primary.main, mb: 2 }}
-            />
-            <Typography variant="h4" fontWeight="bold" mb={1}>
-              847
-            </Typography>
-            <Typography color="text.secondary">Productos Activos</Typography>
-          </Box>
+          {[
+            {
+              icon: ShoppingBag,
+              title: "Total de Ordenes",
+              value: "2,451",
+            },
+            {
+              icon: TrendingUp,
+              title: "Ingresos mensuales",
+              value: "$12.5k",
+            },
+            {
+              icon: Inventory,
+              title: "Productos Activos",
+              value: "847",
+            },
+          ].map((item, index) => {
+            return (
+              <Zoom
+                in
+                key={item.title}
+                style={{ transitionDelay: `${500 + index * 200}ms` }}
+              >
+                <Box
+                  sx={{
+                    p: 4,
+                    borderRadius: 2,
+                    bgcolor: "background.paper",
+                    boxShadow: 1,
+                    textAlign: "center",
+                    transition: "transform 0.3s ease-in-out",
+                    "&:hover": {
+                      transform: "translateY(-5px)",
+                    },
+                  }}
+                >
+                  <item.icon
+                    sx={{
+                      fontSize: 40,
+                      color: theme.palette.primary.main,
+                      mb: 2,
+                    }}
+                  />
+                  <Typography variant="h4" fontWeight="bold" mb={1}>
+                    {item.value}
+                  </Typography>
+                  <Typography color="text.secondary">{item.title}</Typography>
+                </Box>
+              </Zoom>
+            );
+          })}
         </Box>
       </Box>
     </Container>
