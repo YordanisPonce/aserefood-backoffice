@@ -14,14 +14,20 @@ interface Props {
     | "warning";
   fullWidth?: boolean;
   variant?: "text" | "contained" | "outlined";
+  action: (
+    e:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.FormEvent<HTMLFormElement>
+  ) => void;
 }
 
 export default function Button({
   children,
-  type = undefined,
+  type = undefined, 
   color = "primary",
   fullWidth = false,
   variant = "text",
+  action,
 }: Props) {
   return (
     <BtnMUI
@@ -39,6 +45,7 @@ export default function Button({
         },
       }}
       color={color}
+      onClick={action}
     >
       {children}
     </BtnMUI>

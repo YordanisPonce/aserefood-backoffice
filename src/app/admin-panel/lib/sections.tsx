@@ -14,8 +14,28 @@ export const sections: Section[] = [
     icon: <InboxIcon />, // icon for exmaple
   },
   {
-    name: "Categories",
+    name: "Categorias",
     path: "/admin-panel/categories",
     icon: <InboxIcon />, // icon for exmaple
   },
+  {
+    name: "Productos",
+    path: "/admin-panel/products",
+    icon: <InboxIcon />, // icon for exmaple
+  },
+  {
+    name: "Zona",
+    path: "/admin-panel/zone",
+    icon: <InboxIcon />, // icon for exmaple
+  },
+  {
+    name: "Inventario",
+    path: "/admin-panel/inventory",
+    icon: <InboxIcon />, // icon for exmaple
+  },
+  {
+    name: "Usuarios",
+    path: "/admin-panel/users",
+    icon: <InboxIcon />, // icon for exmaple
+  }
 ];

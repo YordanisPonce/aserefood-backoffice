@@ -13,6 +13,8 @@ import { styled } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+
 
 const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
   fontSize: 40,
@@ -29,6 +31,7 @@ export default function LoginCard() {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [formError, setFormError] = useState("");
+  const router = useRouter();
 
   const validateEmail = (email: string) => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -60,7 +63,7 @@ export default function LoginCard() {
     }
 
     if (isValid) {
-      console.log("Formulario válido, enviando datos...");
+      router.push("/admin-panel/dashboard")
     } else {
       setFormError("Por favor, corrija los errores en el formulario");
     }
@@ -137,6 +140,13 @@ export default function LoginCard() {
               fullWidth={true}
               variant="contained"
               color="primary"
+              action={(
+                e:
+                  | React.MouseEvent<HTMLButtonElement, MouseEvent>
+                  | React.FormEvent<HTMLFormElement>
+              ) => {
+                handleSubmit(e as React.FormEvent<HTMLFormElement>);
+              }}
             >
               Iniciar Sesión
             </Button>
