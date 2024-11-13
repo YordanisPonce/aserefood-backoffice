@@ -10,32 +10,32 @@ interface Section {
 export const sections: Section[] = [
   {
     name: "DashBoard",
-    path: "/admin-panel/dashboard",
+    path: "/dashboard",
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Categorias",
-    path: "/admin-panel/categories",
+    path: "/categories",
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Productos",
-    path: "/admin-panel/products",
+    path: "/products",
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Zona",
-    path: "/admin-panel/zone",
+    path: "/zone",
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Inventario",
-    path: "/admin-panel/inventory",
+    path: "/inventory",
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Usuarios",
-    path: "/admin-panel/users",
+    path: "/users",
     icon: <InboxIcon />, // icon for exmaple
   },
 ];
