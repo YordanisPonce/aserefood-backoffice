@@ -20,7 +20,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { sections } from "../../../lib/sections";
 import { usePathname, useRouter } from "next/navigation";
 import { Typography } from "@mui/material";
-import { GlobalContext } from "@/stores/global";
+import { useGlobalContext } from "@/stores/global";
 import { TOGGLE_DRAWER_OPEN } from "@/stores/global/types";
 
 const drawerWidth = 240;
@@ -80,8 +80,8 @@ const DrawerStyle = styled(MuiDrawer, {
 }));
 
 export default function Drawer() {
-  // use the global context
-  const { state, dispatch } = React.useContext(GlobalContext);
+  // use global context
+  const { state, dispatch } = useGlobalContext();
   const theme = useTheme();
   const currentPath = usePathname();
   const router = useRouter();

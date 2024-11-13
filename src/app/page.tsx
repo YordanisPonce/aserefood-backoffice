@@ -13,6 +13,7 @@ import {
 import { ShoppingBag, TrendingUp, Inventory } from "@mui/icons-material";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import { routes } from "@/config/routes";
 
 export default function HomePage() {
   const theme = useTheme();
@@ -70,12 +71,8 @@ export default function HomePage() {
               mb: 8,
             }}
           >
-          <Button
-              type="button"
-              variant="contained"
-              color="primary"
-            >
-              <Link href={"/login"}>Iniciar Sesión</Link>
+            <Button type="button" variant="contained" color="primary">
+              <Link href={routes.login.path}>Iniciar Sesión</Link>
             </Button>
           </Box>
         </Fade>

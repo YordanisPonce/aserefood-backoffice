@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { MoveToInbox as InboxIcon } from "@mui/icons-material";
+import { routes } from "@/config/routes";
 interface Section {
   name: string;
   path: string;
@@ -9,33 +10,33 @@ interface Section {
 
 export const sections: Section[] = [
   {
-    name: "DashBoard",
-    path: "/dashboard",
+    name: "Dashboard",
+    path: routes.dashboard.path,
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Categorias",
-    path: "/categories",
+    path: routes.categories.path,
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Productos",
-    path: "/products",
+    path: routes.products.path,
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Zona",
-    path: "/zone",
+    path: routes.zone.path,
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Inventario",
-    path: "/inventory",
+    path: routes.inventory.path,
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Usuarios",
-    path: "/users",
+    path: routes.users.path,
     icon: <InboxIcon />, // icon for exmaple
   },
 ];

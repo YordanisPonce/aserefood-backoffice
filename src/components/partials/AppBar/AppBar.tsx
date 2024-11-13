@@ -3,6 +3,9 @@ import { IconButton, Toolbar, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled } from "@mui/material/styles";
 import {Menu as MenuIcon} from "@mui/icons-material";
+import React from "react";
+import { useGlobalContext } from "@/stores/global";
+import { TOGGLE_DRAWER_OPEN } from "@/stores/global/types";
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
@@ -30,14 +33,9 @@ const AppBarStyle = styled(MuiAppBar, {
 }));
 
 
-
-import React, { useContext } from "react";
-import { GlobalContext } from "@/stores/global";
-import { TOGGLE_DRAWER_OPEN } from "@/stores/global/types";
-
 export default function AppBar() {
-  // use de global context
-  const {state, dispatch} = useContext(GlobalContext)
+  // use global context
+  const {state, dispatch} = useGlobalContext()
   const handleDrawerOpen = () => {
     dispatch({type: TOGGLE_DRAWER_OPEN, payload: true});
   };

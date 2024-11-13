@@ -2,7 +2,6 @@ import React from "react";
 import { Box } from "@mui/material";
 import AppBar from "../../components/partials/AppBar/AppBar";
 import Drawer from "../../components/partials/Drawer/Drawer";
-import { GlobalProvider } from "@/stores/global";
 
 export default function layout({
   children,
@@ -11,10 +10,8 @@ export default function layout({
 }>) {
   return (
     <Box sx={{ display: "flex" }}>
-      <GlobalProvider>
-        <AppBar />
-        <Drawer />
-      </GlobalProvider>
+      <AppBar />
+      <Drawer />
       {/* Main Content */}
       <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: `85px` }}>
         {children}
