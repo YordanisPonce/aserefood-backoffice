@@ -20,6 +20,8 @@ import ListItemText from "@mui/material/ListItemText";
 import { sections } from "../../../lib/sections";
 import { usePathname, useRouter } from "next/navigation";
 import { Typography } from "@mui/material";
+import { GlobalContext } from "@/stores/global";
+import { TOGGLE_DRAWER_OPEN } from "@/stores/global/types";
 
 const drawerWidth = 240;
 
@@ -77,22 +79,19 @@ const DrawerStyle = styled(MuiDrawer, {
   ],
 }));
 
-interface Props {
-  open: boolean;
-  setOpen: (state: boolean) => void;
-}
-
-export default function Drawer({ open, setOpen }: Props) {
+export default function Drawer() {
+  // use the global context
+  const { state, dispatch } = React.useContext(GlobalContext);
   const theme = useTheme();
   const currentPath = usePathname();
   const router = useRouter();
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    dispatch({ type: TOGGLE_DRAWER_OPEN, payload: false });
   };
 
   return (
-    <DrawerStyle variant="permanent" open={open}>
+    <DrawerStyle variant="permanent" open={state.isDrawerOpen}>
       <DrawerHeader>
         <Typography sx={{ ml: 7 }} typography={"h5"}>
           Sections
@@ -135,7 +134,7 @@ export default function Drawer({ open, setOpen }: Props) {
                   px: 2.5,
                   borderRadius: 2,
                 },
-                open
+                state.isDrawerOpen
                   ? {
                       justifyContent: "initial",
                     }
@@ -154,7 +153,7 @@ export default function Drawer({ open, setOpen }: Props) {
                         ? theme.palette.info.main
                         : "black",
                   },
-                  open
+                  state.isDrawerOpen
                     ? {
                         mr: 3,
                       }
@@ -168,7 +167,7 @@ export default function Drawer({ open, setOpen }: Props) {
               <ListItemText
                 primary={section.name}
                 sx={[
-                  open
+                  state.isDrawerOpen
                     ? {
                         opacity: 1,
                       }

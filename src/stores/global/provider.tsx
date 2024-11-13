@@ -1,3 +1,4 @@
+"use client"
 import React, { FC, useReducer } from "react";
 
 import Context from "./context";

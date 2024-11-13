@@ -1,3 +1,4 @@
+"use client"
 import { IconButton, Toolbar, Typography } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled } from "@mui/material/styles";
@@ -28,19 +29,20 @@ const AppBarStyle = styled(MuiAppBar, {
   ],
 }));
 
-interface Props {
-  drawerOpen: boolean;
-  setdrawerOpen: (state: boolean) => void;
-}
 
-import React from "react";
 
-export default function AppBar({ drawerOpen, setdrawerOpen }: Props) {
+import React, { useContext } from "react";
+import { GlobalContext } from "@/stores/global";
+import { TOGGLE_DRAWER_OPEN } from "@/stores/global/types";
+
+export default function AppBar() {
+  // use de global context
+  const {state, dispatch} = useContext(GlobalContext)
   const handleDrawerOpen = () => {
-    setdrawerOpen(true);
+    dispatch({type: TOGGLE_DRAWER_OPEN, payload: true});
   };
   return (
-    <AppBarStyle position="fixed" open={drawerOpen}>
+    <AppBarStyle position="fixed" open={state.isDrawerOpen}>
       <Toolbar>
         <IconButton
           color="inherit"
@@ -51,7 +53,7 @@ export default function AppBar({ drawerOpen, setdrawerOpen }: Props) {
             {
               marginRight: 5,
             },
-            drawerOpen && { display: "none" },
+            state.isDrawerOpen && { display: "none" },
           ]}
         >
           <MenuIcon />
