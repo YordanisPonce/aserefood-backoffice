@@ -13,7 +13,7 @@ import {
 import { ShoppingBag, TrendingUp, Inventory } from "@mui/icons-material";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-import { routes } from "@/config/routes";
+import { routes } from "@/lib/config/routes";
 
 export default function HomePage() {
   const theme = useTheme();

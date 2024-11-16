@@ -14,8 +14,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { routes } from "@/config/routes";
-
+import { routes } from "@/lib/config/routes";
 
 const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
   fontSize: 40,
@@ -64,7 +63,7 @@ export default function LoginCard() {
     }
 
     if (isValid) {
-      router.push(routes.dashboard.path)
+      router.push(routes.dashboard.path);
     } else {
       setFormError("Por favor, corrija los errores en el formulario");
     }

@@ -1,6 +1,6 @@
 "use client";
 
-import { themeOptions } from "@/config/theme";
+import { themeOptions } from "@/lib/config/theme";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { ReactNode } from "react";
 

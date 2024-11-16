@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { MoveToInbox as InboxIcon } from "@mui/icons-material";
-import { routes } from "@/config/routes";
+import { routes } from "@/lib/config/routes";
 interface Section {
   name: string;
   path: string;
