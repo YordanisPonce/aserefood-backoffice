@@ -19,25 +19,34 @@ interface Props {
       | React.MouseEvent<HTMLButtonElement, MouseEvent>
       | React.FormEvent<HTMLFormElement>
   ) => void;
+  borderRadius?: string | number; 
+  size?: "small" | "medium" | "large"; 
 }
 
 export default function Button({
   children,
-  type = undefined, 
+  type = undefined,
   color = "primary",
   fullWidth = false,
   variant = "text",
-  action= () => {},
+  action = () => {},
+  borderRadius = 1, 
+  size = "medium", 
 }: Props) {
+  
+  const padding = size === "small" ? 0.5 : size === "large" ? 1.5 : 1;
+  const fontSize = size === "small" ? "0.75rem" : size === "large" ? "1.25rem" : "1rem";
+
   return (
     <BtnMUI
       type={type}
       fullWidth={fullWidth}
       variant={variant}
       sx={{
-        mt: 3,
-        mb: 2,
-        py: 1.5,
+        py: padding,
+        px: padding * 2,
+        borderRadius: borderRadius, // Aplicar borde redondeado
+        fontSize: fontSize, // Ajustar tamaño de fuente
         transition: "all 0.3s ease-in-out",
         "&:hover": {
           transform: "translateY(-2px)",

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Box } from "@mui/material";
 import AppBar from "../../components/partials/AppBar/AppBar";
@@ -13,7 +14,10 @@ export default function layout({
       <AppBar />
       <Drawer />
       {/* Main Content */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, paddingTop: `85px` }}>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, p: 3, paddingTop: `85px`, minWidth: 0 }}
+      >
         {children}
       </Box>
     </Box>
