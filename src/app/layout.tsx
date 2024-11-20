@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import ClientThemeProvider from "@/components/ClientThemeProvider";
+import ClientThemeProvider from "@/components/providers/ClientThemeProvider";
 import { GlobalProvider } from "@/stores/global";
+import AuthProvider from "@/components/providers/AuthProvider";
 
 const geistSans = localFont({
-  src: "../config/fonts/GeistVF.woff",
+  src: "../lib/config/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "../config/fonts/GeistMonoVF.woff",
+  src: "../lib/config/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -29,7 +30,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <GlobalProvider>
-          <ClientThemeProvider> {children} </ClientThemeProvider>
+          <AuthProvider>
+            <ClientThemeProvider> {children} </ClientThemeProvider>
+          </AuthProvider>
         </GlobalProvider>
       </body>
     </html>
