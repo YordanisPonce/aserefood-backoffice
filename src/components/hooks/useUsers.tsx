@@ -1,20 +1,11 @@
+import { UserDTO } from "@/lib/dto/UserDTO";
 import React from "react";
 // interface example
 // ***Temporary here****
-export interface User {
-  id: string;
-  username: string;
-  email: string;
-  name: string;
-  lastnames: string;
-  role: string;
-  isActive: boolean;
-  phoneNumber: string;
-}
 
 export default function useUsers() {
   // Data example
-  const users: User[] = [
+  const users: UserDTO[] = [
     {
       id: "1",
       username: "johndoe",

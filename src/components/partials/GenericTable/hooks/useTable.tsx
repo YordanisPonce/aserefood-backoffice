@@ -3,18 +3,6 @@ import React from "react";
 
 type Order = "asc" | "desc";
 
-export interface Column<T> {
-  id: keyof T;
-  label: string;
-  numeric?: boolean;
-  disablePadding?: boolean;
-  bool?: {
-    // meaning
-    true: string;
-    false: string;
-  };
-}
-
 interface Props<T> {
   rows: (T & { id: string })[];
 }

@@ -1,5 +1,6 @@
 "use client";
-import { User } from "@/app/(protected)/users/page";
+
+import { UserDTO } from "@/lib/dto/UserDTO";
 import { Delete, Edit } from "@mui/icons-material";
 import {
   Card,
@@ -11,7 +12,7 @@ import {
 import React from "react";
 
 interface Props {
-  data: User;
+  data: UserDTO;
 }
 
 export default function UserCard({ data: user }: Props) {

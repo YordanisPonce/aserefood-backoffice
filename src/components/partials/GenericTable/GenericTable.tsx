@@ -17,23 +17,16 @@ import {
   Typography,
   Tooltip,
   Chip,
+  List,
+  ListItem,
 } from "@mui/material";
 import { Add, Delete as DeleteIcon, Edit } from "@mui/icons-material";
 import { alpha } from "@mui/material/styles";
 import useTable from "./hooks/useTable";
-
-
-export interface Column<T> {
-  id: keyof T;
-  label: string;
-  numeric?: boolean;
-  disablePadding?: boolean;
-  bool?: {
-    // meaning
-    true: string;
-    false: string;
-  };
-}
+import { Column } from "./types/Column";
+import { NumericColumn } from "./types/NumericColumn";
+import { BoolColumn } from "./types/BoolColumn";
+import { ListColumn } from "./types/ListColumn";
 
 interface Props<T> {
   columns: Column<T>[];
@@ -66,6 +59,32 @@ export default function GenericTable<T extends { id: string }>({
     page,
     rowsPerPage,
   } = useTable<T>({ rows });
+
+  function renderRow(column: Column<T>, row: T & { id: string }) {
+    // is BoolColumn
+    if (
+      "valueTrue" in column &&
+      "valueFalse" in column &&
+      column instanceof BoolColumn
+    )
+      return (
+        <Chip
+          label={row[column.id] ? column.valueTrue : column.valueFalse}
+          color={row[column.id] ? "success" : "error"}
+        />
+      );
+    else if ("nameProperty" in column && column instanceof ListColumn) {
+      // is ListColumn
+      const list: any[] = row[column.id] as any[];
+      return (
+        <List>
+          {list.map((item, index) => (
+            <ListItem key={index}>{item[column.nameProperty]}</ListItem>
+          ))}
+        </List>
+      );
+    } else return row[column.id] as any;
+  }
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -136,7 +155,7 @@ export default function GenericTable<T extends { id: string }>({
                 {columns.map((column) => (
                   <TableCell
                     key={String(column.id)}
-                    align={column.numeric ? "right" : "left"}
+                    align={column instanceof NumericColumn ? "right" : "left"}
                     padding={column.disablePadding ? "none" : "normal"}
                     sortDirection={orderBy === column.id ? order : false}
                   >
@@ -180,25 +199,10 @@ export default function GenericTable<T extends { id: string }>({
                       <TableCell
                         key={String(column.id)}
                         align={
-                          !column.bool
-                            ? column.numeric
-                              ? "right"
-                              : "left"
-                            : "left"
+                          column instanceof NumericColumn ? "right" : "left"
                         }
                       >
-                        {column.bool ? (
-                          <Chip
-                            label={
-                              row[column.id]
-                                ? column.bool.true
-                                : column.bool.false
-                            }
-                            color={row[column.id] ? "success" : "error"}
-                          />
-                        ) : (
-                          (row[column.id] as any)
-                        )}
+                        {renderRow(column, row)}
                       </TableCell>
                     ))}
                     <TableCell align="center">
