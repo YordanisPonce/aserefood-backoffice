@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -13,8 +13,7 @@ import { styled } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Button from "@/components/ui/Button";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { routes } from "@/lib/config/routes";
+import useLoginForm from "./hooks/useLoginForm";
 
 const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
   fontSize: 40,
@@ -26,48 +25,7 @@ const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
 }));
 
 export default function LoginCard() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [formError, setFormError] = useState("");
-  const router = useRouter();
-
-  const validateEmail = (email: string) => {
-    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    return re.test(String(email).toLowerCase());
-  };
-
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setEmailError("");
-    setPasswordError("");
-    setFormError("");
-
-    let isValid = true;
-
-    if (!email) {
-      setEmailError("El correo electrónico es requerido");
-      isValid = false;
-    } else if (!validateEmail(email)) {
-      setEmailError("Ingrese un correo electrónico válido");
-      isValid = false;
-    }
-
-    if (!password) {
-      setPasswordError("La contraseña es requerida");
-      isValid = false;
-    } else if (password.length < 6) {
-      setPasswordError("La contraseña debe tener al menos 6 caracteres");
-      isValid = false;
-    }
-
-    if (isValid) {
-      router.push(routes.dashboard.path);
-    } else {
-      setFormError("Por favor, corrija los errores en el formulario");
-    }
-  }
+  const { register, handleSubmit, errors } = useLoginForm();
 
   return (
     <Card
@@ -94,9 +52,9 @@ export default function LoginCard() {
           <Typography component="h1" variant="h5" sx={{ mb: 3 }}>
             Iniciar Sesión
           </Typography>
-          {formError && (
+          {errors.root?.message && (
             <Alert severity="error" sx={{ width: "100%", mb: 2 }}>
-              {formError}
+              {errors.root.message}
             </Alert>
           )}
           <Box
@@ -111,46 +69,32 @@ export default function LoginCard() {
               fullWidth
               id="email"
               label="Correo Electrónico"
-              name="email"
               autoComplete="email"
               autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              error={!!emailError}
-              helperText={emailError}
+              {...register("email")}
+              error={!!errors.email}
+              helperText={errors.email?.message}
               sx={{ mb: 2 }}
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
+              id="password"
               label="Contraseña"
               type="password"
-              id="password"
               autoComplete="current-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!passwordError}
-              helperText={passwordError}
+              {...register("password")}
+              error={!!errors.password}
+              helperText={errors.password?.message}
               sx={{ mb: 2 }}
             />
-            <Button
-              type="submit"
-              fullWidth={true}
-              variant="contained"
-              color="primary"
-              action={(
-                e:
-                  | React.MouseEvent<HTMLButtonElement, MouseEvent>
-                  | React.FormEvent<HTMLFormElement>
-              ) => {
-                handleSubmit(e as React.FormEvent<HTMLFormElement>);
-              }}
-            >
+            <Button type="submit" fullWidth variant="contained" color="primary">
               Iniciar Sesión
             </Button>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
+            >
               <Link href="#">¿Olvidaste tu contraseña?</Link>
             </Box>
           </Box>
