@@ -11,6 +11,7 @@ interface Routes {
   zone: Route;
   inventory: Route;
   users: Route;
+  userForm: Route
 }
 export const routes: Routes = {
   home: { path: "/" },
@@ -21,4 +22,5 @@ export const routes: Routes = {
   zone: { path: "/zone" },
   inventory: { path: "/inventory" },
   users: { path: "/users" },
+  userForm: {path: "/users/user-form"}
 };
