@@ -11,9 +11,11 @@ import { createProducts, getProduct } from "@/lib/services/products";
 import useUrlParams from "@/lib/hooks/useUrlParams";
 import { revalidateServerTags } from "@/lib/utils/cache";
 import { useSearchParams } from "next/navigation";
+import LoadingScreen from "@/components/common/loading/LoadingScreen";
 
 export const AddProductContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
   const { updateSearchParams } = useUrlParams();
   const params = useSearchParams();
 
@@ -78,32 +80,27 @@ export const AddProductContainer: FunctionComponent = () => {
 
   const updateForm = useCallback(
     async (productId: string) => {
-      const product = await getProduct(productId);
-      methods.reset({
-        description: product.description,
-        name: product.name,
-        shortDescription: product.shortDescription,
-        provider: {
-          id: product.providers[0].id,
-          name: product.providers[0].name,
-        },
-        category: {
-          id: product.categoryId,
-          name: product.categoryName,
-        },
-      });
-
-      console.log({
-        ...product,
-        provider: {
-          id: product.providers[0].id,
-          name: product.providers[0].name,
-        },
-        category: {
-          id: product.categoryId,
-          name: product.categoryName,
-        },
-      });
+      setLoadingData(true);
+      try {
+        const product = await getProduct(productId);
+        methods.reset({
+          description: product.description,
+          name: product.name,
+          shortDescription: product.shortDescription,
+          provider: {
+            id: product.providers[0].id,
+            name: product.providers[0].name,
+          },
+          category: {
+            id: product.categoryId,
+            name: product.categoryName,
+          },
+        });
+      } catch {
+        console.log("error");
+      } finally {
+        setLoadingData(false);
+      }
     },
     [methods]
   );
@@ -134,10 +131,14 @@ export const AddProductContainer: FunctionComponent = () => {
             autoComplete="off"
             className="relative z-10"
           >
-            <CreateProductFrom
-              isLoading={isLoading}
-              isUpdate={currentModal === "update-product"}
-            />
+            {loadingData ? (
+              <LoadingScreen sx={{ height: "100%" }} />
+            ) : (
+              <CreateProductFrom
+                isLoading={isLoading}
+                isUpdate={currentModal === "update-product"}
+              />
+            )}
           </form>
         </FormProvider>
       </DialogContent>
