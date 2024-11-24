@@ -1,3 +1,4 @@
+"use server";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateUserDTO, User } from "../types/users";
@@ -43,16 +44,13 @@ export const getUsers = async (
 export const createUser = async (
   user: CreateUserDTO
 ): Promise<Paginated<User>> => {
-  const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}users`,
-    {
-      method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await fetchWithAuth(`${process.env.NEXT_APP_API_URL}users`, {
+    method: "POST",
+    body: JSON.stringify(user),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!response.ok) {
     console.log(response);

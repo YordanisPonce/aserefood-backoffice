@@ -3,6 +3,9 @@ export interface Provider {
   name: string;
 }
 
+export interface CreateProvider {
+  name: string
+}
 export interface CreateProviderDTO {
   name: string
 }

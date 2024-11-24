@@ -1,19 +1,18 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
+import { InventoryEntry } from "@/lib/types/inventory";
 import { Pagination } from "@/lib/types/pagination";
-import { Province } from "@/lib/types/province";
-import { Paper } from "@mui/material";
+import { Provider } from "@/lib/types/provider";
 import { GridColDef } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
-type ProvincesListProps = {
-  providers: Province[];
+type ProviderListProps = {
+  providers: Provider[];
   pagination: Pagination;
 };
 
-export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
+export const ProviderList: FunctionComponent<ProviderListProps> = ({
   providers,
   pagination,
 }) => {
@@ -21,7 +20,7 @@ export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
   const onDelete = () => {};
   const onEdit = () => {};
 
-  const colDef: GridColDef<Province>[] = [
+  const colDef: GridColDef<InventoryEntry>[] = [
     {
       field: "name",
       headerName: "Nombre",
@@ -36,14 +35,11 @@ export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
   ];
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <SectionHeader titleSection="Provincias" titleButton="Crear Provincia" />
-      <RootDataGrid
-        columns={colDef}
-        data={providers}
-        pagination={pagination}
-        disableSelection
-      />
-    </Paper>
+    <RootDataGrid
+      columns={colDef}
+      data={providers}
+      pagination={pagination}
+      disableSelection
+    />
   );
 };

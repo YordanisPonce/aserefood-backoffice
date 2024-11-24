@@ -80,15 +80,12 @@ export const UsersList: FunctionComponent<UserListProps> = ({
   ];
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <SectionHeader titleSection="Usuarios" titleButton="Crear Usuario" />
-      <RootDataGrid
-        columns={colDef}
-        data={users}
-        pagination={pagination}
-        disableSelection
-        density="comfortable"
-      />
-    </Paper>
+    <RootDataGrid
+      columns={colDef}
+      data={users}
+      pagination={pagination}
+      disableSelection
+      density="comfortable"
+    />
   );
 };
