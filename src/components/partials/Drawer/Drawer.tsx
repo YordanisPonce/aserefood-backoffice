@@ -50,7 +50,7 @@ export default function Drawer() {
     >
       <DrawerHeader>
         <Typography sx={{ ml: 7 }} typography={"h5"}>
-          Sections
+          Secciones
         </Typography>
         <IconButton onClick={handleDrawerClose}>
           <ChevronLeftIcon />

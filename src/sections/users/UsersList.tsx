@@ -1,9 +1,11 @@
 "use client";
 
+import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
+import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { Pagination } from "@/lib/types/pagination";
 import { User } from "@/lib/types/users";
-import { Chip } from "@mui/material";
+import { Chip, Paper } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
@@ -16,6 +18,10 @@ export const UsersList: FunctionComponent<UserListProps> = ({
   users,
   pagination,
 }) => {
+  const onViewDetails = () => {};
+  const onDelete = () => {};
+  const onEdit = () => {};
+
   const colDef: GridColDef<User>[] = [
     {
       field: "username",
@@ -66,15 +72,29 @@ export const UsersList: FunctionComponent<UserListProps> = ({
       sortable: false,
       flex: 0.8,
     },
+    {
+      field: "id",
+      headerName: "Acciones",
+      renderCell: () => <TableMenu {...{ onDelete, onEdit, onViewDetails }} />,
+    },
   ];
 
   return (
-    <RootDataGrid
-      columns={colDef}
-      data={users}
-      pagination={pagination}
-      disableSelection
-      density="comfortable"
-    />
+    <Paper sx={{ p: 2 }}>
+      <SectionHeader
+        titleSection="Usuarios"
+        titleButton="Crear Usuario"
+        actionCreate={() => {
+          // implement
+        }}
+      />
+      <RootDataGrid
+        columns={colDef}
+        data={users}
+        pagination={pagination}
+        disableSelection
+        density="comfortable"
+      />
+    </Paper>
   );
 };

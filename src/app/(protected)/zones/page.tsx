@@ -11,8 +11,6 @@ export default async function Page({ searchParams }: PageProps) {
   const { data, page, total, pageSize } = await getZones(searchParams);
 
   return (
-    <Box sx={{ mt: 4, maxWidth: "100%" }}>
       <ZonesList pagination={{ page, total, pageSize }} zones={data} />
-    </Box>
   );
 }

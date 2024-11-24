@@ -38,7 +38,7 @@ export default function AppBar() {
           AsereFood
         </Typography>
         <Button color="inherit" onClick={handleLogOut}>
-          Cerrar Seción
+          Cerrar Sesión
         </Button>
       </Toolbar>
     </MUIAppBar>

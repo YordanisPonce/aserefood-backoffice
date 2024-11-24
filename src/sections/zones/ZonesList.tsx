@@ -1,6 +1,10 @@
+"use client";
+import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
+import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { Pagination } from "@/lib/types/pagination";
 import { Zone } from "@/lib/types/zone";
+import { Paper } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
@@ -13,6 +17,10 @@ export const ZonesList: FunctionComponent<ZonesListProps> = ({
   zones,
   pagination,
 }) => {
+  const onViewDetails = () => {};
+  const onDelete = () => {};
+  const onEdit = () => {};
+
   const colDef: GridColDef<Zone>[] = [
     {
       field: "name",
@@ -26,14 +34,28 @@ export const ZonesList: FunctionComponent<ZonesListProps> = ({
       sortable: false,
       flex: 1,
     },
+    {
+      field: "id",
+      headerName: "Acciones",
+      renderCell: () => <TableMenu {...{ onDelete, onEdit, onViewDetails }} />,
+    },
   ];
 
   return (
-    <RootDataGrid
-      columns={colDef}
-      data={zones}
-      pagination={pagination}
-      disableSelection
-    />
+    <Paper sx={{ p: 2 }}>
+      <SectionHeader
+        titleSection="Zonas"
+        titleButton="Crear Zona"
+        actionCreate={() => {
+          // implement
+        }}
+      />
+      <RootDataGrid
+        columns={colDef}
+        data={zones}
+        pagination={pagination}
+        disableSelection
+      />
+    </Paper>
   );
 };

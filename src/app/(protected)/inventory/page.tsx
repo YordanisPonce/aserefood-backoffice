@@ -1,7 +1,8 @@
+import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { getInventoryEntries } from "@/lib/services/inventory";
 import { SearchParams } from "@/lib/types/pagination";
 import { InventoryList } from "@/sections/inventory/InventoryList";
-import { Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import React from "react";
 
 type PageProps = {
@@ -13,11 +14,9 @@ export default async function Page({ searchParams }: PageProps) {
   );
 
   return (
-    <Box sx={{ mt: 4, maxWidth: "100%" }}>
-      <InventoryList
-        pagination={{ page, total, pageSize }}
-        inventoryEntries={data}
-      />
-    </Box>
+    <InventoryList
+      pagination={{ page, total, pageSize }}
+      inventoryEntries={data}
+    />
   );
 }

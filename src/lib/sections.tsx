@@ -24,7 +24,7 @@ export const sections: Section[] = [
     icon: <InboxIcon />,
   },
   {
-    name: "Categorias",
+    name: "Categorías",
     path: routes.categories.path,
     icon: <CategoryRoundedIcon />,
   },
