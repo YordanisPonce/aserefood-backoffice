@@ -1,6 +1,8 @@
+"use server";
+
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { Product } from "../types/products";
+import { CreateProductDTO, Product } from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -18,6 +20,28 @@ export const getProducts = async (
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching products");
+  }
+
+  return await response.json();
+};
+
+export const createProducts = async (
+  product: CreateProductDTO
+): Promise<Paginated<Product>> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}products`,
+    {
+      method: "POST",
+      body: JSON.stringify(product),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error creating product");
   }
 
   return await response.json();

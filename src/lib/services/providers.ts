@@ -1,3 +1,5 @@
+"use server";
+
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { Provider } from "../types/provider";
@@ -14,6 +16,19 @@ export const getProviders = async (
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url);
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching providers");
+  }
+
+  return await response.json();
+};
+
+export const getAllProviders = async (): Promise<Provider[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_APP_API_URL}providers/all`)
+  );
 
   if (!response.ok) {
     console.log(response);

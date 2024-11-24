@@ -7,3 +7,26 @@ export interface Product {
   categoryId: number;
   categoryName: string;
 }
+
+export interface CreateProductDTO {
+  name: string;
+  description: string;
+  shortDescription: string;
+  categoryId: number;
+  providerIds: number[];
+  isService: boolean;
+}
+
+export interface CreateProduct {
+  name: string;
+  description: string;
+  shortDescription: string;
+  category: {
+    id: number;
+    name: string;
+  };
+  provider: {
+    id: number;
+    name: string;
+  };
+}

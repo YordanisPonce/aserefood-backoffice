@@ -1,9 +1,10 @@
 import { getProducts } from "@/lib/services/products";
 import { SearchParams } from "@/lib/types/pagination";
-import { ProductList } from "@/sections/products/ProductList";
+import { ProductList } from "@/sections/products/components/ProductList";
 import { Box, Button, Paper, Typography } from "@mui/material";
 import React from "react";
 import { Add as AddIcon } from "@mui/icons-material";
+import { AddProductContainer } from "@/sections/products/containers/AddProductContainer";
 
 type ProductsPageProps = {
   searchParams: SearchParams;
@@ -38,6 +39,7 @@ export default async function ProductsPage({
         </Button>
       </Box>
       <ProductList pagination={{ page, total, pageSize }} products={data} />
+      <AddProductContainer />
     </Paper>
   );
 }
