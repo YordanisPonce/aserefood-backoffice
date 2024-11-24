@@ -5,7 +5,14 @@ export interface Municipality {
   provinceName: string;
 }
 
+export interface CreateMunicipality {
+  name: string;
+  province: {
+    id: number;
+    name: string;
+  };
+}
 export interface CreateMunicipalityDTO {
-  name: string,
-  provinceId: number
+  name: string;
+  provinceId: number;
 }

@@ -1,10 +1,8 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { Municipality } from "@/lib/types/municipality";
 import { Pagination } from "@/lib/types/pagination";
-import { Paper } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
@@ -37,14 +35,11 @@ export const MunicipalitiesList: FunctionComponent<MunicipalitiesListProps> = ({
   ];
 
   return (
-    <Paper sx={{ p: 2 }}>
-      <SectionHeader titleSection="Municipios" titleButton="Crear Municipio" />
-      <RootDataGrid
-        columns={colDef}
-        data={municipalities}
-        pagination={pagination}
-        disableSelection
-      />
-    </Paper>
+    <RootDataGrid
+      columns={colDef}
+      data={municipalities}
+      pagination={pagination}
+      disableSelection
+    />
   );
 };

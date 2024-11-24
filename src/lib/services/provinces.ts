@@ -24,6 +24,19 @@ export const getProvinces = async (
   return await response.json();
 };
 
+export const getAllProvinces = async (): Promise<Province[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_APP_API_URL}provinces/all`)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching provinces");
+  }
+
+  return await response.json();
+};
+
 export const createProvince = async (
   province: CreateProvinceDTO
 ): Promise<Paginated<Province>> => {
