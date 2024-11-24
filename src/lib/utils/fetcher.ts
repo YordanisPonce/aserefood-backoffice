@@ -1,6 +1,7 @@
 "use server";
 
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../config/auth/authOptions";
 
 export const fetchWithAuth = async (
   input: RequestInfo | URL,
@@ -11,7 +12,7 @@ export const fetchWithAuth = async (
     ? new Headers(newInit.headers)
     : new Headers();
 
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
 
   if (session?.accessToken) {
     newInit.headers.append("Authorization", `Bearer ${session.accessToken}`);
