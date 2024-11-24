@@ -2,24 +2,23 @@
 
 import { CreateProduct, CreateProductDTO } from "@/lib/types/products";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { createProductSchema } from "../utils/schema";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { CreateProductFrom } from "../components/CreateProductFrom";
-import { createProducts } from "@/lib/services/products";
+import { createProducts, getProduct } from "@/lib/services/products";
 import useUrlParams from "@/lib/hooks/useUrlParams";
 import { revalidateServerTags } from "@/lib/utils/cache";
+import { useSearchParams } from "next/navigation";
 
-type AddProductContainerProps = {
-  currentModal?: string;
-};
-
-export const AddProductContainer: FunctionComponent<
-  AddProductContainerProps
-> = ({ currentModal }) => {
+export const AddProductContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { updateSearchParams } = useUrlParams();
+  const params = useSearchParams();
+
+  const currentModal = params.get("currentModal");
+  const productId = params.get("productId");
 
   const formOptions: UseFormProps<CreateProduct> = {
     resolver: zodResolver(createProductSchema()),
@@ -38,6 +37,10 @@ export const AddProductContainer: FunctionComponent<
   const handleCloseModal = () => {
     updateSearchParams({
       currentModal: {
+        action: "delete",
+        value: "",
+      },
+      productId: {
         action: "delete",
         value: "",
       },
@@ -73,9 +76,45 @@ export const AddProductContainer: FunctionComponent<
     }
   };
 
+  const updateForm = async (productId: string) => {
+    const product = await getProduct(productId);
+    methods.reset({
+      description: product.description,
+      name: product.name,
+      shortDescription: product.shortDescription,
+      provider: {
+        id: product.providers[0].id,
+        name: product.providers[0].name,
+      },
+      category: {
+        id: product.categoryId,
+        name: product.categoryName,
+      },
+    });
+
+    console.log({
+      ...product,
+      provider: {
+        id: product.providers[0].id,
+        name: product.providers[0].name,
+      },
+      category: {
+        id: product.categoryId,
+        name: product.categoryName,
+      },
+    });
+  };
+  useEffect(() => {
+    if (currentModal === "update-product" && productId) {
+      updateForm(productId);
+    }
+  }, [currentModal]);
+
   return (
     <Dialog
-      open={currentModal === "create-product"}
+      open={
+        currentModal === "create-product" || currentModal === "update-product"
+      }
       maxWidth={"md"}
       fullWidth
       keepMounted={false}

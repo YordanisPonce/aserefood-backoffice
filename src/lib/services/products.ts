@@ -2,7 +2,7 @@
 
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { CreateProductDTO, Product } from "../types/products";
+import { CreateProductDTO, Product, ProductDetails } from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -20,6 +20,24 @@ export const getProducts = async (
       tags: ["products"],
     },
   });
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching products");
+  }
+
+  return await response.json();
+};
+
+export const getProduct = async (
+  productId: string
+): Promise<ProductDetails> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}products/${productId}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!response.ok) {
     console.log(response);

@@ -22,7 +22,7 @@ export default async function ProductsPage({
         createAction="create-product"
       />
       <ProductList pagination={{ page, total, pageSize }} products={data} />
-      <AddProductContainer currentModal={searchParams.currentModal} />
+      <AddProductContainer />
     </Paper>
   );
 }

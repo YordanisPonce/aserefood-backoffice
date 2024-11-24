@@ -2,11 +2,10 @@
 
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
+import useUrlParams from "@/lib/hooks/useUrlParams";
 import { Pagination } from "@/lib/types/pagination";
 import { Product } from "@/lib/types/products";
-import { Paper } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
 type ProductListProps = {
@@ -18,9 +17,43 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
   products,
   pagination,
 }) => {
-  const onViewDetails = () => {};
-  const onDelete = () => {};
-  const onEdit = () => {};
+  const { updateSearchParams } = useUrlParams();
+  const onViewDetails = (params: GridRenderCellParams) => () => {
+    updateSearchParams({
+      currentModal: {
+        action: "set",
+        value: "view-product",
+      },
+      productId: {
+        action: "set",
+        value: params.row.id,
+      },
+    });
+  };
+  const onDelete = (params: GridRenderCellParams) => () => {
+    updateSearchParams({
+      currentModal: {
+        action: "set",
+        value: "delete-entity",
+      },
+      id: {
+        action: "set",
+        value: params.row.id,
+      },
+    });
+  };
+  const onEdit = (params: GridRenderCellParams) => () => {
+    updateSearchParams({
+      currentModal: {
+        action: "set",
+        value: "update-product",
+      },
+      productId: {
+        action: "set",
+        value: params.row.id,
+      },
+    });
+  };
 
   const colDef: GridColDef<Product>[] = [
     { field: "name", headerName: "Nombre", sortable: false, flex: 1 },
@@ -45,7 +78,13 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
     {
       field: "id",
       headerName: "Acciones",
-      renderCell: () => <TableMenu {...{ onDelete, onEdit, onViewDetails }} />,
+      renderCell: (params) => (
+        <TableMenu
+          onDelete={onDelete(params)}
+          onEdit={onEdit(params)}
+          onViewDetails={onViewDetails(params)}
+        />
+      ),
     },
   ];
 

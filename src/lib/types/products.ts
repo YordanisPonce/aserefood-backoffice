@@ -1,3 +1,5 @@
+import { Provider } from "./provider";
+
 export interface Product {
   id: string;
   name: string;
@@ -29,4 +31,15 @@ export interface CreateProduct {
     id: number;
     name: string;
   };
+}
+
+export interface ProductDetails {
+  id: number;
+  name: string;
+  description: string;
+  shortDescription: string;
+  isService: boolean;
+  categoryId: number;
+  categoryName: string;
+  providers: Provider[];
 }
