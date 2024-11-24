@@ -2,7 +2,7 @@
 
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { Provider } from "../types/provider";
+import { CreateProviderDTO, Provider } from "../types/provider";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -33,6 +33,28 @@ export const getAllProviders = async (): Promise<Provider[]> => {
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching providers");
+  }
+
+  return await response.json();
+};
+
+export const createProvider = async (
+  provider: CreateProviderDTO
+): Promise<Paginated<Provider>> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}providers`,
+    {
+      method: "POST",
+      body: JSON.stringify(provider),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error creating provider");
   }
 
   return await response.json();

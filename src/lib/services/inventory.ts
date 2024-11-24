@@ -1,5 +1,5 @@
 import { IQueryable } from "../types/filters";
-import { InventoryEntry } from "../types/inventory";
+import { CreateInventoryEntryDTO, InventoryEntry } from "../types/inventory";
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
@@ -18,6 +18,28 @@ export const getInventoryEntries = async (
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching inventory entries");
+  }
+
+  return await response.json();
+};
+
+export const createInventoryEntry = async (
+  inventoryEntries: CreateInventoryEntryDTO[]
+): Promise<Paginated<InventoryEntry>> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}inventory-entries`,
+    {
+      method: "POST",
+      body: JSON.stringify(inventoryEntries),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error creating inventory entries");
   }
 
   return await response.json();

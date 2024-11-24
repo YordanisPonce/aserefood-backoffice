@@ -4,3 +4,8 @@ export interface Municipality {
   provinceId: number;
   provinceName: string;
 }
+
+export interface CreateMunicipalityDTO {
+  name: string,
+  provinceId: number
+}

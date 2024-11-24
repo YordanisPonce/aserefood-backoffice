@@ -1,6 +1,6 @@
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { Zone } from "../types/zone";
+import { CreateZoneDTO, Zone } from "../types/zone";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -18,6 +18,28 @@ export const getZones = async (
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching providers");
+  }
+
+  return await response.json();
+};
+
+export const createZone = async (
+  zone: CreateZoneDTO
+): Promise<Paginated<Zone>> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}zones`,
+    {
+      method: "POST",
+      body: JSON.stringify(zone),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error creating zone");
   }
 
   return await response.json();

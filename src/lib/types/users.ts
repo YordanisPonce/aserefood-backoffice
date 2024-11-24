@@ -8,3 +8,13 @@ export interface User {
   isActive: boolean;
   phoneNumber: string;
 }
+
+export interface CreateUserDTO {
+  name: string,
+  lastnames: string,
+  email: string,
+  role: string,
+  username: string,
+  phoneNumber: string,
+  password: string
+}

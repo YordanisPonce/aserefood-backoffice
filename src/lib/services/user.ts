@@ -1,6 +1,6 @@
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { User } from "../types/users";
+import { CreateUserDTO, User } from "../types/users";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -35,6 +35,28 @@ export const getUsers = async (
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching users");
+  }
+
+  return await response.json();
+};
+
+export const createUser = async (
+  user: CreateUserDTO
+): Promise<Paginated<User>> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}users`,
+    {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error creating user");
   }
 
   return await response.json();

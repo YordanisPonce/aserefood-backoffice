@@ -7,3 +7,10 @@ export interface InventoryEntry {
   price: number;
   quantity: number;
 }
+
+export interface CreateInventoryEntryDTO {
+  quantity: number;
+  price: number;
+  productId: number;
+  zoneId: number;
+}
