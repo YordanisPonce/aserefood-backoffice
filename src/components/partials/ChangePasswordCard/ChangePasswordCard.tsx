@@ -7,10 +7,10 @@ import {
   Typography,
   Box,
   Alert,
+  Button,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Button from "@/components/ui/Button";
 import useChangePasswordForm from "./hooks/useChangePasswordCard";
 
 

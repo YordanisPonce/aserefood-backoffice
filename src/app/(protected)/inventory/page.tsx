@@ -1,8 +1,6 @@
-import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { getInventoryEntries } from "@/lib/services/inventory";
 import { SearchParams } from "@/lib/types/pagination";
 import { InventoryList } from "@/sections/inventory/InventoryList";
-import { Box, Paper } from "@mui/material";
 import React from "react";
 
 type PageProps = {

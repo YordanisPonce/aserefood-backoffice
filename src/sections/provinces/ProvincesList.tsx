@@ -37,19 +37,13 @@ export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
 
   return (
     <Paper sx={{ p: 2 }}>
-      <SectionHeader
-        titleSection="Provincias"
-        titleButton="Crear Provincia"
-        actionCreate={() => {
-          // implement
-        }}
+      <SectionHeader titleSection="Provincias" titleButton="Crear Provincia" />
+      <RootDataGrid
+        columns={colDef}
+        data={providers}
+        pagination={pagination}
+        disableSelection
       />
-    <RootDataGrid
-      columns={colDef}
-      data={providers}
-      pagination={pagination}
-      disableSelection
-    />
     </Paper>
   );
 };

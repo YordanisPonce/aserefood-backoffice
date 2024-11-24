@@ -57,13 +57,7 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
 
   return (
     <Paper sx={{ p: 2 }}>
-      <SectionHeader
-        titleSection="Inventario"
-        titleButton="Crear Inventario"
-        actionCreate={() => {
-          // implement
-        }}
-      />
+      <SectionHeader titleSection="Inventario" titleButton="Crear Inventario" />
       <RootDataGrid
         columns={colDef}
         data={inventoryEntries}

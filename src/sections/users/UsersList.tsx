@@ -81,13 +81,7 @@ export const UsersList: FunctionComponent<UserListProps> = ({
 
   return (
     <Paper sx={{ p: 2 }}>
-      <SectionHeader
-        titleSection="Usuarios"
-        titleButton="Crear Usuario"
-        actionCreate={() => {
-          // implement
-        }}
-      />
+      <SectionHeader titleSection="Usuarios" titleButton="Crear Usuario" />
       <RootDataGrid
         columns={colDef}
         data={users}

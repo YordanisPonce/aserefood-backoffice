@@ -43,13 +43,7 @@ export const ZonesList: FunctionComponent<ZonesListProps> = ({
 
   return (
     <Paper sx={{ p: 2 }}>
-      <SectionHeader
-        titleSection="Zonas"
-        titleButton="Crear Zona"
-        actionCreate={() => {
-          // implement
-        }}
-      />
+      <SectionHeader titleSection="Zonas" titleButton="Crear Zona" />
       <RootDataGrid
         columns={colDef}
         data={zones}

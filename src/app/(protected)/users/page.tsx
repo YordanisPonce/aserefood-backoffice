@@ -1,9 +1,7 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
 import { UsersList } from "@/sections/users/UsersList";
 import { getUsers } from "@/lib/services/user";
 import { SearchParams } from "@/lib/types/pagination";
-import { Add as AddIcon } from "@mui/icons-material";
 
 type UsersPageProps = {
   searchParams: SearchParams;

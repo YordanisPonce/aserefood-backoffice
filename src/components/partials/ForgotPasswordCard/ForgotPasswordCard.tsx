@@ -8,10 +8,10 @@ import {
   Typography,
   Box,
   Alert,
+  Button,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Button from "@/components/ui/Button";
 import Link from "next/link";
 import useForgotPasswordForm from "./hooks/useForgotPasswordCard";
 import { routes } from "@/lib/config/routes";

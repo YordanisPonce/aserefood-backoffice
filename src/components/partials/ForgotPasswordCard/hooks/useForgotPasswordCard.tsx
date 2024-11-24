@@ -21,7 +21,7 @@ export default function useForgotPasswordForm() {
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     try {
       console.log("Solicitud de restablecimiento para:", data.email);
-    } catch (error) {
+    } catch {
       setError("root", {
         type: "manual",
         message: "Error al procesar la solicitud. Por favor, intente de nuevo.",

@@ -38,13 +38,7 @@ export const ProviderList: FunctionComponent<ProviderListProps> = ({
 
   return (
     <Paper sx={{ p: 2 }}>
-      <SectionHeader
-        titleSection="Proveedores"
-        titleButton="Crear Proveedor"
-        actionCreate={() => {
-          // implement
-        }}
-      />
+      <SectionHeader titleSection="Proveedores" titleButton="Crear Proveedor" />
       <RootDataGrid
         columns={colDef}
         data={providers}

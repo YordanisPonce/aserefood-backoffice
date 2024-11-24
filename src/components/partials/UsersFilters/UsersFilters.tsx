@@ -1,25 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, {  } from "react";
 import {
-  Paper,
   TextField,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
   Box,
-  IconButton,
-  Popover,
-  Typography,
   SelectChangeEvent,
-  Drawer,
-  useMediaQuery,
-  useTheme,
-  Theme,
 } from "@mui/material";
-import { FilterList as FilterListIcon } from "@mui/icons-material";
-import Button from "@/components/ui/Button";
 import useUsersFiltersOptions from "./hooks/useUsersFiltersOptions";
 
 interface UsersFilters {

@@ -1,8 +1,6 @@
 "use client";
 import React, { ReactNode } from "react";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import Button from "@/components/ui/Button";
 import { Add } from "@mui/icons-material";
 
 interface Props<T> {

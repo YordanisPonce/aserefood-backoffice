@@ -38,13 +38,7 @@ export const MunicipalitiesList: FunctionComponent<MunicipalitiesListProps> = ({
 
   return (
     <Paper sx={{ p: 2 }}>
-      <SectionHeader
-        titleSection="Municipios"
-        titleButton="Crear Municipio"
-        actionCreate={() => {
-          // implement
-        }}
-      />
+      <SectionHeader titleSection="Municipios" titleButton="Crear Municipio" />
       <RootDataGrid
         columns={colDef}
         data={municipalities}

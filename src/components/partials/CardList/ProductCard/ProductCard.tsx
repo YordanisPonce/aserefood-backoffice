@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductDTO } from "@/lib/dto/ProductDTO";
+import { ProductDetails } from "@/lib/types/products";
 import { Delete, Edit } from "@mui/icons-material";
 import {
   Box,
@@ -13,7 +13,7 @@ import {
 import React from "react";
 
 interface Props {
-  data: ProductDTO;
+  data: ProductDetails;
 }
 
 export default function ProductCard({ data: product }: Props) {

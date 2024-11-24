@@ -36,7 +36,7 @@ export default function useChangePasswordForm() {
       
       console.log("Contraseña cambiada:", data.newPassword);
     
-    } catch (error) {
+    } catch {
       setError("root", {
         type: "manual",
         message: "Error al cambiar la contraseña. Por favor, intente de nuevo.",
