@@ -115,7 +115,7 @@ const RootDataGrid: React.FC<Props> = ({
           }}
           rowCount={pagination.total}
           paginationModel={{
-            page: pagination.page + 1,
+            page: pagination.page - 1,
             pageSize: pagination.pageSize,
           }}
           onPaginationModelChange={onPaginationModelChange}
