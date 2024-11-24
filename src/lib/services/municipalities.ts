@@ -1,3 +1,4 @@
+"use server"
 import { IQueryable } from "../types/filters";
 import { CreateMunicipalityDTO, Municipality } from "../types/municipality";
 import { Paginated, SearchParams } from "../types/pagination";
