@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { IQueryable } from "../types/filters";
 import { CreateMunicipalityDTO, Municipality } from "../types/municipality";
 import { Paginated, SearchParams } from "../types/pagination";
@@ -15,6 +15,19 @@ export const getMunicipalities = async (
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url);
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching municipalities");
+  }
+
+  return await response.json();
+};
+
+export const getAllMunicipalities = async (): Promise<Municipality[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_APP_API_URL}municipalities/all`)
+  );
 
   if (!response.ok) {
     console.log(response);

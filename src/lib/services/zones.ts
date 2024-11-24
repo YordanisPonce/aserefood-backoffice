@@ -1,3 +1,4 @@
+"use server"
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateZoneDTO, Zone } from "../types/zone";

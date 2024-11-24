@@ -1,4 +1,3 @@
-
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
 import { FunctionComponent } from "react";
@@ -15,7 +14,7 @@ export const CreateProvinceForm: FunctionComponent<CreateProvinceFormProps> = ({
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <RHFInputWithLabel name="name" label="Nombre" type="text" />
       </Box>
-      <DialogActions sx={{ px: 3, pb: 0, pt: 2, gap: 2 }}>
+      <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>
         <Button
           type="submit"

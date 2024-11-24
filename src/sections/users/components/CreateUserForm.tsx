@@ -1,8 +1,4 @@
-import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
-import { getAllCategories } from "@/lib/services/categories";
-import { getAllProviders } from "@/lib/services/providers";
-import { SelectOption } from "@/lib/types/select";
 import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
 import { FunctionComponent } from "react";
 
@@ -33,12 +29,7 @@ export const CreateUserForm: FunctionComponent<CreateUserFormProps> = ({
           />
         </Box>
         <Box sx={{ display: "flex", gap: 2 }}>
-          <RHFInputWithLabel
-            name="email"
-            label="Email"
-            type="text"
-            multiline
-          />
+          <RHFInputWithLabel name="email" label="Email" type="text" multiline />
           <RHFInputWithLabel
             name="phoneNumber"
             label="Número Telefónico"
@@ -47,7 +38,7 @@ export const CreateUserForm: FunctionComponent<CreateUserFormProps> = ({
           />
         </Box>
       </Box>
-      <DialogActions sx={{ px: 3, pb: 0, pt: 2, gap: 2 }}>
+      <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>
         <Button
           type="submit"

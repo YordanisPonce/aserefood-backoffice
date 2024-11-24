@@ -52,7 +52,7 @@ export const CreateProductFrom: FunctionComponent<CreateProductFromProps> = ({
           multiline
         />
       </Box>
-      <DialogActions sx={{ px: 3, pb: 0, pt: 2, gap: 2 }}>
+      <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>
         <Button
           type="submit"
