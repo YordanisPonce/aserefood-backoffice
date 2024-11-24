@@ -1,3 +1,6 @@
+"use client";
+
+import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import { Pagination } from "@/lib/types/pagination";
 import { Product } from "@/lib/types/products";
@@ -13,6 +16,10 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
   products,
   pagination,
 }) => {
+  const onViewDetails = () => {};
+  const onDelete = () => {};
+  const onEdit = () => {};
+
   const colDef: GridColDef<Product>[] = [
     { field: "name", headerName: "Nombre", sortable: false, flex: 1 },
     {
@@ -32,6 +39,11 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
       headerName: "Categoría",
       sortable: false,
       flex: 0.8,
+    },
+    {
+      field: "id",
+      headerName: "Acciones",
+      renderCell: () => <TableMenu {...{ onDelete, onEdit, onViewDetails }} />,
     },
   ];
 

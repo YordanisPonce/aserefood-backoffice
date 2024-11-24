@@ -13,7 +13,6 @@ import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import EmptyContent from "../empty-content/empty-content";
-import Scrollbar from "../scrollbar";
 import SearchItem from "../search/SearchItem";
 import { Pagination } from "@/lib/types/pagination";
 
@@ -67,76 +66,44 @@ const RootDataGrid: React.FC<Props> = ({
   }, 500);
 
   const dataGridContent = (
-    <Stack>
+    <Stack sx={{ gap: 3 }}>
       {!withoutSearch && (
-        <Box p={3}>
-          <SearchItem placeholder={"Buscar"} width="100%" onSearch={onSearch} />
-        </Box>
+        <SearchItem placeholder={"Buscar"} width="100%" onSearch={onSearch} />
       )}
 
-      <Scrollbar>
-        <DataGrid
-          {...other}
-          rows={data}
-          columns={columns}
-          paginationMode="server"
-          sortingMode="server"
-          sx={{
-            width: "100%",
-            "--DataGrid-overlayHeight": "220px",
-            "& .MuiDataGrid-cell": {
-              px: 2,
-              py: 1.5,
-              maxHeight: "unset !important",
-              alignItems: "flex-start",
-            },
-            "& .MuiDataGrid-virtualScrollerRenderZone": {
-              position: "unset !important",
-            },
-            "& .MuiDataGrid-virtualScrollerContent ": {
-              height: "100% !important",
-            },
-            "& .MuiDataGrid-row": {
-              maxHeight: "unset !important",
-            },
-            "& .MuiDataGrid-columnHeader": {
-              px: 2,
-            },
-            "& .MuiDataGrid-overlayWrapper": {
-              height: "fit-content",
-            },
-          }}
-          slots={{
-            noRowsOverlay: () => (
-              <Box width="100%" sx={{ verticalAlign: "center" }}>
-                <EmptyContent title={"No hay datos disponibles"} />
-              </Box>
-            ),
-          }}
-          rowCount={pagination.total}
-          paginationModel={{
-            page: pagination.page - 1,
-            pageSize: pagination.pageSize,
-          }}
-          onPaginationModelChange={onPaginationModelChange}
-          sortModel={sortModel}
-          onSortModelChange={onSortModelChange}
-          pageSizeOptions={[5, 10, 20, 50, 100]}
-          checkboxSelection={!disableSelection}
-          disableRowSelectionOnClick
-          disableColumnMenu={true}
-          hideFooter={hideFooter}
-          rowHeight={rowHeight}
-        />
-      </Scrollbar>
+      <DataGrid
+        {...other}
+        rows={data}
+        columns={columns}
+        paginationMode="server"
+        sortingMode="server"
+        slots={{
+          noRowsOverlay: () => (
+            <Box width="100%" sx={{ verticalAlign: "center" }}>
+              <EmptyContent title={"No hay datos disponibles"} />
+            </Box>
+          ),
+        }}
+        rowCount={pagination.total}
+        paginationModel={{
+          page: pagination.page - 1,
+          pageSize: pagination.pageSize,
+        }}
+        onPaginationModelChange={onPaginationModelChange}
+        sortModel={sortModel}
+        onSortModelChange={onSortModelChange}
+        pageSizeOptions={[5, 10, 20, 50, 100]}
+        checkboxSelection={!disableSelection}
+        disableRowSelectionOnClick
+        disableColumnMenu={true}
+        hideFooter={hideFooter}
+        rowHeight={rowHeight}
+      />
     </Stack>
   );
 
   return !withoutBorder ? (
-    <Paper
-      elevation={2}
-      sx={{ paddingInline: "1rem", paddingTop: withoutSearch ? "1rem" : "" }}
-    >
+    <Paper elevation={2} sx={{ p: 4 }}>
       {dataGridContent}
     </Paper>
   ) : (

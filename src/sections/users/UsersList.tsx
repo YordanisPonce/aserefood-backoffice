@@ -1,6 +1,9 @@
+"use client";
+
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import { Pagination } from "@/lib/types/pagination";
 import { User } from "@/lib/types/users";
+import { Chip } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
@@ -46,9 +49,16 @@ export const UsersList: FunctionComponent<UserListProps> = ({
     },
     {
       field: "isActive",
-      headerName: "Activa?",
+      headerName: "Estado",
       sortable: false,
       flex: 0.8,
+      renderCell: ({ row }) => (
+        <Chip
+          label={row.isActive ? "Activo" : "Inactivo"}
+          variant="filled"
+          color={row.isActive ? "primary" : "error"}
+        />
+      ),
     },
     {
       field: "phoneNumber",
@@ -64,6 +74,7 @@ export const UsersList: FunctionComponent<UserListProps> = ({
       data={users}
       pagination={pagination}
       disableSelection
+      density="comfortable"
     />
   );
 };

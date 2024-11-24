@@ -11,7 +11,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { sections } from "../../../lib/sections";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Typography } from "@mui/material";
 import { useGlobalContext } from "@/stores/global";
 import { TOGGLE_DRAWER_OPEN } from "@/stores/global/types";
@@ -35,8 +35,19 @@ export default function Drawer() {
     dispatch({ type: TOGGLE_DRAWER_OPEN, payload: false });
   };
 
+  const navigateToSection = (path: string) => () => {
+    router.push(path);
+    dispatch({ type: TOGGLE_DRAWER_OPEN, payload: false });
+  };
+
+  const currentPath = usePathname();
+
   return (
-    <MuiDrawer open={isDrawerOpen} onClose={handleDrawerClose}>
+    <MuiDrawer
+      open={isDrawerOpen}
+      onClose={handleDrawerClose}
+      PaperProps={{ sx: { width: 350 } }}
+    >
       <DrawerHeader>
         <Typography sx={{ ml: 7 }} typography={"h5"}>
           Sections
@@ -50,9 +61,8 @@ export default function Drawer() {
         {sections.map((section, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton
-              onClick={() => {
-                router.push(section.path);
-              }}
+              selected={currentPath === section.path}
+              onClick={navigateToSection(section.path)}
               sx={{
                 minHeight: 48,
                 px: 2.5,
