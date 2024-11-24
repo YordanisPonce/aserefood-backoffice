@@ -25,13 +25,28 @@ export const sections: Section[] = [
     icon: <InboxIcon />, // icon for exmaple
   },
   {
-    name: "Zona",
-    path: routes.zone.path,
+    name: "Proveedores",
+    path: routes.providers.path,
+    icon: <InboxIcon />, // icon for exmaple
+  },
+  {
+    name: "Zonas",
+    path: routes.zones.path,
     icon: <InboxIcon />, // icon for exmaple
   },
   {
     name: "Inventario",
     path: routes.inventory.path,
+    icon: <InboxIcon />, // icon for exmaple
+  },
+  {
+    name: "Municipios",
+    path: routes.municipalities.path,
+    icon: <InboxIcon />, // icon for exmaple
+  },
+  {
+    name: "Provincias",
+    path: routes.provinces.path,
     icon: <InboxIcon />, // icon for exmaple
   },
   {
