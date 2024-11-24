@@ -26,11 +26,11 @@ export interface CreateProduct {
   category: {
     id: number;
     name: string;
-  };
+  } | null;
   provider: {
     id: number;
     name: string;
-  };
+  } | null;
 }
 
 export interface ProductDetails {

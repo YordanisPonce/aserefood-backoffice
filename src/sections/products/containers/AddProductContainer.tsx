@@ -2,7 +2,7 @@
 
 import { CreateProduct, CreateProductDTO } from "@/lib/types/products";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { createProductSchema } from "../utils/schema";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
@@ -23,10 +23,10 @@ export const AddProductContainer: FunctionComponent = () => {
   const formOptions: UseFormProps<CreateProduct> = {
     resolver: zodResolver(createProductSchema()),
     defaultValues: {
-      category: undefined,
+      category: null,
       description: undefined,
       name: undefined,
-      provider: undefined,
+      provider: null,
       shortDescription: undefined,
     },
     mode: "onSubmit",
@@ -58,12 +58,12 @@ export const AddProductContainer: FunctionComponent = () => {
     setIsLoading(true);
     try {
       const createProductDto: CreateProductDTO = {
-        categoryId: category.id,
+        categoryId: category?.id ?? 0,
         description,
         isService: false,
         name,
         shortDescription,
-        providerIds: [provider.id],
+        providerIds: provider ? [provider?.id] : [],
       };
       await createProducts(createProductDto);
       await revalidateServerTags("products");
@@ -76,44 +76,49 @@ export const AddProductContainer: FunctionComponent = () => {
     }
   };
 
-  const updateForm = async (productId: string) => {
-    const product = await getProduct(productId);
-    methods.reset({
-      description: product.description,
-      name: product.name,
-      shortDescription: product.shortDescription,
-      provider: {
-        id: product.providers[0].id,
-        name: product.providers[0].name,
-      },
-      category: {
-        id: product.categoryId,
-        name: product.categoryName,
-      },
-    });
+  const updateForm = useCallback(
+    async (productId: string) => {
+      const product = await getProduct(productId);
+      methods.reset({
+        description: product.description,
+        name: product.name,
+        shortDescription: product.shortDescription,
+        provider: {
+          id: product.providers[0].id,
+          name: product.providers[0].name,
+        },
+        category: {
+          id: product.categoryId,
+          name: product.categoryName,
+        },
+      });
 
-    console.log({
-      ...product,
-      provider: {
-        id: product.providers[0].id,
-        name: product.providers[0].name,
-      },
-      category: {
-        id: product.categoryId,
-        name: product.categoryName,
-      },
-    });
-  };
+      console.log({
+        ...product,
+        provider: {
+          id: product.providers[0].id,
+          name: product.providers[0].name,
+        },
+        category: {
+          id: product.categoryId,
+          name: product.categoryName,
+        },
+      });
+    },
+    [methods]
+  );
+
   useEffect(() => {
     if (currentModal === "update-product" && productId) {
       updateForm(productId);
     }
-  }, [currentModal]);
+  }, [currentModal, productId, updateForm]);
 
   return (
     <Dialog
       open={
-        currentModal === "create-product" || currentModal === "update-product"
+        currentModal === "create-product" ||
+        (currentModal === "update-product" && !isLoading)
       }
       maxWidth={"md"}
       fullWidth
@@ -129,7 +134,10 @@ export const AddProductContainer: FunctionComponent = () => {
             autoComplete="off"
             className="relative z-10"
           >
-            <CreateProductFrom isLoading={isLoading} />
+            <CreateProductFrom
+              isLoading={isLoading}
+              isUpdate={currentModal === "update-product"}
+            />
           </form>
         </FormProvider>
       </DialogContent>

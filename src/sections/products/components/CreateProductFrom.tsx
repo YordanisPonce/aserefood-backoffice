@@ -8,10 +8,12 @@ import { FunctionComponent } from "react";
 
 type CreateProductFromProps = {
   isLoading: boolean;
+  isUpdate: boolean;
 };
 
 export const CreateProductFrom: FunctionComponent<CreateProductFromProps> = ({
   isLoading,
+  isUpdate,
 }) => {
   return (
     <>
@@ -58,7 +60,7 @@ export const CreateProductFrom: FunctionComponent<CreateProductFromProps> = ({
           startIcon={isLoading ? <CircularProgress size={20} /> : null}
           variant="contained"
         >
-          Crear
+          {isUpdate ? "Actualizar" : "Crear"}
         </Button>
       </DialogActions>
     </>

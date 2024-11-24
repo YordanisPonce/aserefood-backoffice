@@ -7,12 +7,16 @@ export const createProductSchema = () =>
       required_error: "La descipción corta es requerida",
     }),
     description: z.string({ required_error: "La descipción es requerida" }),
-    provider: z.object({
-      id: z.number(),
-      name: z.string(),
-    }),
-    category: z.object({
-      id: z.number(),
-      name: z.string(),
-    }),
+    provider: z
+      .object({
+        id: z.number(),
+        name: z.string(),
+      })
+      .nullable(),
+    category: z
+      .object({
+        id: z.number(),
+        name: z.string(),
+      })
+      .nullable(),
   });

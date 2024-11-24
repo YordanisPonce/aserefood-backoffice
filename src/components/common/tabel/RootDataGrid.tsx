@@ -79,7 +79,10 @@ const RootDataGrid: React.FC<Props> = ({
         sortingMode="server"
         slots={{
           noRowsOverlay: () => (
-            <Box width="100%" sx={{ verticalAlign: "center" }}>
+            <Box
+              width="100%"
+              sx={{ verticalAlign: "center", minHeight: "250px" }}
+            >
               <EmptyContent title={"No hay datos disponibles"} />
             </Box>
           ),
@@ -98,6 +101,7 @@ const RootDataGrid: React.FC<Props> = ({
         disableColumnMenu={true}
         hideFooter={hideFooter}
         rowHeight={rowHeight}
+        sx={{ minHeight: 450 }}
       />
     </Stack>
   );
