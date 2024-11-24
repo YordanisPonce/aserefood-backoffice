@@ -51,7 +51,7 @@ export const CreateProductFrom: FunctionComponent<CreateProductFromProps> = ({
         />
       </Box>
       <DialogActions sx={{ px: 3, pb: 0, pt: 2, gap: 2 }}>
-        <Button>Cancelar</Button>
+        <Button type="reset">Cancelar</Button>
         <Button
           type="submit"
           disabled={isLoading}

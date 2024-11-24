@@ -3,18 +3,32 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { Add as AddIcon } from "@mui/icons-material";
+import useUrlParams from "@/lib/hooks/useUrlParams";
 
 interface SectionHeaderProps {
   titleSection: string;
   titleButton: string;
-  actionCreate?: () => void;
+  createAction?: string;
 }
 
 export default function SectionHeader({
   titleSection,
   titleButton,
-  actionCreate,
+  createAction,
 }: SectionHeaderProps) {
+  const { updateSearchParams } = useUrlParams();
+
+  const handleClick = () => {
+    if (createAction) {
+      updateSearchParams({
+        currentModal: {
+          action: "set",
+          value: createAction,
+        },
+      });
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -34,11 +48,7 @@ export default function SectionHeader({
       >
         {titleSection}
       </Typography>
-      <Button
-        variant="contained"
-        onClick={actionCreate}
-        startIcon={<AddIcon />}
-      >
+      <Button variant="contained" onClick={handleClick} startIcon={<AddIcon />}>
         {titleButton}
       </Button>
     </Box>

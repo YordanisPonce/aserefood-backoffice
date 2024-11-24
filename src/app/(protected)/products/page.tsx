@@ -16,9 +16,15 @@ export default async function ProductsPage({
 
   return (
     <Paper sx={{ p: 2 }}>
-      <SectionHeader titleSection="Productos" titleButton="Crear Producto" />
+      <SectionHeader
+        titleSection="Productos"
+        titleButton="Crear Producto"
+        createAction="create-product"
+      />
       <ProductList pagination={{ page, total, pageSize }} products={data} />
-      <AddProductContainer />
+      <AddProductContainer currentModal={searchParams.currentModal} />
     </Paper>
   );
 }
+
+export const dynamic = "force-dynamic";

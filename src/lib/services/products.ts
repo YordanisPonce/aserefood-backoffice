@@ -15,7 +15,11 @@ export const getProducts = async (
     `${process.env.NEXT_APP_API_URL}products`
   );
   const url = queryObject.build();
-  const response = await fetchWithAuth(url);
+  const response = await fetchWithAuth(url, {
+    next: {
+      tags: ["products"],
+    },
+  });
 
   if (!response.ok) {
     console.log(response);

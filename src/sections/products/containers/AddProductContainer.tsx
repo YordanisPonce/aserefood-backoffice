@@ -2,23 +2,48 @@
 
 import { CreateProduct, CreateProductDTO } from "@/lib/types/products";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { createProductSchema } from "../utils/schema";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
 import { CreateProductFrom } from "../components/CreateProductFrom";
 import { createProducts } from "@/lib/services/products";
-import { revalidateTag } from "next/cache";
+import useUrlParams from "@/lib/hooks/useUrlParams";
+import { revalidateServerTags } from "@/lib/utils/cache";
 
-export const AddProductContainer = () => {
+type AddProductContainerProps = {
+  currentModal?: string;
+};
+
+export const AddProductContainer: FunctionComponent<
+  AddProductContainerProps
+> = ({ currentModal }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const { updateSearchParams } = useUrlParams();
 
   const formOptions: UseFormProps<CreateProduct> = {
     resolver: zodResolver(createProductSchema()),
+    defaultValues: {
+      category: undefined,
+      description: undefined,
+      name: undefined,
+      provider: undefined,
+      shortDescription: undefined,
+    },
     mode: "onSubmit",
     reValidateMode: "onChange",
   };
   const methods = useForm<CreateProduct>(formOptions);
+
+  const handleCloseModal = () => {
+    updateSearchParams({
+      currentModal: {
+        action: "delete",
+        value: "",
+      },
+    });
+    methods.reset();
+  };
 
   const onSubmit = async ({
     category,
@@ -38,7 +63,9 @@ export const AddProductContainer = () => {
         providerIds: [provider.id],
       };
       await createProducts(createProductDto);
-      await revalidateTag("products");
+      await revalidateServerTags("products");
+      handleCloseModal();
+      methods.reset();
     } catch (error) {
       console.log(error);
     } finally {
@@ -47,13 +74,19 @@ export const AddProductContainer = () => {
   };
 
   return (
-    <Dialog open maxWidth={"md"} fullWidth>
+    <Dialog
+      open={currentModal === "create-product"}
+      maxWidth={"md"}
+      fullWidth
+      keepMounted={false}
+    >
       <DialogTitle id="alert-dialog-title">Crear producto </DialogTitle>
       <DialogContent>
         <FormProvider {...methods}>
           <form
             action="#"
             onSubmit={methods.handleSubmit(onSubmit)}
+            onReset={handleCloseModal}
             autoComplete="off"
             className="relative z-10"
           >
