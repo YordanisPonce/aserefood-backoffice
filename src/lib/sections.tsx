@@ -1,5 +1,14 @@
 import { ReactNode } from "react";
-import { MoveToInbox as InboxIcon } from "@mui/icons-material";
+import {
+  MoveToInbox as InboxIcon,
+  Inventory2Rounded as Inventory2RoundedIcon,
+  PublicRounded as PublicRoundedIcon,
+  FmdGoodRounded as FmdGoodRoundedIcon,
+  CategoryRounded as CategoryRoundedIcon,
+  ShoppingCartRounded as ShoppingCartRoundedIcon,
+  PeopleAltRounded as PeopleAltRoundedIcon,
+  HomeWorkRounded as HomeWorkRoundedIcon,
+} from "@mui/icons-material";
 import { routes } from "@/lib/config/routes";
 interface Section {
   name: string;
@@ -12,46 +21,46 @@ export const sections: Section[] = [
   {
     name: "Dashboard",
     path: routes.dashboard.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <InboxIcon />,
   },
   {
     name: "Categorias",
     path: routes.categories.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <CategoryRoundedIcon />,
   },
   {
     name: "Productos",
     path: routes.products.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <ShoppingCartRoundedIcon />,
   },
   {
     name: "Proveedores",
     path: routes.providers.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <HomeWorkRoundedIcon />,
   },
   {
     name: "Zonas",
     path: routes.zones.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <PublicRoundedIcon />,
   },
   {
     name: "Inventario",
     path: routes.inventory.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <Inventory2RoundedIcon />,
   },
   {
     name: "Municipios",
     path: routes.municipalities.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <FmdGoodRoundedIcon />,
   },
   {
     name: "Provincias",
     path: routes.provinces.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <FmdGoodRoundedIcon />,
   },
   {
     name: "Usuarios",
     path: routes.users.path,
-    icon: <InboxIcon />, // icon for exmaple
+    icon: <PeopleAltRoundedIcon />,
   },
 ];
