@@ -1,7 +1,6 @@
-import React from 'react'
+import LoadingScreen from "@/components/common/loading/LoadingScreen";
+import React from "react";
 
-export default function adminPanelLoading() {
-  return (
-    <div>loading.....</div>
-  )
+export default function Loading() {
+  return <LoadingScreen />;
 }
