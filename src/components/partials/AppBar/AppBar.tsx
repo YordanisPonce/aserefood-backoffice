@@ -1,65 +1,46 @@
-"use client"
-import { IconButton, Toolbar, Typography } from "@mui/material";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import { styled } from "@mui/material/styles";
-import {Menu as MenuIcon} from "@mui/icons-material";
+"use client";
+import {
+  IconButton,
+  Toolbar,
+  Typography,
+  AppBar as MUIAppBar,
+  Button,
+} from "@mui/material";
+import { Menu as MenuIcon } from "@mui/icons-material";
 import React from "react";
 import { useGlobalContext } from "@/stores/global";
-import { TOGGLE_DRAWER_OPEN } from "@/stores/global/types";
-interface AppBarProps extends MuiAppBarProps {
-  open?: boolean;
-}
-const AppBarStyle = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme }) => ({
-  zIndex: theme.zIndex.drawer + 1,
-  transition: theme.transitions.create(["width", "margin"], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  variants: [
-    {
-      props: ({ open }) => open,
-      style: {
-        marginLeft: 240,
-        width: `calc(100% - ${240}px)`,
-        transition: theme.transitions.create(["width", "margin"], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      },
-    },
-  ],
-}));
-
+import { signOut } from "next-auth/react";
 
 export default function AppBar() {
-  // use global context
-  const {state, dispatch} = useGlobalContext()
+  const { dispatch } = useGlobalContext();
   const handleDrawerOpen = () => {
-    dispatch({type: TOGGLE_DRAWER_OPEN, payload: true});
+    dispatch({ type: "TOGGLE_DRAWER_OPEN", payload: true });
   };
+
+  const handleLogOut = async () => {
+    await signOut({ redirect: true, callbackUrl: "/login" });
+  };
+
   return (
-    <AppBarStyle position="fixed" open={state.isDrawerOpen}>
+    <MUIAppBar>
       <Toolbar>
         <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
+          size="large"
           edge="start"
-          sx={[
-            {
-              marginRight: 5,
-            },
-            state.isDrawerOpen && { display: "none" },
-          ]}
+          color="inherit"
+          aria-label="menu"
+          sx={{ mr: 2 }}
+          onClick={handleDrawerOpen}
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Asere Food
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          AsereFood
         </Typography>
+        <Button color="inherit" onClick={handleLogOut}>
+          Cerrar Seción
+        </Button>
       </Toolbar>
-    </AppBarStyle>
+    </MUIAppBar>
   );
 }

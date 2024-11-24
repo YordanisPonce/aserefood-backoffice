@@ -4,8 +4,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { routes } from "@/lib/config/routes";
-import { login } from "@/lib/services/auth";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 
 const loginSchema = z.object({
   email: z.string().email({
@@ -30,12 +30,20 @@ export default function useLoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  const onSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async ({ email, password }: LoginFormValues) => {
     if (!loading) {
       setLoading(true);
       try {
-        await login(data.email, data.password);
-        router.push(routes.dashboard.path);
+        const res = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
+        if (res?.status === 401) {
+          setError("root", { message: "Credenciales invcalidas" });
+        } else if (res?.status === 200) {
+          router.push(routes.products.path);
+        }
       } catch (error) {
         console.error(error);
         if (error instanceof Error)

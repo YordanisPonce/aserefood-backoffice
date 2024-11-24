@@ -29,11 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <GlobalProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <GlobalProvider>
             <ClientThemeProvider> {children} </ClientThemeProvider>
-          </AuthProvider>
-        </GlobalProvider>
+          </GlobalProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 "use server";
 
-import { getToken } from "./cookies";
+import { getServerSession } from "next-auth";
 
 export const fetchWithAuth = async (
   input: RequestInfo | URL,
@@ -11,10 +11,10 @@ export const fetchWithAuth = async (
     ? new Headers(newInit.headers)
     : new Headers();
 
+  const session = await getServerSession();
 
-  const token = getToken();
-  if (token) {
-    newInit.headers.append("Authorization", `Bearer ${getToken()}`);
+  if (session?.accessToken) {
+    newInit.headers.append("Authorization", `Bearer ${session.accessToken}`);
   }
 
   return fetch(input, newInit);

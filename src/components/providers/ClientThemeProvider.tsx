@@ -10,7 +10,7 @@ export default function ClientThemeProvider({
   children: ReactNode;
 }) {
   return (
-    <ThemeProvider theme={themeOptions}>
+    <ThemeProvider theme={themeOptions} defaultMode="light">
       <CssBaseline />
       {children}
     </ThemeProvider>

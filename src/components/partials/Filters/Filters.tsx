@@ -8,9 +8,9 @@ import {
   Popover,
   Typography,
   Drawer,
+  Button,
 } from "@mui/material";
 import { FilterList as FilterListIcon } from "@mui/icons-material";
-import Button from "@/components/ui/Button";
 import useFiltersResponsiveOptions from "./hooks/useFiltersResponsiveOptions";
 
 interface Props {

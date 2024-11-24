@@ -8,11 +8,11 @@ import {
   Typography,
   Box,
   Alert,
+  Button,
+  CircularProgress,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Button from "@/components/ui/Button";
-import Link from "next/link";
 import useLoginForm from "./hooks/useLoginForm";
 
 const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
@@ -25,7 +25,7 @@ const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
 }));
 
 export default function LoginCard() {
-  const { register, handleSubmit, errors } = useLoginForm();
+  const { register, handleSubmit, errors, loading } = useLoginForm();
 
   return (
     <Card
@@ -89,14 +89,16 @@ export default function LoginCard() {
               helperText={errors.password?.message}
               sx={{ mb: 2 }}
             />
-            <Button type="submit" fullWidth variant="contained" color="primary">
-              Iniciar Sesión
-            </Button>
-            <Box
-              sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              disabled={loading}
             >
-              <Link href="#">¿Olvidaste tu contraseña?</Link>
-            </Box>
+              Iniciar Sesión
+              {loading && <CircularProgress size={20} sx={{ ml: 1 }} />}
+            </Button>
           </Box>
         </Box>
       </CardContent>

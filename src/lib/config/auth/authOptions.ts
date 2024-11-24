@@ -1,19 +1,16 @@
-import { NextAuthOptions, Session, User } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
-  session: { strategy: "jwt" },
-  jwt: {
-    maxAge: 60 * 60 * 24 * 7, // seven days (TBD)
-  },
   providers: [
     CredentialsProvider({
       name: "Credentials",
+      type: "credentials",
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "jsmith" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const res = await fetch(process.env.NEXT_APP_API_URL + "auth/login", {
           method: "POST",
           body: JSON.stringify({
@@ -25,9 +22,11 @@ export const authOptions: NextAuthOptions = {
         const user = await res.json();
 
         if (!res.ok) {
-          let menssage = "";
-          if (res.status === 401) menssage = "Credenciales incorrectas";
-          throw new Error(menssage);
+          throw new Error(
+            res.status === 401
+              ? "Credenciales invalidas"
+              : "Ha ocurreido un error inesperado, intentelo mas tarde"
+          );
         }
 
         return {
@@ -48,7 +47,8 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
+      session.user = user;
       session.accessToken = token.accessToken as string;
       session.refreshToken = token.refreshToken as string;
       return session;
