@@ -2,7 +2,12 @@
 
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { CreateProductDTO, Product, ProductDetails } from "../types/products";
+import {
+  CreateProductDTO,
+  Product,
+  ProductDetails,
+  UpdateProductDTO,
+} from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -54,6 +59,29 @@ export const createProducts = async (
     `${process.env.NEXT_APP_API_URL}products`,
     {
       method: "POST",
+      body: JSON.stringify(product),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error creating product");
+  }
+
+  return await response.json();
+};
+
+export const updateProduct = async (
+  productId: string,
+  product: UpdateProductDTO
+): Promise<Paginated<Product>> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}products/` + productId,
+    {
+      method: "PATCH",
       body: JSON.stringify(product),
       headers: {
         "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import { Paper } from "@mui/material";
 import React from "react";
 import { AddProductContainer } from "@/sections/products/containers/AddProductContainer";
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
+import Modal from "@/components/partials/Modal/Modal";
 
 type ProductsPageProps = {
   searchParams: SearchParams;
@@ -19,10 +20,12 @@ export default async function ProductsPage({
       <SectionHeader
         titleSection="Productos"
         titleButton="Crear Producto"
-        createAction="create-product"
+        createAction="modal-product"
       />
       <ProductList pagination={{ page, total, pageSize }} products={data} />
-      <AddProductContainer />
+      <Modal formPath="modal-product" titleModal="Producto">
+        <AddProductContainer />
+      </Modal>
     </Paper>
   );
 }

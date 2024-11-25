@@ -1,76 +1,92 @@
 "use client";
 
-import { CreateProduct, CreateProductDTO } from "@/lib/types/products";
+import {
+  CreateProduct,
+  CreateProductDTO,
+  UpdateProduct,
+  UpdateProductDTO,
+} from "@/lib/types/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
-import { createProductSchema } from "../utils/schema";
-import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { CreateProductFrom } from "../components/CreateProductFrom";
-import { createProducts, getProduct } from "@/lib/services/products";
-import useUrlParams from "@/lib/hooks/useUrlParams";
+import { createProductSchema, updateProductSchema } from "../utils/schema";
+import {
+  createProducts,
+  getProduct,
+  updateProduct,
+} from "@/lib/services/products";
 import { revalidateServerTags } from "@/lib/utils/cache";
-import { useSearchParams } from "next/navigation";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
+import useModal from "@/components/partials/Modal/hooks/useModal";
+import { ProductForm } from "../components/CreateProductFrom";
 
 export const AddProductContainer: FunctionComponent = () => {
+  const { entityId: productId, handleCloseModal } = useModal();
+  // ****if productId is no null them this form is open of update****
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
-  const { updateSearchParams } = useUrlParams();
-  const params = useSearchParams();
 
-  const currentModal = params.get("currentModal");
-  const productId = params.get("productId");
+  const formOptions: UseFormProps<CreateProduct | UpdateProduct> = !productId
+    ? {
+        // resolver of create
+        resolver: zodResolver(createProductSchema()),
+        defaultValues: {
+          category: null,
+          description: undefined,
+          name: undefined,
+          provider: null,
+          shortDescription: undefined,
+        },
+        mode: "onSubmit",
+        reValidateMode: "onChange",
+      }
+    : {
+        // resolver of update (in case the entity update does not have the same fields)
+        resolver: zodResolver(updateProductSchema()),
+        defaultValues: {
+          category: null,
+          description: undefined,
+          name: undefined,
+          provider: null,
+          shortDescription: undefined,
+        },
+        mode: "onSubmit",
+        reValidateMode: "onChange",
+      };
+  const methods = useForm<CreateProduct | UpdateProduct>(formOptions);
 
-  const formOptions: UseFormProps<CreateProduct> = {
-    resolver: zodResolver(createProductSchema()),
-    defaultValues: {
-      category: null,
-      description: undefined,
-      name: undefined,
-      provider: null,
-      shortDescription: undefined,
-    },
-    mode: "onSubmit",
-    reValidateMode: "onChange",
-  };
-  const methods = useForm<CreateProduct>(formOptions);
-
-  const handleCloseModal = () => {
-    updateSearchParams({
-      currentModal: {
-        action: "delete",
-        value: "",
-      },
-      productId: {
-        action: "delete",
-        value: "",
-      },
-    });
-    methods.reset();
-  };
-
-  const onSubmit = async ({
-    category,
-    description,
-    name,
-    provider,
-    shortDescription,
-  }: CreateProduct) => {
+  const onSubmit = async (product: CreateProduct | UpdateProduct) => {
     setIsLoading(true);
     try {
-      const createProductDto: CreateProductDTO = {
-        categoryId: category?.id ?? 0,
-        description,
-        isService: false,
-        name,
-        shortDescription,
-        providerIds: provider ? [provider?.id] : [],
-      };
-      await createProducts(createProductDto);
+      if (!productId) {
+        // create product
+        const { category, description, shortDescription, name, provider } =
+          product as CreateProduct;
+        const createProductDto: CreateProductDTO = {
+          categoryId: category?.id ?? 0,
+          description,
+          isService: false,
+          name,
+          shortDescription,
+          providerIds: provider ? [provider?.id] : [],
+        };
+        await createProducts(createProductDto);
+      } else {
+        // update product
+        const { category, description, shortDescription, name, provider } =
+          product as UpdateProduct;
+        const updateProductDTO: UpdateProductDTO = {
+          categoryId: category?.id ?? 0,
+          description,
+          isService: false,
+          name,
+          shortDescription,
+          providerIds: provider ? [provider?.id] : [],
+        };
+        await updateProduct(productId, updateProductDTO);
+      }
       await revalidateServerTags("products");
       handleCloseModal();
-      methods.reset();
     } catch (error) {
       console.log(error);
     } finally {
@@ -105,43 +121,29 @@ export const AddProductContainer: FunctionComponent = () => {
     [methods]
   );
 
+  // when the component is assembled
   useEffect(() => {
-    if (currentModal === "update-product" && productId) {
-      updateForm(productId);
-    }
-  }, [currentModal, productId, updateForm]);
+    if (productId) updateForm(productId);
+  }, []);
 
   return (
-    <Dialog
-      open={
-        currentModal === "create-product" ||
-        (currentModal === "update-product" && !isLoading)
-      }
-      maxWidth={"md"}
-      fullWidth
-      keepMounted={false}
-    >
-      <DialogTitle id="alert-dialog-title">Crear producto </DialogTitle>
-      <DialogContent>
-        <FormProvider {...methods}>
-          <form
-            action="#"
-            onSubmit={methods.handleSubmit(onSubmit)}
-            onReset={handleCloseModal}
-            autoComplete="off"
-            className="relative z-10"
-          >
-            {loadingData ? (
-              <LoadingScreen sx={{ height: "100%" }} />
-            ) : (
-              <CreateProductFrom
-                isLoading={isLoading}
-                isUpdate={currentModal === "update-product"}
-              />
-            )}
-          </form>
-        </FormProvider>
-      </DialogContent>
-    </Dialog>
+    <FormProvider {...methods}>
+      <form
+        action="#"
+        onSubmit={methods.handleSubmit(onSubmit)}
+        onReset={handleCloseModal}
+        autoComplete="off"
+        className="relative z-10"
+      >
+        {loadingData ? (
+          <LoadingScreen sx={{ height: "100%" }} />
+        ) : (
+          <ProductForm
+            isLoading={isLoading}
+            isUpdate={productId !== null}
+          />
+        )}
+      </form>
+    </FormProvider>
   );
 };

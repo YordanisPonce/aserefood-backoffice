@@ -46,9 +46,9 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
     updateSearchParams({
       currentModal: {
         action: "set",
-        value: "update-product",
+        value: "modal-product",
       },
-      productId: {
+      entityId: {
         action: "set",
         value: params.row.id,
       },

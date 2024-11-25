@@ -6,14 +6,14 @@ import { SelectOption } from "@/lib/types/select";
 import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
 import { FunctionComponent } from "react";
 
-type CreateProductFromProps = {
+type ProductFormProps = {
   isLoading: boolean;
   isUpdate: boolean;
 };
 
-export const CreateProductFrom: FunctionComponent<CreateProductFromProps> = ({
+export const ProductForm: FunctionComponent<ProductFormProps> = ({
   isLoading,
-  isUpdate,
+  isUpdate, // the "isUpdate" property can be used to conditionally render inputs to match them to the schema
 }) => {
   return (
     <>
@@ -39,6 +39,7 @@ export const CreateProductFrom: FunctionComponent<CreateProductFromProps> = ({
             size="small"
           />
         </Box>
+
         <RHFInputWithLabel
           name="shortDescription"
           label="Descripción corta"
