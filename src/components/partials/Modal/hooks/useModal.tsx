@@ -1,5 +1,5 @@
 "use client";
-import useUrlParams from "@/lib/hooks/useUrlParams";
+import useUrlParams, { UrlParamsType } from "@/lib/hooks/useUrlParams";
 import { useSearchParams } from "next/navigation";
 
 export default function useModal() {
@@ -9,25 +9,20 @@ export default function useModal() {
   const entityId = params.get("entityId");
 
   const handleOpenModal = (modalName: string, entityId?: string) => {
-    updateSearchParams(
-      entityId
-        ? {
-            currentModal: {
-              action: "set",
-              value: modalName,
-            },
-            entityId: {
-              action: "set",
-              value: entityId,
-            },
-          }
-        : {
-            currentModal: {
-              action: "set",
-              value: modalName,
-            },
-          }
-    );
+    const params: UrlParamsType | UrlParamsType[] = {
+      currentModal: {
+        action: "set",
+        value: modalName,
+      },
+      ...(entityId && {
+        entityId: {
+          action: "set",
+          value: entityId,
+        },
+      }),
+    };
+  
+    updateSearchParams(params);
   };
 
   const handleCloseModal = () => {
