@@ -13,7 +13,7 @@ type ProductFormProps = {
 
 export const ProductForm: FunctionComponent<ProductFormProps> = ({
   isLoading,
-  isUpdate, // the "isUpdate" property can be used to conditionally render inputs to match them to the schema
+  isUpdate,
 }) => {
   return (
     <>

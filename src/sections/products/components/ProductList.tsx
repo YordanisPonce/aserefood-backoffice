@@ -2,6 +2,7 @@
 
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
+import useModal from "@/components/partials/Modal/hooks/useModal";
 import useUrlParams from "@/lib/hooks/useUrlParams";
 import { Pagination } from "@/lib/types/pagination";
 import { Product } from "@/lib/types/products";
@@ -18,6 +19,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
   pagination,
 }) => {
   const { updateSearchParams } = useUrlParams();
+  const { handleOpenModal } = useModal();
   const onViewDetails = (params: GridRenderCellParams) => () => {
     updateSearchParams({
       currentModal: {
@@ -43,16 +45,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
     });
   };
   const onEdit = (params: GridRenderCellParams) => () => {
-    updateSearchParams({
-      currentModal: {
-        action: "set",
-        value: "modal-product",
-      },
-      entityId: {
-        action: "set",
-        value: params.row.id,
-      },
-    });
+    handleOpenModal("modal-product", params.row.id);
   };
 
   const colDef: GridColDef<Product>[] = [

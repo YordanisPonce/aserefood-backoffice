@@ -3,7 +3,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import { Add as AddIcon } from "@mui/icons-material";
-import useUrlParams from "@/lib/hooks/useUrlParams";
+import useModal from "../Modal/hooks/useModal";
 
 interface SectionHeaderProps {
   titleSection: string;
@@ -16,16 +16,10 @@ export default function SectionHeader({
   titleButton,
   createAction,
 }: SectionHeaderProps) {
-  const { updateSearchParams } = useUrlParams();
-
+  const { handleOpenModal } = useModal();
   const handleClick = () => {
     if (createAction) {
-      updateSearchParams({
-        currentModal: {
-          action: "set",
-          value: createAction,
-        },
-      });
+      handleOpenModal(createAction);
     }
   };
 

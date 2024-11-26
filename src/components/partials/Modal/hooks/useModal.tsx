@@ -8,6 +8,28 @@ export default function useModal() {
   const currentModal = params.get("currentModal");
   const entityId = params.get("entityId");
 
+  const handleOpenModal = (modalName: string, entityId?: string) => {
+    updateSearchParams(
+      entityId
+        ? {
+            currentModal: {
+              action: "set",
+              value: modalName,
+            },
+            entityId: {
+              action: "set",
+              value: entityId,
+            },
+          }
+        : {
+            currentModal: {
+              action: "set",
+              value: modalName,
+            },
+          }
+    );
+  };
+
   const handleCloseModal = () => {
     updateSearchParams({
       currentModal: {
@@ -20,5 +42,5 @@ export default function useModal() {
       },
     });
   };
-  return { entityId, handleCloseModal, currentModal };
+  return { entityId, handleCloseModal, currentModal, handleOpenModal };
 }

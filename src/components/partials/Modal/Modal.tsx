@@ -1,6 +1,5 @@
 "use client";
 import { Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { useSearchParams } from "next/navigation";
 import React, { ReactNode } from "react";
 import useModal from "./hooks/useModal";
 
@@ -15,22 +14,20 @@ export default function Modal({ formPath, children, titleModal }: ModalProps) {
 
   return (
     <>
-      {currentModal === formPath && (
-        <Dialog
-          open={currentModal === formPath}
-          maxWidth={"md"}
-          fullWidth
-          keepMounted={false}
-        >
-          <DialogTitle id="alert-dialog-title">
-            {`${(entityId ? "Actualizar " : "Crear ") + titleModal}`}{" "}
-          </DialogTitle>
-          <DialogContent>
-            {/* Form container */}
-            {children}
-          </DialogContent>
-        </Dialog>
-      )}
+      <Dialog
+        open={currentModal === formPath}
+        maxWidth={"md"}
+        fullWidth
+        keepMounted={false}
+      >
+        <DialogTitle id="alert-dialog-title">
+          {`${(entityId ? "Actualizar " : "Crear ") + titleModal}`}{" "}
+        </DialogTitle>
+        <DialogContent>
+          {/* Form container */}
+          {children}
+        </DialogContent>
+      </Dialog>
     </>
   );
 }

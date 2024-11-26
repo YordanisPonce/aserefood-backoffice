@@ -10,15 +10,6 @@ export interface Product {
   categoryName: string;
 }
 
-export interface UpdateProductDTO {
-  name: string;
-  description: string;
-  shortDescription: string;
-  categoryId: number;
-  providerIds: number[];
-  isService: boolean;
-}
-
 export interface CreateProductDTO {
   name: string;
   description: string;
@@ -26,20 +17,6 @@ export interface CreateProductDTO {
   categoryId: number;
   providerIds: number[];
   isService: boolean;
-}
-
-export interface UpdateProduct {
-  name: string;
-  description: string;
-  shortDescription: string;
-  category: {
-    id: number;
-    name: string;
-  } | null;
-  provider: {
-    id: number;
-    name: string;
-  } | null;
 }
 
 export interface CreateProduct {
