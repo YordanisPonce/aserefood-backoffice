@@ -1,3 +1,4 @@
+import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -24,10 +25,14 @@ export const authOptions: NextAuthOptions = {
         if (!res.ok) {
           throw new Error(
             res.status === 401
-              ? "Credenciales invalidas"
+              ? "Credenciales inválidas"
               : "Ha ocurreido un error inesperado, intentelo mas tarde"
           );
         }
+        const decodeToken = jwtDecode<JwtPayload>(user.accessToken);
+
+        if (decodeToken.role !== "admin")
+          throw new Error("Credenciales inválidas");
 
         return {
           id: user.id,
