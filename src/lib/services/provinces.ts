@@ -24,6 +24,22 @@ export const getProvinces = async (
   return await response.json();
 };
 
+export const getProvince = async (provinceId: string): Promise<Province> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}provinces/${provinceId}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching province");
+  }
+
+  return await response.json();
+};
+
 export const getAllProvinces = async (): Promise<Province[]> => {
   const response = await fetchWithAuth(
     new URL(`${process.env.NEXT_APP_API_URL}provinces/all`)
@@ -57,4 +73,25 @@ export const createProvince = async (
   }
 
   return await response.json();
+};
+
+export const updateProvince = async (
+  provinceId: string,
+  province: CreateProvinceDTO
+): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}provinces/` + provinceId,
+    {
+      method: "PATCH",
+      body: JSON.stringify(province),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error updating province");
+  }
 };

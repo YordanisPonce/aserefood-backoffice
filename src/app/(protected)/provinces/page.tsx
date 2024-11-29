@@ -1,8 +1,11 @@
+import Modal from "@/components/partials/Modal/Modal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { getProvinces } from "@/lib/services/provinces";
 import { SearchParams } from "@/lib/types/pagination";
 import { ProvincesList } from "@/sections/provinces/components/ProvincesList";
-import { AddProvinceContainer } from "@/sections/provinces/containers/AddProvinceContainer";
+import { ProvinceFormContainer } from "@/sections/provinces/containers/ProvinceFormContainer";
+
 import { Paper } from "@mui/material";
 import React from "react";
 
@@ -17,10 +20,15 @@ export default async function Page({ searchParams }: PageProps) {
       <SectionHeader
         titleSection="Provincias"
         titleButton="Crear Provincia"
-        createAction="create-province"
+        createAction={modalTypes.provinces.form.name}
       />
       <ProvincesList pagination={{ page, total, pageSize }} providers={data} />
-      <AddProvinceContainer currentModal={searchParams.currentModal} />
+      <Modal
+        formPath={modalTypes.provinces.form.name}
+        titleModal={modalTypes.provinces.form.title}
+      >
+        <ProvinceFormContainer />
+      </Modal>
     </Paper>
   );
 }

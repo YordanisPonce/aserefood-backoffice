@@ -4,7 +4,9 @@ import { UsersList } from "@/sections/users/components/UsersList";
 import { getUsers } from "@/lib/services/user";
 import { SearchParams } from "@/lib/types/pagination";
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
-import { AddUserContainer } from "@/sections/users/containers/AddUserContainer";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
+import Modal from "@/components/partials/Modal/Modal";
+import { UserFormContainer } from "@/sections/users/containers/UserFormContainer";
 
 type UsersPageProps = {
   searchParams: SearchParams;
@@ -20,10 +22,15 @@ export default async function UserManagementPage({
       <SectionHeader
         titleSection="Usuarios"
         titleButton="Crear Usuario"
-        createAction="create-user"
+        createAction={modalTypes.users.form.name}
       />
       <UsersList pagination={{ page, total, pageSize }} users={data} />
-      <AddUserContainer currentModal={searchParams.currentModal} />
+      <Modal
+        formPath={modalTypes.users.form.name}
+        titleModal={modalTypes.users.form.title}
+      >
+        <UserFormContainer />
+      </Modal>
     </Paper>
   );
 }

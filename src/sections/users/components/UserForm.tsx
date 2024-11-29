@@ -2,12 +2,14 @@ import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
 import { FunctionComponent } from "react";
 
-type CreateUserFormProps = {
+type UserFormProps = {
   isLoading: boolean;
+  isUpdate: boolean;
 };
 
-export const CreateUserForm: FunctionComponent<CreateUserFormProps> = ({
+export const UserForm: FunctionComponent<UserFormProps> = ({
   isLoading,
+  isUpdate,
 }) => {
   return (
     <>
@@ -22,11 +24,13 @@ export const CreateUserForm: FunctionComponent<CreateUserFormProps> = ({
             label="Nombre de Usuario"
             type="text"
           />
-          <RHFInputWithLabel
-            name="password"
-            label="Contraseña"
-            type="password"
-          />
+          {!isUpdate && (
+            <RHFInputWithLabel
+              name="password"
+              label="Contraseña"
+              type="password"
+            />
+          )}
         </Box>
         <Box sx={{ display: "flex", gap: 2 }}>
           <RHFInputWithLabel name="email" label="Email" type="text" multiline />
@@ -46,7 +50,7 @@ export const CreateUserForm: FunctionComponent<CreateUserFormProps> = ({
           startIcon={isLoading ? <CircularProgress size={20} /> : null}
           variant="contained"
         >
-          Crear
+          {isUpdate ? "Actualizar" : "Crear"}
         </Button>
       </DialogActions>
     </>

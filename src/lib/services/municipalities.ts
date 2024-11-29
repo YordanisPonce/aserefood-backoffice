@@ -24,6 +24,24 @@ export const getMunicipalities = async (
   return await response.json();
 };
 
+export const getMunicipality = async (
+  municipalityId: string
+): Promise<Municipality> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}municipalities/${municipalityId}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching products");
+  }
+
+  return await response.json();
+};
+
 export const getAllMunicipalities = async (): Promise<Municipality[]> => {
   const response = await fetchWithAuth(
     new URL(`${process.env.NEXT_APP_API_URL}municipalities/all`)
@@ -37,7 +55,20 @@ export const getAllMunicipalities = async (): Promise<Municipality[]> => {
   return await response.json();
 };
 
-export const createMunicipalitie = async (
+export const getAvaliablesMunicipalities = async (): Promise<Municipality[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_APP_API_URL}municipalities/available`)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching municipalities");
+  }
+
+  return await response.json();
+};
+
+export const createMunicipality = async (
   municipality: CreateMunicipalityDTO
 ): Promise<Paginated<Municipality>> => {
   const response = await fetchWithAuth(
@@ -57,4 +88,25 @@ export const createMunicipalitie = async (
   }
 
   return await response.json();
+};
+
+export const updateMunicipality = async (
+  municipalityId: string,
+  municipality: CreateMunicipalityDTO
+): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}municipalities/` + municipalityId,
+    {
+      method: "PATCH",
+      body: JSON.stringify(municipality),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error updating product");
+  }
 };

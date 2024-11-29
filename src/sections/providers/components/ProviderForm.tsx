@@ -3,12 +3,14 @@ import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
 import { FunctionComponent } from "react";
 
-type CreateProviderFormProps = {
+type ProviderFormProps = {
   isLoading: boolean;
+  isUpdate: boolean
 };
 
-export const CreateProviderForm: FunctionComponent<CreateProviderFormProps> = ({
+export const ProviderForm: FunctionComponent<ProviderFormProps> = ({
   isLoading,
+  isUpdate
 }) => {
   return (
     <>
@@ -23,7 +25,7 @@ export const CreateProviderForm: FunctionComponent<CreateProviderFormProps> = ({
           startIcon={isLoading ? <CircularProgress size={20} /> : null}
           variant="contained"
         >
-          Crear
+          {isUpdate ? "Actualizar" : "Crear" }
         </Button>
       </DialogActions>
     </>

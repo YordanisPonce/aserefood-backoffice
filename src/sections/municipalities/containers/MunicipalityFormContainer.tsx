@@ -1,0 +1,97 @@
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import { FormProvider, useForm, UseFormProps } from "react-hook-form";
+import { revalidateServerTags } from "@/lib/utils/cache";
+import { createMunicipalitieSchema } from "../utils/schema";
+import {
+  CreateMunicipality,
+  CreateMunicipalityDTO,
+} from "@/lib/types/municipality";
+import {
+  createMunicipality,
+  getMunicipality,
+  updateMunicipality,
+} from "@/lib/services/municipalities";
+
+import useModal from "@/components/partials/Modal/hooks/useModal";
+import LoadingScreen from "@/components/common/loading/LoadingScreen";
+import { MunicipalityForm } from "../components/MunicipalityForm";
+
+export const MunicipalityFormContainer: FunctionComponent = () => {
+  const { entityId: municipalityId, handleCloseModal } = useModal();
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingData, setLoadingData] = useState(false);
+
+  const formOptions: UseFormProps<CreateMunicipality> = {
+    resolver: zodResolver(createMunicipalitieSchema()),
+    defaultValues: {
+      name: undefined,
+      province: undefined,
+    },
+    mode: "onSubmit",
+    reValidateMode: "onChange",
+  };
+  const methods = useForm<CreateMunicipality>(formOptions);
+
+  const onSubmit = async ({ name, province }: CreateMunicipality) => {
+    setIsLoading(true);
+    try {
+      const createMunicipaliyDTO: CreateMunicipalityDTO = {
+        name,
+        provinceId: province.id,
+      };
+      if (!municipalityId) await createMunicipality(createMunicipaliyDTO);
+      else await updateMunicipality(municipalityId, createMunicipaliyDTO);
+      await revalidateServerTags("municipalities");
+      handleCloseModal();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const updateForm = useCallback(
+    async (municipalityId: string) => {
+      setLoadingData(true);
+      try {
+        const municipality = await getMunicipality(municipalityId);
+        methods.reset({
+          name: municipality.name,
+          province: {
+            id: municipality.provinceId,
+            name: municipality.provinceName,
+          },
+        });
+      } catch {
+        console.log("error");
+      } finally {
+        setLoadingData(false);
+      }
+    },
+    [methods]
+  );
+
+  useEffect(() => {
+    if (municipalityId) updateForm(municipalityId);
+  }, []);
+
+  return (
+    <FormProvider {...methods}>
+      <form
+        action="#"
+        onSubmit={methods.handleSubmit(onSubmit)}
+        onReset={handleCloseModal}
+        autoComplete="off"
+        className="relative z-10"
+      >
+        {loadingData ? (
+          <LoadingScreen sx={{ height: "100%" }} />
+        ) : (
+          <MunicipalityForm isLoading={isLoading} isUpdate={municipalityId !== null} />
+        )}
+      </form>
+    </FormProvider>
+  );
+};

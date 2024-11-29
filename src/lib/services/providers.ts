@@ -38,6 +38,24 @@ export const getAllProviders = async (): Promise<Provider[]> => {
   return await response.json();
 };
 
+export const getProvider = async (
+  providerId: string
+): Promise<Provider> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}providers/${providerId}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching provider");
+  }
+
+  return await response.json();
+};
+
 export const createProvider = async (
   provider: CreateProviderDTO
 ): Promise<Paginated<Provider>> => {
@@ -58,4 +76,25 @@ export const createProvider = async (
   }
 
   return await response.json();
+};
+
+export const updateProvider = async (
+  providerId: string,
+  provider: CreateProviderDTO
+): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}providers/` + providerId,
+    {
+      method: "PATCH",
+      body: JSON.stringify(provider),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error updating provider");
+  }
 };

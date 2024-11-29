@@ -1,26 +1,9 @@
 "use server";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { CreateUserDTO, User } from "../types/users";
+import { CreateUserDTO, UpdateUserDTO, User } from "../types/users";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
-
-export const getProfile = async (username: string): Promise<unknown> => {
-  try {
-    const response = await fetchWithAuth(
-      `${process.env.NEXT_APP_API_URL}/api/profiles/${username}`
-    );
-
-    if (!response.ok) {
-      throw new Error("Error fetching profile");
-    }
-
-    return await response.json();
-  } catch (e) {
-    console.error(e);
-    return null;
-  }
-};
 
 export const getUsers = async (
   params: SearchParams
@@ -36,6 +19,22 @@ export const getUsers = async (
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching users");
+  }
+
+  return await response.json();
+};
+
+export const getUser = async (userId: string): Promise<User> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}users/${userId}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching user");
   }
 
   return await response.json();
@@ -58,4 +57,25 @@ export const createUser = async (
   }
 
   return await response.json();
+};
+
+export const updateUser = async (
+  userId: string,
+  user: UpdateUserDTO
+): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}users/` + userId,
+    {
+      method: "PATCH",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error updating user");
+  }
 };

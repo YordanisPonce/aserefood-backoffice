@@ -7,12 +7,23 @@ export const createProductSchema = () =>
       .string()
       .min(1, { message: "La descipción corta es requerida" }),
     description: z.string().min(1, { message: "La descipción es requerida" }),
-    provider: z
-      .object({
-        id: z.number(),
-        name: z.string(),
-      })
-      .nullable(),
+    providers: z
+      .array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+        })
+      )
+      .min(1, { message: "Debe incluir al menos un proveedor" })
+      .refine(
+        (items) => {
+          const uniqueIds = new Set(items.map((item) => item.id));
+          return uniqueIds.size === items.length;
+        },
+        {
+          message: "No se pueden repetir los proveedores.",
+        }
+      ),
     category: z
       .object({
         id: z.number(),
@@ -20,4 +31,3 @@ export const createProductSchema = () =>
       })
       .nullable(),
   });
-

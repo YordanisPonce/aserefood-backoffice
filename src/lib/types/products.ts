@@ -27,10 +27,10 @@ export interface CreateProduct {
     id: number;
     name: string;
   } | null;
-  provider: {
+  providers: {
     id: number;
     name: string;
-  } | null;
+  }[];
 }
 
 export interface ProductDetails {

@@ -1,10 +1,12 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
+import useModal from "@/components/partials/Modal/hooks/useModal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { InventoryEntry } from "@/lib/types/inventory";
 import { Pagination } from "@/lib/types/pagination";
 import { Provider } from "@/lib/types/provider";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
 type ProviderListProps = {
@@ -16,9 +18,11 @@ export const ProviderList: FunctionComponent<ProviderListProps> = ({
   providers,
   pagination,
 }) => {
-  const onViewDetails = () => {};
-  const onDelete = () => {};
-  const onEdit = () => {};
+  const { handleOpenModal } = useModal();
+  const onDelete = (params: GridRenderCellParams) => () => {};
+  const onEdit = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.providers.form.name, params.row.id);
+  };
 
   const colDef: GridColDef<InventoryEntry>[] = [
     {
@@ -30,7 +34,12 @@ export const ProviderList: FunctionComponent<ProviderListProps> = ({
     {
       field: "id",
       headerName: "Acciones",
-      renderCell: () => <TableMenu {...{ onDelete, onEdit, onViewDetails }} />,
+      renderCell: (params) => (
+        <TableMenu
+          onDelete={onDelete(params)}
+          onEdit={onEdit(params)}
+        />
+      ),
     },
   ];
 

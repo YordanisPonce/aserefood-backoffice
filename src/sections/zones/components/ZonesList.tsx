@@ -1,9 +1,11 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
+import useModal from "@/components/partials/Modal/hooks/useModal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Pagination } from "@/lib/types/pagination";
 import { Zone } from "@/lib/types/zone";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
 type ZonesListProps = {
@@ -15,9 +17,12 @@ export const ZonesList: FunctionComponent<ZonesListProps> = ({
   zones,
   pagination,
 }) => {
-  const onViewDetails = () => {};
-  const onDelete = () => {};
-  const onEdit = () => {};
+  const { handleOpenModal } = useModal();
+  const onViewDetails = (params: GridRenderCellParams) => () => {};
+  const onDelete = (params: GridRenderCellParams) => () => {};
+  const onEdit = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.zones.form.name, params.row.id);
+  };
 
   const colDef: GridColDef<Zone>[] = [
     {
@@ -35,7 +40,13 @@ export const ZonesList: FunctionComponent<ZonesListProps> = ({
     {
       field: "id",
       headerName: "Acciones",
-      renderCell: () => <TableMenu {...{ onDelete, onEdit, onViewDetails }} />,
+      renderCell: (params) => (
+        <TableMenu
+          onDelete={onDelete(params)}
+          onEdit={onEdit(params)}
+          onViewDetails={onViewDetails(params)}
+        />
+      ),
     },
   ];
 

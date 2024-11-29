@@ -1,9 +1,11 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
+import useModal from "@/components/partials/Modal/hooks/useModal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Pagination } from "@/lib/types/pagination";
 import { Province } from "@/lib/types/province";
-import { GridColDef } from "@mui/x-data-grid";
+import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
 type ProvincesListProps = {
@@ -15,9 +17,11 @@ export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
   providers,
   pagination,
 }) => {
-  const onViewDetails = () => {};
-  const onDelete = () => {};
-  const onEdit = () => {};
+  const { handleOpenModal } = useModal();
+  const onDelete = (params: GridRenderCellParams) => () => {};
+  const onEdit = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.provinces.form.name, params.row.id);
+  };
 
   const colDef: GridColDef<Province>[] = [
     {
@@ -29,7 +33,12 @@ export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
     {
       field: "id",
       headerName: "Acciones",
-      renderCell: () => <TableMenu {...{ onDelete, onEdit, onViewDetails }} />,
+      renderCell: (params) => (
+        <TableMenu
+          onDelete={onDelete(params)}
+          onEdit={onEdit(params)}
+        />
+      ),
     },
   ];
 

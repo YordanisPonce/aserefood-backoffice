@@ -4,77 +4,53 @@ import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
+import { InventoryEntry } from "@/lib/types/inventory";
 import { Pagination } from "@/lib/types/pagination";
-import { User } from "@/lib/types/users";
-import { Chip } from "@mui/material";
+import { fCurrency } from "@/lib/utils/formatter";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
-type UserListProps = {
-  users: User[];
+type InventoryListProps = {
+  inventoryEntries: InventoryEntry[];
   pagination: Pagination;
 };
 
-export const UsersList: FunctionComponent<UserListProps> = ({
-  users,
+export const InventoryList: FunctionComponent<InventoryListProps> = ({
+  inventoryEntries,
   pagination,
 }) => {
   const { handleOpenModal } = useModal();
   const onViewDetails = (params: GridRenderCellParams) => () => {};
   const onDelete = (params: GridRenderCellParams) => () => {};
   const onEdit = (params: GridRenderCellParams) => () => {
-    handleOpenModal(modalTypes.users.form.name, params.row.id);
+    handleOpenModal(modalTypes.inventory.form.name, params.row.id);
   };
 
-  const colDef: GridColDef<User>[] = [
+  const colDef: GridColDef<InventoryEntry>[] = [
     {
-      field: "username",
-      headerName: "Nombre de usuario",
+      field: "productName",
+      headerName: "Nombre del producto",
       sortable: false,
       flex: 1,
     },
     {
-      field: "email",
-      headerName: "Email",
+      field: "zoneName",
+      headerName: "Nombre de la Zona",
       sortable: false,
-      flex: 2,
+      flex: 1,
     },
     {
-      field: "name",
-      headerName: "Nombre",
+      field: "price",
+      headerName: "Precio",
       sortable: false,
-      flex: 2,
+      flex: 1,
+      renderCell: (params) => fCurrency(Number(params.value)),
     },
     {
-      field: "lastnames",
-      headerName: "Apellidos",
+      field: "quantity",
+      headerName: "Cantidad",
       sortable: false,
-      flex: 0.8,
-    },
-    {
-      field: "role",
-      headerName: "Rol",
-      sortable: false,
-      flex: 0.8,
-    },
-    {
-      field: "isActive",
-      headerName: "Estado",
-      sortable: false,
-      flex: 0.8,
-      renderCell: ({ row }) => (
-        <Chip
-          label={row.isActive ? "Activo" : "Inactivo"}
-          variant="filled"
-          color={row.isActive ? "primary" : "error"}
-        />
-      ),
-    },
-    {
-      field: "phoneNumber",
-      headerName: "Número de Teléfono",
-      sortable: false,
-      flex: 0.8,
+      flex: 1,
     },
     {
       field: "id",
@@ -92,10 +68,9 @@ export const UsersList: FunctionComponent<UserListProps> = ({
   return (
     <RootDataGrid
       columns={colDef}
-      data={users}
+      data={inventoryEntries}
       pagination={pagination}
       disableSelection
-      density="comfortable"
     />
   );
 };

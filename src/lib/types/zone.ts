@@ -4,13 +4,23 @@ export interface Zone {
   description: string;
 }
 
+export interface ZoneDetails {
+  id: number;
+  name: string;
+  description: string;
+  municipalities: {
+    id: number;
+    name: string;
+  }[];
+}
+
 export interface CreateZone {
   name: string;
   description: string;
-  municipality: {
+  municipalities: {
     id: number;
     name: string;
-  };
+  }[];
 }
 
 export interface CreateZoneDTO {

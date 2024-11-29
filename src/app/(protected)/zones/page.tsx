@@ -1,10 +1,13 @@
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { getZones } from "@/lib/services/zones";
 import { SearchParams } from "@/lib/types/pagination";
-import { AddZoneContainer } from "@/sections/zones/containers/AddZoneContainer";
 import { ZonesList } from "@/sections/zones/components/ZonesList";
 import { Paper } from "@mui/material";
 import React from "react";
+import Modal from "@/components/partials/Modal/Modal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
+import { ZoneFormContainer } from "@/sections/zones/containers/ZoneFormContainer";
+
 
 type PageProps = {
   searchParams: SearchParams;
@@ -17,10 +20,15 @@ export default async function Page({ searchParams }: PageProps) {
       <SectionHeader
         titleSection="Zonas"
         titleButton="Crear Zona"
-        createAction="create-zone"
+        createAction={modalTypes.zones.form.name}
       />
       <ZonesList pagination={{ page, total, pageSize }} zones={data} />
-      <AddZoneContainer currentModal={searchParams.currentModal} />
+      <Modal
+        formPath={modalTypes.zones.form.name}
+        titleModal={modalTypes.zones.form.title}
+      >
+        <ZoneFormContainer />
+      </Modal>
     </Paper>
   );
 }

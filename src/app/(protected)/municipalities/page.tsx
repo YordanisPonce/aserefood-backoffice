@@ -1,8 +1,10 @@
+import Modal from "@/components/partials/Modal/Modal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { getMunicipalities } from "@/lib/services/municipalities";
 import { SearchParams } from "@/lib/types/pagination";
 import { MunicipalitiesList } from "@/sections/municipalities/components/MunicipalitiesList";
-import { AddMunicipalitieContainer } from "@/sections/municipalities/containers/AddMunicipalitieContainer";
+import { MunicipalityFormContainer } from "@/sections/municipalities/containers/MunicipalityFormContainer";
 import { Paper } from "@mui/material";
 import React from "react";
 
@@ -17,13 +19,18 @@ export default async function Page({ searchParams }: PageProps) {
       <SectionHeader
         titleSection="Municipios"
         titleButton="Crear Municipio"
-        createAction="create-municipalitie"
+        createAction={modalTypes.municipalities.form.name}
       />
       <MunicipalitiesList
         pagination={{ page, total, pageSize }}
         municipalities={data}
       />
-      <AddMunicipalitieContainer currentModal={searchParams.currentModal} />
+      <Modal
+        formPath={modalTypes.municipalities.form.name}
+        titleModal={modalTypes.municipalities.form.title}
+      >
+        <MunicipalityFormContainer />
+      </Modal>
     </Paper>
   );
 }

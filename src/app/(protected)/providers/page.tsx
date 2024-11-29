@@ -1,8 +1,11 @@
+import Modal from "@/components/partials/Modal/Modal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { getProviders } from "@/lib/services/providers";
 import { SearchParams } from "@/lib/types/pagination";
 import { ProviderList } from "@/sections/providers/components/ProvidersList";
-import { AddProviderContainer } from "@/sections/providers/containers/AddProviderContainer";
+import { ProviderFormContainer } from "@/sections/providers/containers/ProviderFormContainer";
+
 import { Paper } from "@mui/material";
 import React from "react";
 
@@ -17,10 +20,15 @@ export default async function Page({ searchParams }: PageProps) {
       <SectionHeader
         titleSection="Proveedores"
         titleButton="Crear Proveedor"
-        createAction="create-provider"
+        createAction={modalTypes.providers.form.name}
       />
       <ProviderList pagination={{ page, total, pageSize }} providers={data} />
-      <AddProviderContainer currentModal={searchParams.currentModal} />
+      <Modal
+        formPath={modalTypes.providers.form.name}
+        titleModal={modalTypes.providers.form.title}
+      >
+        <ProviderFormContainer />
+      </Modal>
     </Paper>
   );
 }

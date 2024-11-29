@@ -29,6 +29,19 @@ export const getProducts = async (
   return await response.json();
 };
 
+export const getAllProducts = async (): Promise<Product[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_APP_API_URL}products/all`)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching products");
+  }
+
+  return await response.json();
+};
+
 export const getProduct = async (
   productId: string
 ): Promise<ProductDetails> => {
@@ -86,6 +99,6 @@ export const updateProduct = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating product");
+    throw new Error("Error updating product");
   }
 };
