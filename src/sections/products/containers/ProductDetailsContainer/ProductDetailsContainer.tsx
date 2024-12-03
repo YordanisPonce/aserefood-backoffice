@@ -25,7 +25,7 @@ const productImages = [
   "/images/product-place-holder.png",
 ];
 
-export default function DetailsProductContainer() {
+export default function ProductDetailsContainer() {
   const { entityId } = useModal();
   const { product, loadingData, error, fetchProduct } = useProduct({
     productId: entityId,

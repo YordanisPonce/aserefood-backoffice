@@ -14,7 +14,7 @@ interface Props {
   pagination: Pagination;
 }
 
-export default function CategoriesTreeView({ categories }: Props) {
+export default function CategoriesTreeView({ categories, pagination }: Props) {
   const { handleOpenModal } = useModal();
   const router = useRouter();
   const pathname = usePathname();
@@ -27,7 +27,9 @@ export default function CategoriesTreeView({ categories }: Props) {
   const onCreate = (item: DataTree) => {
     handleOpenModal(modalTypes.subcategories.form.name, item.id);
   };
-  const onViewDetails = (item: DataTree) => {};
+  const onViewDetails = (item: DataTree) => {
+    handleOpenModal(modalTypes.categories.details.name, item.id);
+  };
   const onDelete = (item: DataTree) => {};
 
   const transformData = (items: Category[]): DataTree[] => {
@@ -41,6 +43,7 @@ export default function CategoriesTreeView({ categories }: Props) {
   return (
     <TreeItemsList
       data={transformData(categories)}
+      pagination={pagination}
       onViewDetails={onViewDetails}
       onDelete={onDelete}
       onEdit={onEdit}

@@ -24,12 +24,14 @@ export default function CategoriesTableView({ categories, pagination }: Props) {
   const { handleOpenModal } = useModal();
 
   useEffect(() => {
-    const searchUrl = new URLSearchParams(searchParams);
+    const searchUrl = new URLSearchParams();
     searchUrl.set("isFlat", "false");
     router.replace(`${pathname}?${searchUrl.toString()}`);
   }, []);
 
-  const onViewDetails = (params: GridRenderCellParams) => () => {};
+  const onViewDetails = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.categories.details.name, params.row.id);
+  };
   const onDelete = (params: GridRenderCellParams) => () => {
     updateSearchParams({
       currentModal: {

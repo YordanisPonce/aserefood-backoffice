@@ -8,6 +8,7 @@ import { CategoryList } from "@/sections/categories/components/CategoriesList";
 import { getCategories } from "@/lib/services/categories";
 import { CategoryFormContainer } from "@/sections/categories/containers/CategoryFormContainer";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
+import CategoryDetailsContainer from "@/sections/categories/containers/CategoryDetailsContainer/CategoryDetailsContainer";
 
 type CategoriesPageProps = {
   searchParams: SearchParams;
@@ -27,6 +28,9 @@ export default async function CategoriesPage({
       <CategoryList pagination={{ page, total, pageSize }} categories={data} />
       <Modal formPath={[modalTypes.categories.form.name, modalTypes.subcategories.form.name]} titleModal={modalTypes.categories.form.title}>
         <CategoryFormContainer />
+      </Modal>
+      <Modal formPath={[modalTypes.categories.details.name]} titleModal={modalTypes.categories.details.title}>
+        <CategoryDetailsContainer />
       </Modal>
     </Paper>
   );

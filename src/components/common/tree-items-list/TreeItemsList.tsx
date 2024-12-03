@@ -9,18 +9,20 @@ import {
   CategoryRounded as CategoryRoundedIcon,
   Visibility as VisibilityIcon,
 } from "@mui/icons-material";
-import SearchItem from "../search";
-import useTreeItemsList from "./hooks/useTreeItemsList";
-import { debounce } from "lodash";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import EmptyContent from "../empty-content";
+import useTreeItemsList from "./hooks/useTreeItemsList";
+import { Pagination } from "@/lib/types/pagination";
+import TreeItemsListPagination from "./components/tree-items-list-pagination/TreeItemsListPagination";
+
 export interface DataTree {
   id: string;
   label: string;
   children: DataTree[];
 }
+
 interface Props {
   data: DataTree[];
+  pagination: Pagination;
   onCreate?: (item: DataTree) => void;
   onEdit?: (item: DataTree) => void;
   onDelete?: (item: DataTree) => void;
@@ -29,6 +31,7 @@ interface Props {
 
 export default function TreeItemsList({
   data,
+  pagination,
   onCreate,
   onDelete,
   onViewDetails,
@@ -68,25 +71,6 @@ export default function TreeItemsList({
                 <CategoryRoundedIcon fontSize="inherit" />
                 <span>{item.label}</span>
               </Box>
-              {/*item.children.length > 0 && (
-                <SearchItem
-                  size="small"
-                  placeholder={"Buscar"}
-                  sx={{
-                    "& .MuiInputBase-root": {
-                      height: "30px",
-                    },
-                    "& .MuiInputBase-input": {
-                      padding: "4px 8px",
-                      fontSize: "14px",
-                    },
-                  }}
-                  onSearch={() => onSearch(item)}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                  }}
-                />
-              )*/}
             </Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               {onViewDetails && (
@@ -146,8 +130,14 @@ export default function TreeItemsList({
     <Box
       sx={{ width: "100%", display: "flex", flexDirection: "column", gap: 1 }}
     >
-      {items.length > 0 ? (
-        <SimpleTreeView>{renderingTreeView(items)}</SimpleTreeView>
+      {data.length > 0 ? (
+        <Box>
+          <SimpleTreeView>{renderingTreeView(items)}</SimpleTreeView>
+          <TreeItemsListPagination
+            pagination={pagination}
+            pageSizeOptions={[5, 10, 20, 50, 100]}
+          />
+        </Box>
       ) : (
         <EmptyContent title={"No hay datos disponibles"} />
       )}
