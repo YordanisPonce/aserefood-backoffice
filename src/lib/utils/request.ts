@@ -16,8 +16,8 @@ export class QueryParamsURLFactory {
     const queryParams = new URLSearchParams();
     const pagination = this.query?.pagination;
     const search = this.query?.search;
+    const isFlat = this.query?.isFlat;
 
-  
     // Add pagination
     if (pagination) {
       const { page, pageSize } = pagination;
@@ -28,6 +28,11 @@ export class QueryParamsURLFactory {
     // Add search
     if (search) {
       queryParams.set("search", search);
+    }
+
+    // Add ifFlat (only categories)
+    if (isFlat !== undefined) {
+      queryParams.set("isFlat", isFlat);
     }
 
     // Generate complete URL if baseUrl is provided
