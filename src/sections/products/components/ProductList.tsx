@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
@@ -21,16 +20,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
   const { updateSearchParams } = useUrlParams();
   const { handleOpenModal } = useModal();
   const onViewDetails = (params: GridRenderCellParams) => () => {
-    updateSearchParams({
-      currentModal: {
-        action: "set",
-        value: "view-product",
-      },
-      productId: {
-        action: "set",
-        value: params.row.id,
-      },
-    });
+    handleOpenModal("details-product", params.row.id);
   };
   const onDelete = (params: GridRenderCellParams) => () => {
     updateSearchParams({

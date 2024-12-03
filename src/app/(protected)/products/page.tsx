@@ -7,6 +7,7 @@ import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import Modal from "@/components/partials/Modal/Modal";
 import { ProductFormContainer } from "@/sections/products/containers/ProductFormContainer";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
+import DetailsProductContainer from "@/sections/products/containers/DetailsProductContainer/DetailsProductContainer";
 
 type ProductsPageProps = {
   searchParams: SearchParams;
@@ -20,8 +21,8 @@ export default async function ProductsPage({
     <Paper sx={{ p: 2 }}>
       <SectionHeader
         titleSection="Productos"
-        titleButton="Crear Producto"
-        createAction={modalTypes.products.form.name}
+        titleButton="Gestión de Producto"
+        createAction="modal-product"
       />
       <ProductList pagination={{ page, total, pageSize }} products={data} />
       <Modal
@@ -29,6 +30,9 @@ export default async function ProductsPage({
         titleModal={modalTypes.products.form.title}
       >
         <ProductFormContainer />
+      </Modal>
+      <Modal formPath="details-product" titleModal="Información de Producto">
+        <DetailsProductContainer />
       </Modal>
     </Paper>
   );
