@@ -26,9 +26,6 @@ export default function CategoriesTableView({ categories, pagination }: Props) {
     const searchUrl = new URLSearchParams(searchParams);
     searchUrl.set("isFlat", "false");
     router.replace(`${pathname}?${searchUrl.toString()}`);
-    return () => {
-      router.replace(pathname);
-    };
   }, []);
 
   const onViewDetails = (params: GridRenderCellParams) => () => {};
