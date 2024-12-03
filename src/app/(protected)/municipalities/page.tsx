@@ -26,7 +26,7 @@ export default async function Page({ searchParams }: PageProps) {
         municipalities={data}
       />
       <Modal
-        formPath={modalTypes.municipalities.form.name}
+        formPath={[modalTypes.municipalities.form.name]}
         titleModal={modalTypes.municipalities.form.title}
       >
         <MunicipalityFormContainer />

@@ -3,6 +3,7 @@
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import useUrlParams from "@/lib/hooks/useUrlParams";
 import { Category } from "@/lib/types/category";
 import { Pagination } from "@/lib/types/pagination";
@@ -42,7 +43,7 @@ export default function CategoriesTableView({ categories, pagination }: Props) {
     });
   };
   const onEdit = (params: GridRenderCellParams) => () => {
-    handleOpenModal("form-category", params.row.id);
+    handleOpenModal(modalTypes.categories.form.name, params.row.id);
   };
 
   const colDef: GridColDef<Category>[] = [

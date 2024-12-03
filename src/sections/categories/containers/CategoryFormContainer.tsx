@@ -15,6 +15,7 @@ import {
   updateCategory,
 } from "@/lib/services/categories";
 import { CategoryForm } from "../components/CategoryForm";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 
 export enum CategoryFormModality {
   CreateCategory = 0,
@@ -30,7 +31,7 @@ export const CategoryFormContainer: FunctionComponent = () => {
   const [formModality] = useState<CategoryFormModality>(
     !categoryId
       ? CategoryFormModality.CreateCategory
-      : currentModal === "form-subCategory"
+      : currentModal === modalTypes.subcategories.form.name
       ? CategoryFormModality.CreateSubCategory
       : CategoryFormModality.UpdateCategory
   );

@@ -3,6 +3,7 @@ import TreeItemsList, {
   DataTree,
 } from "@/components/common/tree-items-list/TreeItemsList";
 import useModal from "@/components/partials/Modal/hooks/useModal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Category } from "@/lib/types/category";
 import { Pagination } from "@/lib/types/pagination";
 import { usePathname, useRouter } from "next/navigation";
@@ -21,10 +22,10 @@ export default function CategoriesTreeView({ categories }: Props) {
     router.replace(pathname);
   }, []);
   const onEdit = (item: DataTree) => {
-    handleOpenModal("form-category", item.id);
+    handleOpenModal(modalTypes.categories.form.name, item.id);
   };
   const onCreate = (item: DataTree) => {
-    handleOpenModal("form-subCategory", item.id);
+    handleOpenModal(modalTypes.subcategories.form.name, item.id);
   };
   const onViewDetails = (item: DataTree) => {};
   const onDelete = (item: DataTree) => {};

@@ -24,7 +24,7 @@ export default async function Page({ searchParams }: PageProps) {
       />
       <ProviderList pagination={{ page, total, pageSize }} providers={data} />
       <Modal
-        formPath={modalTypes.providers.form.name}
+        formPath={[modalTypes.providers.form.name]}
         titleModal={modalTypes.providers.form.title}
       >
         <ProviderFormContainer />

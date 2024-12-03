@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 import useModal from "./hooks/useModal";
 import CloseIcon from "@mui/icons-material/Close";
 interface ModalProps {
-  formPath: string;
+  formPath: string[];
   titleModal: string;
   children: ReactNode;
 }
@@ -15,7 +15,7 @@ export default function Modal({ formPath, children, titleModal }: ModalProps) {
   return (
     <>
       <Dialog
-        open={currentModal === formPath}
+        open={currentModal !== null && formPath.includes(currentModal)}
         maxWidth={"md"}
         fullWidth
         keepMounted={false}

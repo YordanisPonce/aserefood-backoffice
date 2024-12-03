@@ -17,6 +17,7 @@ export interface ModalTypes {
   municipalities: SectionModal;
   inventory: SectionModal;
   categories: SectionModal;
+  subcategories: SectionModal
 }
 
 export const modalTypes: ModalTypes = {
@@ -100,4 +101,14 @@ export const modalTypes: ModalTypes = {
       title: "Formulario de Categoría",
     },
   },
+  subcategories: {
+    details: {
+      name: "details-subcategories",
+      title: "Información de la Categoría",
+    },
+    form: {
+      name: "form-subcategories",
+      title: "Formulario de Subcategoría",
+    },
+  }
 };

@@ -1,7 +1,8 @@
-"use client"
+"use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import useUrlParams from "@/lib/hooks/useUrlParams";
 import { Pagination } from "@/lib/types/pagination";
 import { Product } from "@/lib/types/products";
@@ -20,7 +21,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
   const { updateSearchParams } = useUrlParams();
   const { handleOpenModal } = useModal();
   const onViewDetails = (params: GridRenderCellParams) => () => {
-    handleOpenModal("details-product", params.row.id);
+    handleOpenModal(modalTypes.products.details.name, params.row.id);
   };
   const onDelete = (params: GridRenderCellParams) => () => {
     updateSearchParams({
@@ -35,7 +36,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
     });
   };
   const onEdit = (params: GridRenderCellParams) => () => {
-    handleOpenModal("modal-product", params.row.id);
+    handleOpenModal(modalTypes.products.form.name, params.row.id);
   };
 
   const colDef: GridColDef<Product>[] = [

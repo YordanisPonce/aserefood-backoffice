@@ -28,7 +28,7 @@ export default async function Page({ searchParams }: PageProps) {
         inventoryEntries={data}
       />
       <Modal
-        formPath={modalTypes.inventory.form.name}
+        formPath={[modalTypes.inventory.form.name]}
         titleModal={modalTypes.inventory.form.title}
       >
         <InventoryEntryFormContainer />

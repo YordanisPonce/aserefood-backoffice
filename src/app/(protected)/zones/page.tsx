@@ -24,7 +24,7 @@ export default async function Page({ searchParams }: PageProps) {
       />
       <ZonesList pagination={{ page, total, pageSize }} zones={data} />
       <Modal
-        formPath={modalTypes.zones.form.name}
+        formPath={[modalTypes.zones.form.name]}
         titleModal={modalTypes.zones.form.title}
       >
         <ZoneFormContainer />

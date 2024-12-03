@@ -22,16 +22,19 @@ export default async function ProductsPage({
       <SectionHeader
         titleSection="Productos"
         titleButton="Gestión de Producto"
-        createAction="modal-product"
+        createAction={modalTypes.products.form.name}
       />
       <ProductList pagination={{ page, total, pageSize }} products={data} />
       <Modal
-        formPath={modalTypes.products.form.name}
+        formPath={[modalTypes.products.form.name]}
         titleModal={modalTypes.products.form.title}
       >
         <ProductFormContainer />
       </Modal>
-      <Modal formPath="details-product" titleModal="Información de Producto">
+      <Modal
+        formPath={[modalTypes.products.details.name]}
+        titleModal={modalTypes.products.details.title}
+      >
         <DetailsProductContainer />
       </Modal>
     </Paper>

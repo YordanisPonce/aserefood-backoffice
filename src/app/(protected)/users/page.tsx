@@ -26,7 +26,7 @@ export default async function UserManagementPage({
       />
       <UsersList pagination={{ page, total, pageSize }} users={data} />
       <Modal
-        formPath={modalTypes.users.form.name}
+        formPath={[modalTypes.users.form.name]}
         titleModal={modalTypes.users.form.title}
       >
         <UserFormContainer />
