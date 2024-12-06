@@ -1,0 +1,65 @@
+import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
+import RHFCheckboxWithLabel from "@/components/common/hook-form/RHFCheckboxWithLabel";
+import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
+import { getAllMunicipalities } from "@/lib/services/municipalities";
+import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import { FunctionComponent } from "react";
+
+type DeliveryMethodFormProps = {
+  isLoading: boolean;
+  isUpdate: boolean;
+};
+
+export const DeliveryMethodForm: FunctionComponent<DeliveryMethodFormProps> = ({
+  isLoading,
+  isUpdate,
+}) => {
+  return (
+    <>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <RHFInputWithLabel name="name" label="Name" type="text" />
+          <RHFInputWithLabel
+            name="pickUpDirection"
+            label="Dirección de recogida"
+            type="text"
+          />
+        </Box>
+        <RHFAutocompleteFetcher
+          fullWidth
+          name="municipality"
+          label="Municipio"
+          onFetch={getAllMunicipalities}
+          getOptionLabel={(opt) => opt.name}
+          getOptionKey={(opt) => opt.id}
+          size="small"
+        />
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <RHFInputWithLabel
+            name="estimatedArrivalTime"
+            label="Tiempo de Arrivo Estimado"
+            type="text"
+          />
+          <RHFInputWithLabel name="cost" label="Costo" type="number" />
+          <RHFInputWithLabel
+            name="minimalDeliveryPrice"
+            label="Precio mínimo de entrega"
+            type="number"
+          />
+        </Box>
+        <RHFCheckboxWithLabel name="isFree" label="Es libre?" />
+      </Box>
+      <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
+        <Button type="reset">Cancelar</Button>
+        <Button
+          type="submit"
+          disabled={isLoading}
+          startIcon={isLoading ? <CircularProgress size={20} /> : null}
+          variant="contained"
+        >
+          {isUpdate ? "Actualizar" : "Crear"}
+        </Button>
+      </DialogActions>
+    </>
+  );
+};

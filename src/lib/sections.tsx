@@ -9,6 +9,7 @@ import {
   PeopleAltRounded as PeopleAltRoundedIcon,
   HomeWorkRounded as HomeWorkRoundedIcon,
   CalendarMonth as CalendarMonthIcon,
+  LocalShipping as LocalShippingIcon,
 } from "@mui/icons-material";
 import { routes } from "@/lib/config/routes";
 
@@ -59,6 +60,11 @@ export const sections: Section[] = [
     name: "Inventario",
     path: routes.inventory.path,
     icon: <Inventory2RoundedIcon />,
+  },
+  {
+    name: "Métodos de Entrega",
+    path: routes.deliveryMethods.path,
+    icon: <LocalShippingIcon />,
   },
   {
     name: "Municipios",

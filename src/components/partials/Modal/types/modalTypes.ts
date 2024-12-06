@@ -26,6 +26,7 @@ export interface ModalTypes {
   inventory: SectionModal;
   categories: SectionModal;
   subcategories: SectionModal;
+  deliveryMethods: SectionModal;
 }
 
 export const modalTypes: ModalTypes = {
@@ -214,6 +215,23 @@ export const modalTypes: ModalTypes = {
       subTitle: "¿Seguro que desea eliminar la subcategoría?",
       message:
         "La acción de eliminación de una subcategoría es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
+  },
+  deliveryMethods: {
+    details: {
+      name: "details-delivery-method",
+      title: "Información del Método de Entrega",
+    },
+    form: {
+      name: "form-delivery-method",
+      title: "Formualrio de Método de Entrega",
+    },
+    delete: {
+      name: "delete-delivery-method",
+      title: "Eliminación de Método de Entrega",
+      subTitle: "¿Seguro que desea eliminar el Método de entrega?",
+      message:
+        "La acción de eliminación de un método de entrega es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
     },
   },
 };
