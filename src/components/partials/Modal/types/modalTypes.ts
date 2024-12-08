@@ -10,6 +10,7 @@ export interface SectionModal {
 }
 export interface ModalTypes {
   products: SectionModal;
+  productCombos: SectionModal;
   providers: SectionModal;
   provinces: SectionModal;
   zones: SectionModal;
@@ -29,6 +30,16 @@ export const modalTypes: ModalTypes = {
     form: {
       name: "form-product",
       title: "Formulario de Producto",
+    },
+  },
+  productCombos: {
+    details: {
+      name: "details-product-combo",
+      title: "Información del Combo",
+    },
+    form: {
+      name: "form-product-combo",
+      title: "Formulario de Combo",
     },
   },
   providers: {

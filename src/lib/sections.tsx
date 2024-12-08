@@ -34,6 +34,11 @@ export const sections: Section[] = [
     icon: <ShoppingCartRoundedIcon />,
   },
   {
+    name: "Combos de Productos",
+    path: routes.productCombos.path,
+    icon: <ShoppingCartRoundedIcon />,
+  },
+  {
     name: "Proveedores",
     path: routes.providers.path,
     icon: <HomeWorkRoundedIcon />,

@@ -1,0 +1,112 @@
+"use server";
+
+import { IQueryable } from "../types/filters";
+import { Paginated, SearchParams } from "../types/pagination";
+import {
+  CreateProductComboDTO,
+  ProductCombo,
+  ProductComboDetails,
+} from "../types/productCombo";
+import { fetchWithAuth } from "../utils/fetcher";
+import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+export const getProductCombos = async (
+  params: SearchParams
+): Promise<Paginated<ProductCombo>> => {
+  const query: IQueryable = buildQueryParams(params);
+  const queryObject = new QueryParamsURLFactory(
+    query,
+    `${process.env.NEXT_APP_API_URL}product-combos`
+  );
+  const url = queryObject.build();
+  const response = await fetchWithAuth(url, {
+    next: {
+      tags: ["product-combos"],
+    },
+  });
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching product combos");
+  }
+
+  return await response.json();
+};
+
+export const getAllProductCombos = async (): Promise<ProductCombo[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_APP_API_URL}product-combos/all`)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching product combos");
+  }
+
+  return await response.json();
+};
+
+export const getProductCombo = async (
+  productComboId: string
+): Promise<ProductComboDetails> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}product-combos/${productComboId}`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching product combo");
+  }
+
+  return await response.json();
+};
+
+export const createProductCombo = async (
+  productCombo: CreateProductComboDTO
+): Promise<Paginated<ProductCombo>> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}product-combos`,
+    {
+      method: "POST",
+      body: JSON.stringify(productCombo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400) throw new Error(response.statusText);
+    throw new Error("Error creating product combo");
+  }
+
+  return await response.json();
+};
+
+export const updateProductCombo = async (
+  productComboId: string,
+  productCombo: CreateProductComboDTO
+): Promise<void> => {
+  console.log(productComboId);
+  console.log(productCombo);
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}product-combos/` + productComboId,
+    {
+      method: "PATCH",
+      body: JSON.stringify(productCombo),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400) throw new Error(response.statusText);
+    throw new Error("Error updating product combo");
+  }
+};

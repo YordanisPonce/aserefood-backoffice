@@ -8,6 +8,7 @@ interface Routes {
   dashboard: Route;
   categories: Route;
   products: Route;
+  productCombos: Route
   providers: Route
   zones: Route;
   inventory: Route;
@@ -22,6 +23,7 @@ export const routes: Routes = {
   dashboard: { path: "/dashboard" },
   categories: { path: "/categories" },
   products: { path: "/products" },
+  productCombos: {path: "/product-combos"},
   providers: { path: "/providers" },
   zones: { path: "/zones" },
   inventory: { path: "/inventory" },
