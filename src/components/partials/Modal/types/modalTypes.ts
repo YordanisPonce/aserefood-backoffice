@@ -11,6 +11,7 @@ export interface SectionModal {
 export interface ModalTypes {
   products: SectionModal;
   productCombos: SectionModal;
+  promotions: SectionModal;
   providers: SectionModal;
   provinces: SectionModal;
   zones: SectionModal;
@@ -18,7 +19,7 @@ export interface ModalTypes {
   municipalities: SectionModal;
   inventory: SectionModal;
   categories: SectionModal;
-  subcategories: SectionModal
+  subcategories: SectionModal;
 }
 
 export const modalTypes: ModalTypes = {
@@ -40,6 +41,16 @@ export const modalTypes: ModalTypes = {
     form: {
       name: "form-product-combo",
       title: "Formulario de Combo",
+    },
+  },
+  promotions: {
+    details: {
+      name: "details-promotion",
+      title: "Información de la Promoción",
+    },
+    form: {
+      name: "form-promotion",
+      title: "Formulario de Promoción",
     },
   },
   providers: {
@@ -121,5 +132,5 @@ export const modalTypes: ModalTypes = {
       name: "form-subcategories",
       title: "Formulario de Subcategoría",
     },
-  }
+  },
 };

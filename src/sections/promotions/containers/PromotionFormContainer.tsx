@@ -18,11 +18,11 @@ import {
 } from "@/lib/services/promotions";
 import { PromotionForm } from "../components/PromotionForm";
 
-
 export const PromotionFormContainer: FunctionComponent = () => {
   const { entityId: promotionId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<CreatePromotion> = {
     resolver: zodResolver(createPromotionSchema()),
     defaultValues: {
@@ -31,8 +31,8 @@ export const PromotionFormContainer: FunctionComponent = () => {
       code: undefined,
       discountOption: DiscountOption.FIXED_AMOUNT,
       discountValue: 1,
-      endDate: new Date().toDateString(),
-      startDate: new Date().toDateString(),
+      endDate: new Date().toISOString(),
+      startDate: new Date().toISOString(),
       image: undefined,
       isActive: false,
       productCombos: [],
@@ -76,6 +76,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
       await revalidateServerTags("promotions");
       handleCloseModal();
     } catch (error) {
+      if (error instanceof Error) setError(error.message);
       console.log(error);
     } finally {
       setIsLoading(false);
@@ -85,6 +86,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
   const updateForm = useCallback(
     async (promotionId: string) => {
       setLoadingData(true);
+      setError(undefined);
       try {
         const promotion = await getPromotion(promotionId);
         methods.reset({
@@ -131,6 +133,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
           <PromotionForm
             isLoading={isLoading}
             isUpdate={promotionId !== null}
+            error={error}
           />
         )}
       </form>

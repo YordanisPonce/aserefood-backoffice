@@ -8,8 +8,10 @@ import {
   ShoppingCartRounded as ShoppingCartRoundedIcon,
   PeopleAltRounded as PeopleAltRoundedIcon,
   HomeWorkRounded as HomeWorkRoundedIcon,
+  CalendarMonth as CalendarMonthIcon,
 } from "@mui/icons-material";
 import { routes } from "@/lib/config/routes";
+
 interface Section {
   name: string;
   path: string;
@@ -37,6 +39,11 @@ export const sections: Section[] = [
     name: "Combos de Productos",
     path: routes.productCombos.path,
     icon: <ShoppingCartRoundedIcon />,
+  },
+  {
+    name: "Promociones",
+    path: routes.promotions.path,
+    icon: <CalendarMonthIcon />,
   },
   {
     name: "Proveedores",

@@ -4,7 +4,10 @@ import z from "zod";
 export const createPromotionSchema = () =>
   z
     .object({
-      code: z.string().min(1, { message: "El código es requerido" }),
+      code: z
+        .string()
+        .min(1, { message: "El código es requerido" })
+        .max(10, { message: "El código no puede exceder los 10 carácteres" }),
       name: z.string().min(1, { message: "El nombre es requerido" }),
       description: z.string().min(1, { message: "La descipción es requerida" }),
       discountOption: z.enum([

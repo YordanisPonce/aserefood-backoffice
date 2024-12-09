@@ -1,7 +1,8 @@
 import { Box, Divider, Typography } from "@mui/material";
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import RHFDatePicker from "./RHFDatePicker";
+import RHFDateTimePicker from "./RHFDateTimePicker";
+
 
 interface Props {
   title: string;
@@ -11,7 +12,7 @@ interface Props {
   labelFinalDatePicker: string;
 }
 
-export default function RHFDatePickerRange({
+export default function RHFDateTimePickerRange({
   title,
   nameFinalDatePicker,
   nameInitialDatePicker,
@@ -37,11 +38,11 @@ export default function RHFDatePickerRange({
         )}
       </Box>
       <Box sx={{ display: "flex", gap: 2 }}>
-        <RHFDatePicker
+        <RHFDateTimePicker
           name={nameInitialDatePicker}
           label={labelInitialDatePicker}
         />
-        <RHFDatePicker
+        <RHFDateTimePicker
           name={nameFinalDatePicker}
           label={labelFinalDatePicker}
         />

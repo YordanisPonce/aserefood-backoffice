@@ -22,18 +22,21 @@ export default async function PromotionsPage({
       <SectionHeader
         titleSection="Promociones"
         titleButton="Crear Promoción"
-        createAction="form-promotion"
+        createAction={modalTypes.promotions.form.name}
       />
       <PromotionsList
         pagination={{ page, total, pageSize }}
         promotions={data}
       />
-      <Modal formPath={"form-promotion"} titleModal={"Formulario de Promoción"}>
+      <Modal
+        formPath={[modalTypes.promotions.form.name]}
+        titleModal={modalTypes.promotions.form.title}
+      >
         <PromotionFormContainer />
       </Modal>
       <Modal
-        formPath={"details-promotion"}
-        titleModal={"Información de Promoción"}
+        formPath={[modalTypes.promotions.details.name]}
+        titleModal={modalTypes.promotions.details.title}
       >
         <PromotionDetailsContainer />
       </Modal>

@@ -2,10 +2,11 @@
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
+import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import useUrlParams from "@/lib/hooks/useUrlParams";
 import { Pagination } from "@/lib/types/pagination";
 import { Promotion } from "@/lib/types/promotion";
-import { Chip, Typography } from "@mui/material";
+import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
 
@@ -21,7 +22,7 @@ export const PromotionsList: FunctionComponent<PromotionsListProps> = ({
   const { updateSearchParams } = useUrlParams();
   const { handleOpenModal } = useModal();
   const onViewDetails = (params: GridRenderCellParams) => () => {
-    handleOpenModal("details-promotion", params.row.id);
+    handleOpenModal(modalTypes.promotions.details.name, params.row.id);
   };
   const onDelete = (params: GridRenderCellParams) => () => {
     updateSearchParams({
@@ -36,7 +37,7 @@ export const PromotionsList: FunctionComponent<PromotionsListProps> = ({
     });
   };
   const onEdit = (params: GridRenderCellParams) => () => {
-    handleOpenModal("form-promotion", params.row.id);
+    handleOpenModal(modalTypes.promotions.form.name, params.row.id);
   };
 
   const colDef: GridColDef<Promotion>[] = [

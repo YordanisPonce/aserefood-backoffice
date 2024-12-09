@@ -2,7 +2,7 @@ import React from "react";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Controller, useFormContext } from "react-hook-form";
-import { DatePicker } from "@mui/x-date-pickers";
+import { DateTimePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
   label: string;
 }
 
-export default function RHFDatePicker({ name, label }: Props) {
+export default function RHFDateTimePicker({ name, label }: Props) {
   const { control } = useFormContext();
 
   return (
@@ -19,7 +19,7 @@ export default function RHFDatePicker({ name, label }: Props) {
         name={name}
         control={control}
         render={({ field }) => (
-          <DatePicker
+          <DateTimePicker 
             {...field}
             label={label}
             value={field.value ? dayjs(field.value) : null}

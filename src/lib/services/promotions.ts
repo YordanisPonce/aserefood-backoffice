@@ -2,8 +2,11 @@
 
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { CreateProductDTO, Product, ProductDetails } from "../types/products";
-import { CreatePromotionDTO, Promotion, PromotionDetails } from "../types/promotion";
+import {
+  CreatePromotionDTO,
+  Promotion,
+  PromotionDetails,
+} from "../types/promotion";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -64,7 +67,14 @@ export const createPromotion = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating promotions");
+    if (response.status === 400) {
+      const error: {
+        message: string[];
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message[0]);
+    } else throw new Error("Error creating promotions");
   }
 
   return await response.json();
@@ -87,6 +97,13 @@ export const updatePromotion = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating promotions");
+    if (response.status === 400) {
+      const error: {
+        message: string[];
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message[0]);
+    } else throw new Error("Error updating promotions");
   }
 };

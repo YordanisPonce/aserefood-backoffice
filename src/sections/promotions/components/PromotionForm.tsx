@@ -1,25 +1,34 @@
 import RHFAutocomplete from "@/components/common/hook-form/RHFAutocomplete";
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
-import RHFDatePickerRange from "@/components/common/hook-form/RHFDatePickerRange";
+import RHFDateTimePickerRange from "@/components/common/hook-form/RHFDateTimePickerRange";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
+import { getAllProductCombos } from "@/lib/services/productCombos";
 import { getAllProducts } from "@/lib/services/products";
-import { getAllProviders } from "@/lib/services/providers";
 import { DiscountOption } from "@/lib/types/promotion";
-import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+} from "@mui/material";
 import { FunctionComponent } from "react";
 
 type PromotionFormProps = {
   isLoading: boolean;
   isUpdate: boolean;
+  error: string | undefined;
 };
 
 export const PromotionForm: FunctionComponent<PromotionFormProps> = ({
   isLoading,
   isUpdate,
+  error,
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         <Box sx={{ display: "flex", gap: 2 }}>
           <RHFInputWithLabel name="code" label="Código" type="text" />
           <RHFInputWithLabel name="name" label="Nombre" type="text" />
@@ -30,7 +39,7 @@ export const PromotionForm: FunctionComponent<PromotionFormProps> = ({
             fullWidth
             name="productCombos"
             label="Combos de Productos"
-            onFetch={getAllProviders}
+            onFetch={getAllProductCombos}
             multiple={true}
             getOptionLabel={(opt) => opt.name}
             getOptionKey={(opt) => opt.id}
@@ -62,7 +71,7 @@ export const PromotionForm: FunctionComponent<PromotionFormProps> = ({
             type="number"
           />
         </Box>
-        <RHFDatePickerRange
+        <RHFDateTimePickerRange
           title="Intervalo de duración"
           nameInitialDatePicker="startDate"
           nameFinalDatePicker="endDate"

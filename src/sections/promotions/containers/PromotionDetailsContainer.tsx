@@ -51,7 +51,7 @@ export default function PromotionDetailsContainer() {
                 }}
               />
             </Card>
-            <Box sx={{ p: 3, overflowY: "auto" }}>
+            <Box sx={{ p: 3, overflow: "hidden" }}>
               <Typography
                 id="promotion-details-modal"
                 variant="h6"
@@ -73,8 +73,14 @@ export default function PromotionDetailsContainer() {
               <Box display="flex" alignItems="center" mb={2}>
                 <CalendarToday sx={{ mr: 1 }} color="action" />
                 <Typography variant="body2">
-                  Vigencia: {new Date(promotion.startDate).toLocaleDateString()}{" "}
-                  - {new Date(promotion.endDate).toLocaleDateString()}
+                  Vigencia:{" "}
+                  {new Date(promotion.startDate).toLocaleDateString() +
+                    " " +
+                    new Date(promotion.startDate).toLocaleTimeString() +
+                    " - " +
+                    new Date(promotion.endDate).toLocaleDateString() +
+                    " " +
+                    new Date(promotion.endDate).toLocaleTimeString()}
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center" mb={2}>
