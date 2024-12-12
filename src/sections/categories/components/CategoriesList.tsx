@@ -24,12 +24,13 @@ export const CategoryList: FunctionComponent<CategoryListProps> = ({
   categories,
   pagination,
 }) => {
+  console.log(categories);
   const [view, setView] = useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setView(newValue);
   };
   return (
-    <Box sx={{display: "flex", flexDirection: "column", gap: 2}}>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       <Tabs
         value={view}
         onChange={handleChange}

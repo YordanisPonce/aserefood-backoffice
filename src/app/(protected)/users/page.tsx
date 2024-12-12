@@ -8,6 +8,7 @@ import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import Modal from "@/components/partials/Modal/Modal";
 import { UserFormContainer } from "@/sections/users/containers/UserFormContainer";
 import UserDetailsContainer from "@/sections/users/containers/UserDetailsContainer";
+import DeleteEntityContainer from "@/components/containers/DeleteEntityContainer";
 
 type UsersPageProps = {
   searchParams: SearchParams;
@@ -37,6 +38,15 @@ export default async function UserManagementPage({
         titleModal={modalTypes.users.details.title}
       >
         <UserDetailsContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.users.delete.name]}
+        titleModal={modalTypes.users.delete.title}
+      >
+        <DeleteEntityContainer
+          message={modalTypes.users.delete.message}
+          title={modalTypes.users.delete.subTitle}
+        />
       </Modal>
     </Paper>
   );

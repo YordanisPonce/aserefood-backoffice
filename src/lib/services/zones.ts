@@ -1,9 +1,13 @@
 "use server";
+
+import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateZoneDTO, Zone, ZoneDetails } from "../types/zone";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+const zonesTag = "zones";
 
 export const getZones = async (
   params: SearchParams
@@ -14,7 +18,11 @@ export const getZones = async (
     `${process.env.NEXT_APP_API_URL}zones`
   );
   const url = queryObject.build();
-  const response = await fetchWithAuth(url);
+  const response = await fetchWithAuth(url, {
+    next: {
+      tags: [zonesTag],
+    },
+  });
 
   if (!response.ok) {
     console.log(response);
@@ -109,4 +117,29 @@ export const updateZone = async (
       throw new Error(error.message);
     } else throw new Error("Error updating zone");
   }
+};
+
+export const deleteZone = async (zoneId: string): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}zones/` + zoneId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400 || response.status === 409) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error deleting zone");
+  }
+  revalidateTag(zonesTag);
 };

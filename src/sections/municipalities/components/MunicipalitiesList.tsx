@@ -18,7 +18,9 @@ export const MunicipalitiesList: FunctionComponent<MunicipalitiesListProps> = ({
   pagination,
 }) => {
   const { handleOpenModal } = useModal();
-  const onDelete = (params: GridRenderCellParams) => () => {};
+  const onDelete = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.municipalities.delete.name, params.row.id);
+  };
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.municipalities.form.name, params.row.id);
   };

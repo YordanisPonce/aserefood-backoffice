@@ -1,9 +1,12 @@
 "use server";
+import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateUserDTO, UpdateUserDTO, User } from "../types/users";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+const usersTag = "users"
 
 export const getUsers = async (
   params: SearchParams
@@ -14,7 +17,11 @@ export const getUsers = async (
     `${process.env.NEXT_APP_API_URL}users`
   );
   const url = queryObject.build();
-  const response = await fetchWithAuth(url);
+  const response = await fetchWithAuth(url, {
+    next: {
+      tags: [usersTag],
+    },
+  });
 
   if (!response.ok) {
     console.log(response);
@@ -100,4 +107,29 @@ export const updateUser = async (
       throw new Error(error.message);
     } else throw new Error("Error updating user");
   }
+};
+
+export const deleteUser = async (userId: string): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}users/` + userId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400 || response.status === 409) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error deleting user");
+  }
+  revalidateTag(usersTag);
 };

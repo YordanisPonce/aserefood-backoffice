@@ -1,10 +1,13 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateProductDTO, Product, ProductDetails } from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+const productsTag = "products"
 
 export const getProducts = async (
   params: SearchParams
@@ -17,7 +20,7 @@ export const getProducts = async (
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
     next: {
-      tags: ["products"],
+      tags: [productsTag],
     },
   });
 
@@ -119,4 +122,29 @@ export const updateProduct = async (
       throw new Error(error.message);
     } else throw new Error("Error updating product");
   }
+};
+
+export const deleteProduct = async (productId: string): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}products/` + productId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400 || response.status === 409) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error deleting product");
+  }
+  revalidateTag(productsTag);
 };

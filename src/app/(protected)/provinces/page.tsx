@@ -1,3 +1,4 @@
+import DeleteEntityContainer from "@/components/containers/DeleteEntityContainer";
 import Modal from "@/components/partials/Modal/Modal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
@@ -28,6 +29,15 @@ export default async function Page({ searchParams }: PageProps) {
         titleModal={modalTypes.provinces.form.title}
       >
         <ProvinceFormContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.provinces.delete.name]}
+        titleModal={modalTypes.provinces.delete.title}
+      >
+        <DeleteEntityContainer
+          message={modalTypes.provinces.delete.message}
+          title={modalTypes.provinces.delete.subTitle}
+        />
       </Modal>
     </Paper>
   );

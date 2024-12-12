@@ -18,7 +18,9 @@ export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
   pagination,
 }) => {
   const { handleOpenModal } = useModal();
-  const onDelete = (params: GridRenderCellParams) => () => {};
+  const onDelete = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.provinces.delete.name, params.row.id);
+  };
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.provinces.form.name, params.row.id);
   };
@@ -34,10 +36,7 @@ export const ProvincesList: FunctionComponent<ProvincesListProps> = ({
       field: "id",
       headerName: "Acciones",
       renderCell: (params) => (
-        <TableMenu
-          onDelete={onDelete(params)}
-          onEdit={onEdit(params)}
-        />
+        <TableMenu onDelete={onDelete(params)} onEdit={onEdit(params)} />
       ),
     },
   ];

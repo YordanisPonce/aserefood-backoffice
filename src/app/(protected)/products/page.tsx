@@ -8,7 +8,7 @@ import Modal from "@/components/partials/Modal/Modal";
 import { ProductFormContainer } from "@/sections/products/containers/ProductFormContainer";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import ProductDetailsContainer from "@/sections/products/containers/ProductDetailsContainer/ProductDetailsContainer";
-
+import DeleteEntityContainer from "@/components/containers/DeleteEntityContainer";
 
 type ProductsPageProps = {
   searchParams: SearchParams;
@@ -37,6 +37,15 @@ export default async function ProductsPage({
         titleModal={modalTypes.products.details.title}
       >
         <ProductDetailsContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.products.delete.name]}
+        titleModal={modalTypes.products.delete.title}
+      >
+        <DeleteEntityContainer
+          message={modalTypes.products.delete.message}
+          title={modalTypes.products.delete.subTitle}
+        />
       </Modal>
     </Paper>
   );

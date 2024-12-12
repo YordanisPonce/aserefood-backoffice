@@ -33,16 +33,7 @@ export default function CategoriesTableView({ categories, pagination }: Props) {
     handleOpenModal(modalTypes.categories.details.name, params.row.id);
   };
   const onDelete = (params: GridRenderCellParams) => () => {
-    updateSearchParams({
-      currentModal: {
-        action: "set",
-        value: "delete-entity",
-      },
-      id: {
-        action: "set",
-        value: params.row.id,
-      },
-    });
+    handleOpenModal(modalTypes.categories.delete.name, params.row.id);
   };
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.categories.form.name, params.row.id);

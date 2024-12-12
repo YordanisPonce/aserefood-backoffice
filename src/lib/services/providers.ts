@@ -1,10 +1,13 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateProviderDTO, Provider } from "../types/provider";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+const providersTag = "providers";
 
 export const getProviders = async (
   params: SearchParams
@@ -15,7 +18,11 @@ export const getProviders = async (
     `${process.env.NEXT_APP_API_URL}providers`
   );
   const url = queryObject.build();
-  const response = await fetchWithAuth(url);
+  const response = await fetchWithAuth(url, {
+    next: {
+      tags: [providersTag],
+    },
+  });
 
   if (!response.ok) {
     console.log(response);
@@ -113,4 +120,29 @@ export const updateProvider = async (
       throw new Error(error.message);
     } else throw new Error("Error updating provider");
   }
+};
+
+export const deleteProvider = async (providerId: string): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}providers/` + providerId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400 || response.status === 409) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error deleting provider");
+  }
+  revalidateTag(providersTag);
 };

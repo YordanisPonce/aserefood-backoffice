@@ -7,6 +7,12 @@ export interface SectionModal {
     name: string;
     title: string;
   };
+  delete: {
+    name: string;
+    title: string;
+    subTitle: string;
+    message: string;
+  };
 }
 export interface ModalTypes {
   products: SectionModal;
@@ -32,6 +38,13 @@ export const modalTypes: ModalTypes = {
       name: "form-product",
       title: "Formulario de Producto",
     },
+    delete: {
+      name: "delete-product",
+      title: "Eliminación de producto",
+      subTitle: "¿Seguro que desea eliminar el producto?",
+      message:
+        "La acción de eliminación de un producto es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
   },
   productCombos: {
     details: {
@@ -41,6 +54,13 @@ export const modalTypes: ModalTypes = {
     form: {
       name: "form-product-combo",
       title: "Formulario de Combo",
+    },
+    delete: {
+      name: "delete-product-combo",
+      title: "Eliminación de combo",
+      subTitle: "¿Seguro que desea eliminar el combo de producto?",
+      message:
+        "Todos los productos relacionados permanecerán en el sistema, pero este combo se eliminará de forma permanente.",
     },
   },
   promotions: {
@@ -52,6 +72,13 @@ export const modalTypes: ModalTypes = {
       name: "form-promotion",
       title: "Formulario de Promoción",
     },
+    delete: {
+      name: "delete-promotion",
+      title: "Eliminación de promoción",
+      subTitle: "¿Seguro que desea eliminar la promoción?",
+      message:
+        "La acción de eliminación de una promoción es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
   },
   providers: {
     details: {
@@ -61,6 +88,13 @@ export const modalTypes: ModalTypes = {
     form: {
       name: "form-providers",
       title: "Formualario de Proveedor",
+    },
+    delete: {
+      name: "delete-provider",
+      title: "Eliminación de proveedor",
+      subTitle: "¿Seguro que desea eliminar el proveedor?",
+      message:
+        "La acción de eliminación de un proveedor es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
     },
   },
   provinces: {
@@ -72,6 +106,13 @@ export const modalTypes: ModalTypes = {
       name: "form-province",
       title: "Formulario de Provincia",
     },
+    delete: {
+      name: "delete-province",
+      title: "Eliminación de provincia",
+      subTitle: "¿Seguro que desea eliminar la provincia?",
+      message:
+        "La acción de eliminación de una provincia es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
   },
   zones: {
     details: {
@@ -81,6 +122,13 @@ export const modalTypes: ModalTypes = {
     form: {
       name: "form-zone",
       title: "Formulario de Zona",
+    },
+    delete: {
+      name: "delete-zone",
+      title: "Eliminación de zona",
+      subTitle: "¿Seguro que desea eliminar la zona?",
+      message:
+        "La acción de eliminación de una zona es irreversible y no se prodrá recuperar la información una vez se haya eliminado. Esto podría afectar los datos relacionados con la distribución y los envíos.",
     },
   },
   users: {
@@ -92,6 +140,13 @@ export const modalTypes: ModalTypes = {
       name: "form-user",
       title: "Formulario de Usuario",
     },
+    delete: {
+      name: "delete-user",
+      title: "Eliminación de usuario",
+      subTitle: "¿Seguro que desea eliminar el usuario?",
+      message:
+        "La acción de eliminación de un usuario es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
   },
   municipalities: {
     details: {
@@ -101,6 +156,13 @@ export const modalTypes: ModalTypes = {
     form: {
       name: "form-municipality",
       title: "Formulario de Municipio",
+    },
+    delete: {
+      name: "delete-municipality",
+      title: "Eliminación de municipio",
+      subTitle: "¿Seguro que desea eliminar el municipio?",
+      message:
+        "La acción de eliminación de un municipio es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
     },
   },
   inventory: {
@@ -112,6 +174,13 @@ export const modalTypes: ModalTypes = {
       name: "form-inventory-entry",
       title: "Formulario de Entrada de Inventario",
     },
+    delete: {
+      name: "delete-inventory-entry",
+      title: "Eliminación de entrada de iventario",
+      subTitle: "¿Seguro que desea eliminar la entrada de inventario?",
+      message:
+        "La acción de eliminación de una entrada de iventario es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
   },
   categories: {
     details: {
@@ -122,6 +191,13 @@ export const modalTypes: ModalTypes = {
       name: "form-categories",
       title: "Formulario de Categoría",
     },
+    delete: {
+      name: "delete-category",
+      title: "Eliminación de categoría",
+      subTitle: "¿Seguro que desea eliminar la categoría?",
+      message:
+        "La acción de eliminación de una categoría es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
   },
   subcategories: {
     details: {
@@ -131,6 +207,13 @@ export const modalTypes: ModalTypes = {
     form: {
       name: "form-subcategories",
       title: "Formulario de Subcategoría",
+    },
+    delete: {
+      name: "delete-subcategory",
+      title: "Eliminación de subcategoría",
+      subTitle: "¿Seguro que desea eliminar la subcategoría?",
+      message:
+        "La acción de eliminación de una subcategoría es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
     },
   },
 };

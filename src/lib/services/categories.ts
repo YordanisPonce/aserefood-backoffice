@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import {
   Category,
   CategoryDetails,
@@ -10,6 +11,8 @@ import { Paginated, SearchParams } from "../types/pagination";
 import { SelectOption } from "../types/select";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+const categoriesTag = "categories";
 
 export const getCategories = async (
   params: SearchParams
@@ -26,7 +29,8 @@ export const getCategories = async (
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
     next: {
-      tags: ["categories"],
+      revalidate: 0,
+      tags: [categoriesTag],
     },
   });
 
@@ -144,4 +148,31 @@ export const updateCategory = async (
       throw new Error(error.message);
     } else throw new Error("Error updating category");
   }
+};
+
+export const deleteCategory = async (categoryId: string): Promise<void> => {
+  // aqui se espera a que la api responda
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}categories/` + categoryId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400 || response.status === 409) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error deleting category");
+  }
+
+  revalidateTag(categoriesTag);
 };

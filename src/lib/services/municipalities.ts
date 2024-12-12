@@ -1,9 +1,12 @@
 "use server";
+import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { CreateMunicipalityDTO, Municipality } from "../types/municipality";
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+const municipalitiesTag = "municipalities";
 
 export const getMunicipalities = async (
   params: SearchParams
@@ -14,7 +17,11 @@ export const getMunicipalities = async (
     `${process.env.NEXT_APP_API_URL}municipalities`
   );
   const url = queryObject.build();
-  const response = await fetchWithAuth(url);
+  const response = await fetchWithAuth(url, {
+    next: {
+      tags: [municipalitiesTag],
+    },
+  });
 
   if (!response.ok) {
     console.log(response);
@@ -129,4 +136,31 @@ export const updateMunicipality = async (
       throw new Error(error.message);
     } else throw new Error("Error updating municipality");
   }
+};
+
+export const deleteMunicipality = async (
+  municiplalityId: string
+): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}municipalities/` + municiplalityId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400 || response.status === 409) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error deleting municipality");
+  }
+  revalidateTag(municipalitiesTag);
 };

@@ -30,7 +30,9 @@ export default function CategoriesTreeView({ categories, pagination }: Props) {
   const onViewDetails = (item: DataTree) => {
     handleOpenModal(modalTypes.categories.details.name, item.id);
   };
-  const onDelete = (item: DataTree) => {};
+  const onDelete = (item: DataTree) => {
+    handleOpenModal(modalTypes.categories.delete.name, item.id);
+  };
 
   const transformData = (items: Category[]): DataTree[] => {
     return items.map((item) => ({

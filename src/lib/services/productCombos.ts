@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import {
@@ -9,6 +10,8 @@ import {
 } from "../types/productCombo";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+
+const productCombosTag = "product-combos"
 
 export const getProductCombos = async (
   params: SearchParams
@@ -21,7 +24,7 @@ export const getProductCombos = async (
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
     next: {
-      tags: ["product-combos"],
+      tags: [productCombosTag],
     },
   });
 
@@ -125,4 +128,31 @@ export const updateProductCombo = async (
       throw new Error(error.message);
     } else throw new Error("Error updating product combo");
   }
+};
+
+export const deleteProductCombo = async (
+  productComboId: string
+): Promise<void> => {
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_APP_API_URL}product-combos/` + productComboId,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    if (response.status === 400 || response.status === 409) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error deleting product combo");
+  }
+  revalidateTag(productCombosTag);
 };

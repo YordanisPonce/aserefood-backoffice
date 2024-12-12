@@ -3,7 +3,6 @@ import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
-import useUrlParams from "@/lib/hooks/useUrlParams";
 import { Pagination } from "@/lib/types/pagination";
 import { ProductCombo } from "@/lib/types/productCombo";
 import { Chip } from "@mui/material";
@@ -19,22 +18,12 @@ export const ProductCombosList: FunctionComponent<ProductCombosListProps> = ({
   productCombos,
   pagination,
 }) => {
-  const { updateSearchParams } = useUrlParams();
   const { handleOpenModal } = useModal();
   const onViewDetails = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.productCombos.details.name, params.row.id);
   };
   const onDelete = (params: GridRenderCellParams) => () => {
-    updateSearchParams({
-      currentModal: {
-        action: "set",
-        value: "delete-entity",
-      },
-      id: {
-        action: "set",
-        value: params.row.id,
-      },
-    });
+    handleOpenModal(modalTypes.productCombos.delete.name, params.row.id);
   };
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.productCombos.form.name, params.row.id);

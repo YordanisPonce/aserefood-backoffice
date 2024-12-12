@@ -8,6 +8,7 @@ import Modal from "@/components/partials/Modal/Modal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { ZoneFormContainer } from "@/sections/zones/containers/ZoneFormContainer";
 import ZoneDetailsContainer from "@/sections/zones/containers/ZoneDetailsContainer";
+import DeleteEntityContainer from "@/components/containers/DeleteEntityContainer";
 
 type PageProps = {
   searchParams: SearchParams;
@@ -34,6 +35,15 @@ export default async function Page({ searchParams }: PageProps) {
         titleModal={modalTypes.zones.details.title}
       >
         <ZoneDetailsContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.zones.delete.name]}
+        titleModal={modalTypes.zones.delete.title}
+      >
+        <DeleteEntityContainer
+          message={modalTypes.zones.delete.message}
+          title={modalTypes.zones.delete.subTitle}
+        />
       </Modal>
     </Paper>
   );
