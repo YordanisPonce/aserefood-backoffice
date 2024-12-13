@@ -48,7 +48,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
       flex: 2,
     },
     {
-      field: "longDescription",
+      field: "description",
       headerName: "Descipción larga",
       sortable: false,
       flex: 2,

@@ -20,7 +20,9 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
   pagination,
 }) => {
   const { handleOpenModal } = useModal();
-  const onViewDetails = (params: GridRenderCellParams) => () => {};
+  const onViewDetails = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.inventory.details.name, params.row.id);
+  };
   const onDelete = (params: GridRenderCellParams) => () => {};
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.inventory.form.name, params.row.id);

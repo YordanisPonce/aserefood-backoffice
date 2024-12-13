@@ -38,6 +38,7 @@ export interface CreateProduct {
 export interface ProductDetails {
   id: number;
   name: string;
+  image: string;
   description: string;
   shortDescription: string;
   image: string;

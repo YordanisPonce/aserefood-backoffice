@@ -18,7 +18,9 @@ export const ZonesList: FunctionComponent<ZonesListProps> = ({
   pagination,
 }) => {
   const { handleOpenModal } = useModal();
-  const onViewDetails = (params: GridRenderCellParams) => () => {};
+  const onViewDetails = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.zones.details.name, params.row.id);
+  };
   const onDelete = (params: GridRenderCellParams) => () => {};
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.zones.form.name, params.row.id);

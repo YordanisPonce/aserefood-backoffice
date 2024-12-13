@@ -20,7 +20,9 @@ export const UsersList: FunctionComponent<UserListProps> = ({
   pagination,
 }) => {
   const { handleOpenModal } = useModal();
-  const onViewDetails = (params: GridRenderCellParams) => () => {};
+  const onViewDetails = (params: GridRenderCellParams) => () => {
+    handleOpenModal(modalTypes.users.details.name, params.row.id);
+  };
   const onDelete = (params: GridRenderCellParams) => () => {};
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.users.form.name, params.row.id);
@@ -67,6 +69,19 @@ export const UsersList: FunctionComponent<UserListProps> = ({
           label={row.isActive ? "Activo" : "Inactivo"}
           variant="filled"
           color={row.isActive ? "primary" : "error"}
+        />
+      ),
+    },
+    {
+      field: "isConfirmed",
+      headerName: "Verificación de Identidad",
+      sortable: false,
+      flex: 0.8,
+      renderCell: ({ row }) => (
+        <Chip
+          label={row.isConfirmed ? "verificado" : "no verificado"}
+          variant="filled"
+          color={row.isConfirmed ? "primary" : "error"}
         />
       ),
     },

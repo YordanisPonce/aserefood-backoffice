@@ -4,6 +4,7 @@ import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { getInventoryEntries } from "@/lib/services/inventory";
 import { SearchParams } from "@/lib/types/pagination";
 import { InventoryList } from "@/sections/inventory/components/InventoryList";
+import InventoryEntryDetailsContainer from "@/sections/inventory/containers/InventoryEntryDetailsContainer";
 import { InventoryEntryFormContainer } from "@/sections/inventory/containers/InventoryEntryFormContainer";
 import { Paper } from "@mui/material";
 import React from "react";
@@ -32,6 +33,12 @@ export default async function Page({ searchParams }: PageProps) {
         titleModal={modalTypes.inventory.form.title}
       >
         <InventoryEntryFormContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.inventory.details.name]}
+        titleModal={modalTypes.inventory.details.title}
+      >
+        <InventoryEntryDetailsContainer />
       </Modal>
     </Paper>
   );

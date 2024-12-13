@@ -7,7 +7,7 @@ import React from "react";
 import Modal from "@/components/partials/Modal/Modal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { ZoneFormContainer } from "@/sections/zones/containers/ZoneFormContainer";
-
+import ZoneDetailsContainer from "@/sections/zones/containers/ZoneDetailsContainer";
 
 type PageProps = {
   searchParams: SearchParams;
@@ -28,6 +28,12 @@ export default async function Page({ searchParams }: PageProps) {
         titleModal={modalTypes.zones.form.title}
       >
         <ZoneFormContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.zones.details.name]}
+        titleModal={modalTypes.zones.details.title}
+      >
+        <ZoneDetailsContainer />
       </Modal>
     </Paper>
   );

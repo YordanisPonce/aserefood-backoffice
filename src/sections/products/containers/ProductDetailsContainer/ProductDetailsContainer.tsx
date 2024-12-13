@@ -8,33 +8,31 @@ import {
   ListItem,
   ListItemText,
   Divider,
+  Card,
+  CardMedia,
 } from "@mui/material";
-import { Category, Description } from "@mui/icons-material";
+import { Description, ShoppingCart } from "@mui/icons-material";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import useProduct from "../../hooks/useProduct";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
-import ImagesGrid from "./components/ImagesGrid";
-
-const productImages = [
-  "/images/product-place-holder.png",
-  "/images/product-place-holder.png",
-  "/images/product-place-holder.png",
-  "/images/product-place-holder.png",
-  "/images/product-place-holder.png",
-  "/images/product-place-holder.png",
-];
+import ProductCategoriesSection from "./components/ProductCategoriesSection";
 
 export default function ProductDetailsContainer() {
   const { entityId } = useModal();
-  const { product, loadingData, error, fetchProduct } = useProduct({
+  const {
+    product,
+    loadingData: loadingDataProduct,
+    error: errorProduct,
+    fetchProduct,
+  } = useProduct({
     productId: entityId,
   });
 
   return (
     <>
-      {!loadingData ? (
-        product && !error ? (
+      {!loadingDataProduct ? (
+        product && !errorProduct ? (
           <Box
             sx={{
               display: "flex",
@@ -43,15 +41,34 @@ export default function ProductDetailsContainer() {
               overflow: "hidden",
             }}
           >
+            <Card>
+              <CardMedia
+                component="img"
+                height="140"
+                image={product.image || "/images/product-place-holder.png"}
+                alt={`Product image ${
+                  product.image || "/images/product-place-holder.png"
+                }`}
+                sx={{
+                  objectFit: "cover",
+                  cursor: "pointer",
+                }}
+              />
+            </Card>
             <Box sx={{ p: 3, overflowY: "auto" }}>
-              <Typography
-                id="product-details-modal"
-                variant="h6"
-                component="h2"
-                gutterBottom
-              >
-                {product.name}
-              </Typography>
+              <Box display="flex" alignItems="center" mb={2}>
+                <ShoppingCart
+                  sx={{ fontSize: 40, mr: 2, color: "primary.main" }}
+                />
+                <Typography
+                  id="product-details-modal"
+                  variant="h6"
+                  component="h2"
+                  gutterBottom
+                >
+                  {product.name}
+                </Typography>
+              </Box>
               <Chip
                 label={
                   product.isService
@@ -62,24 +79,21 @@ export default function ProductDetailsContainer() {
                 size="small"
                 sx={{ mb: 2 }}
               />
-              <Typography variant="body2" color="text.secondary" paragraph>
+              <Typography variant="body2" color="text.secondary">
                 {product.shortDescription}
               </Typography>
               <Divider sx={{ my: 2 }} />
-              <Box display="flex" alignItems="center" mb={2}>
-                <Category sx={{ mr: 1 }} color="action" />
-                <Typography variant="body2">
-                  Category: {product.categoryName}
-                </Typography>
-              </Box>
-              <Typography variant="body2" paragraph>
+              <ProductCategoriesSection
+                categoryId={product.categoryId.toString()}
+              />
+              <Typography variant="body2">
                 <Description
                   sx={{ mr: 1, verticalAlign: "middle" }}
                   color="action"
                 />
                 Description:
               </Typography>
-              <Typography variant="body2" paragraph sx={{ pl: 4 }}>
+              <Typography variant="body2" sx={{ pl: 4 }}>
                 {product.description}
               </Typography>
               <Divider sx={{ my: 2 }} />
@@ -101,12 +115,11 @@ export default function ProductDetailsContainer() {
                   </ListItem>
                 ))}
               </List>
-              <ImagesGrid images={productImages} />
             </Box>
           </Box>
         ) : (
           <ModalFetchingDataError
-            message={error as string}
+            message={errorProduct as string}
             reset={fetchProduct}
           />
         )

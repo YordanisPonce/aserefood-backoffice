@@ -7,6 +7,7 @@ import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import Modal from "@/components/partials/Modal/Modal";
 import { UserFormContainer } from "@/sections/users/containers/UserFormContainer";
+import UserDetailsContainer from "@/sections/users/containers/UserDetailsContainer";
 
 type UsersPageProps = {
   searchParams: SearchParams;
@@ -30,6 +31,12 @@ export default async function UserManagementPage({
         titleModal={modalTypes.users.form.title}
       >
         <UserFormContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.users.details.name]}
+        titleModal={modalTypes.users.details.title}
+      >
+        <UserDetailsContainer />
       </Modal>
     </Paper>
   );

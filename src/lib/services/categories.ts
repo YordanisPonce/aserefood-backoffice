@@ -70,6 +70,21 @@ export const getAllCategories = async (): Promise<SelectOption[]> => {
   return await response.json();
 };
 
+export const getCategoryAncestors = async (
+  categoryId: string
+): Promise<Category[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_APP_API_URL}categories/ancestors/` + categoryId)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching categories");
+  }
+
+  return await response.json();
+};
+
 export const createCategory = async (
   category: CreateCategoryDTO
 ): Promise<Paginated<Category>> => {

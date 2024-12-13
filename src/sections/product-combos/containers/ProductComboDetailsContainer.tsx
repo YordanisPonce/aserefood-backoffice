@@ -12,7 +12,12 @@ import {
   Card,
   CardMedia,
 } from "@mui/material";
-import { Description, ShoppingBasket, AttachMoney } from "@mui/icons-material";
+import {
+  Description,
+  ShoppingBasket,
+  AttachMoney,
+  Place,
+} from "@mui/icons-material";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
@@ -52,14 +57,19 @@ export default function ProductComboDetailsContainer() {
               />
             </Card>
             <Box sx={{ p: 3, overflowY: "auto" }}>
-              <Typography
-                id="product-combo-details-modal"
-                variant="h6"
-                component="h2"
-                gutterBottom
-              >
-                {productCombo.name}
-              </Typography>
+              <Box display="flex" alignItems="center" mb={2}>
+                <ShoppingBasket
+                  sx={{ fontSize: 40, mr: 2, color: "primary.main" }}
+                />
+                <Typography
+                  id="product-combo-details-modal"
+                  variant="h6"
+                  component="h2"
+                  gutterBottom
+                >
+                  {productCombo.name}
+                </Typography>
+              </Box>
               <Chip
                 label={productCombo.isActive ? "Activo" : "Inactivo"}
                 color={productCombo.isActive ? "success" : "error"}
@@ -71,7 +81,7 @@ export default function ProductComboDetailsContainer() {
               </Typography>
               <Divider sx={{ my: 2 }} />
               <Box display="flex" alignItems="center" mb={2}>
-                <ShoppingBasket sx={{ mr: 1 }} color="action" />
+                <Place sx={{ mr: 1 }} color="action" />
                 <Typography variant="body2">
                   Zona: {productCombo.zoneName}
                 </Typography>
