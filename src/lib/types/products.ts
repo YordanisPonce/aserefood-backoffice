@@ -14,6 +14,7 @@ export interface CreateProductDTO {
   name: string;
   description: string;
   shortDescription: string;
+  image: string | null;
   categoryId: number;
   providerIds: number[];
   isService: boolean;
@@ -23,6 +24,7 @@ export interface CreateProduct {
   name: string;
   description: string;
   shortDescription: string;
+  image: File | null;
   category: {
     id: number;
     name: string;
@@ -38,6 +40,7 @@ export interface ProductDetails {
   name: string;
   description: string;
   shortDescription: string;
+  image: string;
   isService: boolean;
   categoryId: number;
   categoryName: string;

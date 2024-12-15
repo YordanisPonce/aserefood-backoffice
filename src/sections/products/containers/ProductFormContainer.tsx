@@ -14,6 +14,7 @@ import { revalidateServerTags } from "@/lib/utils/cache";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import { ProductForm } from "../components/ProductForm";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 
 export const ProductFormContainer: FunctionComponent = () => {
   const { entityId: productId, handleCloseModal } = useModal();
@@ -27,6 +28,7 @@ export const ProductFormContainer: FunctionComponent = () => {
       category: null,
       description: undefined,
       name: undefined,
+      image: null,
       providers: [],
       shortDescription: undefined,
     },
@@ -39,21 +41,25 @@ export const ProductFormContainer: FunctionComponent = () => {
   const onSubmit = async ({
     name,
     description,
+    image: file,
     category,
     providers,
     shortDescription,
   }: CreateProduct) => {
     setIsLoading(true);
     setError(undefined);
+
+    const image = file ? await fileToBase64(file) : null;
+
     const createProductDto: CreateProductDTO = {
       categoryId: category?.id ?? 0,
       description,
       isService: false,
+      image,
       name,
       shortDescription,
       providerIds: providers.map((provider) => provider.id),
     };
-
     try {
       if (!productId) {
         await createProduct(createProductDto);
@@ -78,6 +84,9 @@ export const ProductFormContainer: FunctionComponent = () => {
         methods.reset({
           description: product.description,
           name: product.name,
+          image: product.image
+            ? base64ToFile(product.image, product.name)
+            : null,
           shortDescription: product.shortDescription,
           providers: product.providers,
           category: {

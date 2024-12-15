@@ -1,4 +1,5 @@
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
+import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { getAllCategories } from "@/lib/services/categories";
 import { getAllProviders } from "@/lib/services/providers";
@@ -61,6 +62,10 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
           label="Descripción"
           type="text"
           multiline
+        />
+        <RHFInputImageUpload
+          name="image"
+          placeholder="Imagen del Producto"
         />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>

@@ -17,6 +17,7 @@ import {
   updateProductCombo,
 } from "@/lib/services/productCombos";
 import { ProductComboForm } from "../components/ProductComboForm";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 
 export const ProductComboFormContainer: FunctionComponent = () => {
   const { entityId: productComboId, handleCloseModal } = useModal();
@@ -43,7 +44,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
   const onSubmit = async ({
     name,
     description,
-    image,
+    image: file,
     isActive,
     price,
     productComboItems,
@@ -52,22 +53,25 @@ export const ProductComboFormContainer: FunctionComponent = () => {
   }: CreateProductCombo) => {
     setIsLoading(true);
     setError(undefined);
+
+    const image = file ? await fileToBase64(file) : null;
+
+    const createProductComboDTO: CreateProductComboDTO = {
+      name: name,
+      description,
+      image,
+      isActive,
+      price,
+      productComboItems: productComboItems.map((productCombo) => {
+        return {
+          productId: productCombo.product?.id ?? 0,
+          amount: productCombo.amount,
+        };
+      }),
+      shortDescription,
+      zoneId: zone?.id ?? 0,
+    };
     try {
-      const createProductComboDTO: CreateProductComboDTO = {
-        name: name,
-        description,
-        image,
-        isActive,
-        price,
-        productComboItems: productComboItems.map((productCombo) => {
-          return {
-            productId: productCombo.product?.id ?? 0,
-            amount: productCombo.amount,
-          };
-        }),
-        shortDescription,
-        zoneId: zone?.id ?? 0,
-      };
       if (!productComboId) await createProductCombo(createProductComboDTO);
       else await updateProductCombo(productComboId, createProductComboDTO);
       await revalidateServerTags("product-combos");
@@ -88,7 +92,9 @@ export const ProductComboFormContainer: FunctionComponent = () => {
         methods.reset({
           name: productCombo.name,
           description: productCombo.description,
-          image: productCombo.image,
+          image: productCombo.image
+            ? base64ToFile(productCombo.image, productCombo.name)
+            : null,
           isActive: productCombo.isActive,
           price: productCombo.price,
           productComboItems: productCombo.productComboItems.map(

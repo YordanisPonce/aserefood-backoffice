@@ -1,4 +1,5 @@
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
+import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import RHFList from "@/components/common/hook-form/RHFList";
 import { getAllZones } from "@/lib/services/zones";
@@ -56,6 +57,8 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
           noDataText="Inserte Articulos como parte del Combo"
           propertyMap={{ product: "Producto", amount: "Importe" }}
         />
+
+        <RHFInputImageUpload name="image" placeholder="Imagen del Combo" />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>
