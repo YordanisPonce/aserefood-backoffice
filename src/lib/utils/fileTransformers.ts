@@ -1,4 +1,3 @@
-import imageCompression from "browser-image-compression";
 
 export const fileMaxSizeMB = 2;
 
@@ -27,28 +26,3 @@ export function base64ToFile(base64: string, fileName: string): File {
   return new File([byteArray], `${fileName}.${extension}`, { type: mimeType });
 }
 
-export async function compressImage(
-  file: File,
-  maxSizeMB: number,
-  maxWidthOrHeight: number,
-  useWebWorker: boolean = true
-): Promise<File> {
-  const options = {
-    maxSizeMB: maxSizeMB,
-    maxWidthOrHeight: maxWidthOrHeight,
-    useWebWorker: useWebWorker,
-  };
-
-  try {
-    const compressedBlob = await imageCompression(file, options);
-
-    const compressedFile = new File([compressedBlob], file.name, {
-      type: compressedBlob.type,
-    });
-
-    return compressedFile;
-  } catch (error) {
-    console.error("Error al comprimir la imagen:", error);
-    throw error;
-  }
-}

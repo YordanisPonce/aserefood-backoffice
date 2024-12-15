@@ -1,6 +1,6 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { ChangeEvent, useRef, useState } from "react";
-import { compressImage, fileMaxSizeMB } from "@/lib/utils/fileTransformers";
+import { fileMaxSizeMB } from "@/lib/utils/fileTransformers";
 import InputImageUpload from "../input/InputImageUpload";
 
 type Props = {
