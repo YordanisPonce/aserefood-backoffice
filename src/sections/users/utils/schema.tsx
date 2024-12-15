@@ -10,8 +10,14 @@ export const createUserSchema = () =>
     }),
     password: z
       .string({ required_error: "La contraseña es requerida" })
-      .min(6, {
-        message: "La contraseña debe tener al menos 6 caracteres",
+      .min(8, {
+        message: "La contraseña debe tener al menos 8 caracteres",
+      })
+      .regex(/(?=.*[0-9])/, {
+        message: "La contraseña debe contener al menos un número",
+      })
+      .regex(/(?=.*[A-Z])/, {
+        message: "La contraseña debe contener al menos una letra mayúscula",
       }),
     username: z
       .string({ required_error: "El nombre de usuario es requerido" })
@@ -21,7 +27,9 @@ export const createUserSchema = () =>
       .min(1, { message: "Los apellidos son requeridos" }),
     phoneNumber: z
       .string({ required_error: "El número telefónico es requerido" })
-      .min(1, { message: "El número telefónico es requerido" }),
+      .regex(/^\d+$/, {
+        message: "El número telefónico solo debe contener dígitos",
+      }),
   });
 
 export const updateUserSchema = () =>
@@ -40,5 +48,7 @@ export const updateUserSchema = () =>
       .min(1, { message: "Los apellidos son requeridos" }),
     phoneNumber: z
       .string({ required_error: "El número telefónico es requerido" })
-      .min(1, { message: "El número telefónico es requerido" }),
+      .regex(/^\d+$/, {
+        message: "El número telefónico solo debe contener dígitos",
+      }),
   });
