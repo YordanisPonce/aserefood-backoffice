@@ -14,6 +14,7 @@ export const ZoneFormContainer: FunctionComponent = () => {
   const { entityId: zoneId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const formOptions: UseFormProps<CreateZone> = {
     resolver: zodResolver(createZoneSchema()),
@@ -33,6 +34,7 @@ export const ZoneFormContainer: FunctionComponent = () => {
     description,
   }: CreateZone) => {
     setIsLoading(true);
+    setError(undefined);
     try {
       const createZoneDto: CreateZoneDTO = {
         name,
@@ -45,6 +47,7 @@ export const ZoneFormContainer: FunctionComponent = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -82,10 +85,14 @@ export const ZoneFormContainer: FunctionComponent = () => {
         autoComplete="off"
         className="relative z-10"
       >
-       {loadingData ? (
+        {loadingData ? (
           <LoadingScreen sx={{ height: "100%" }} />
         ) : (
-          <ZoneForm isLoading={isLoading} isUpdate={zoneId !== null} />
+          <ZoneForm
+            isLoading={isLoading}
+            isUpdate={zoneId !== null}
+            error={error}
+          />
         )}
       </form>
     </FormProvider>

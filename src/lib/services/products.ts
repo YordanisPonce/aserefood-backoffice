@@ -60,7 +60,7 @@ export const getProduct = async (
   return await response.json();
 };
 
-export const createProducts = async (
+export const createProduct = async (
   product: CreateProductDTO
 ): Promise<Paginated<Product>> => {
   const response = await fetchWithAuth(
@@ -76,7 +76,16 @@ export const createProducts = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating product");
+    if (response.status === 409)
+      throw new Error("Ya existe un producto con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating product");
   }
 
   return await response.json();
@@ -99,6 +108,15 @@ export const updateProduct = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating product");
+    if (response.status === 409)
+      throw new Error("Ya existe un producto con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating product");
   }
 };

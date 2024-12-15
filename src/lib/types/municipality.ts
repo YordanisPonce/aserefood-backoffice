@@ -10,7 +10,7 @@ export interface CreateMunicipality {
   province: {
     id: number;
     name: string;
-  };
+  } | null;
 }
 export interface CreateMunicipalityDTO {
   name: string;

@@ -1,20 +1,28 @@
-
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
-import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+} from "@mui/material";
 import { FunctionComponent } from "react";
 
 type ProviderFormProps = {
   isLoading: boolean;
-  isUpdate: boolean
+  isUpdate: boolean;
+  error: string | undefined;
 };
 
 export const ProviderForm: FunctionComponent<ProviderFormProps> = ({
   isLoading,
-  isUpdate
+  isUpdate,
+  error,
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         <RHFInputWithLabel name="name" label="Nombre" type="text" />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
@@ -25,7 +33,7 @@ export const ProviderForm: FunctionComponent<ProviderFormProps> = ({
           startIcon={isLoading ? <CircularProgress size={20} /> : null}
           variant="contained"
         >
-          {isUpdate ? "Actualizar" : "Crear" }
+          {isUpdate ? "Actualizar" : "Crear"}
         </Button>
       </DialogActions>
     </>

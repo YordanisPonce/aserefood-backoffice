@@ -38,9 +38,7 @@ export const getAllProviders = async (): Promise<Provider[]> => {
   return await response.json();
 };
 
-export const getProvider = async (
-  providerId: string
-): Promise<Provider> => {
+export const getProvider = async (providerId: string): Promise<Provider> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_APP_API_URL}providers/${providerId}`,
     {
@@ -72,7 +70,16 @@ export const createProvider = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating provider");
+    if (response.status === 409)
+      throw new Error("Ya existe un proveedor con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating provider");
   }
 
   return await response.json();
@@ -95,6 +102,15 @@ export const updateProvider = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating provider");
+    if (response.status === 409)
+      throw new Error("Ya existe un proveedor con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating provider");
   }
 };

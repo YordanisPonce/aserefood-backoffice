@@ -1,6 +1,11 @@
-"use server"
+"use server";
 import { IQueryable } from "../types/filters";
-import { CreateInventoryEntryDTO, InventoryEntry, InventoryEntryDetails, UpdateInventoryEntryDTO } from "../types/inventory";
+import {
+  CreateInventoryEntryDTO,
+  InventoryEntry,
+  InventoryEntryDetails,
+  UpdateInventoryEntryDTO,
+} from "../types/inventory";
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
@@ -58,7 +63,14 @@ export const createInventoryEntry = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating inventory entries");
+    if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating inventory entries");
   }
 
   return await response.json();
@@ -81,6 +93,13 @@ export const updateInventoryEntry = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating inventory entry");
+    if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating inventory entry");
   }
 };

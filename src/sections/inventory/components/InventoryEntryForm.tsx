@@ -2,21 +2,30 @@ import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocomplet
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { getAllProducts } from "@/lib/services/products";
 import { getAllZones } from "@/lib/services/zones";
-import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+} from "@mui/material";
 import { FunctionComponent } from "react";
 
 type InventoryEntryFormProps = {
   isLoading: boolean;
   isUpdate: boolean;
+  error: string | undefined;
 };
 
 export const InventoryEntryForm: FunctionComponent<InventoryEntryFormProps> = ({
   isLoading,
   isUpdate,
+  error,
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         {!isUpdate && (
           <Box sx={{ display: "flex", gap: 2 }}>
             <RHFAutocompleteFetcher

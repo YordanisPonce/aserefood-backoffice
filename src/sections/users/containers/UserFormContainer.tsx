@@ -14,6 +14,7 @@ export const UserFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const { entityId: userId, handleCloseModal } = useModal();
+  const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<CreateUser | UpdateUser> = {
     resolver: zodResolver(!userId ? createUserSchema() : updateUserSchema()),
     defaultValues: !userId
@@ -39,6 +40,7 @@ export const UserFormContainer: FunctionComponent = () => {
 
   const onSubmit = async (user: CreateUser | UpdateUser) => {
     setIsLoading(true);
+    setError(undefined);
     try {
       if (!userId) {
         const { username, password, email, name, lastnames, phoneNumber } =
@@ -68,6 +70,7 @@ export const UserFormContainer: FunctionComponent = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -110,7 +113,11 @@ export const UserFormContainer: FunctionComponent = () => {
         {loadingData ? (
           <LoadingScreen sx={{ height: "100%" }} />
         ) : (
-          <UserForm isLoading={isLoading} isUpdate={userId !== null} />
+          <UserForm
+            isLoading={isLoading}
+            isUpdate={userId !== null}
+            error={error}
+          />
         )}
       </form>
     </FormProvider>

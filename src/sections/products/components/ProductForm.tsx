@@ -3,21 +3,30 @@ import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { getAllCategories } from "@/lib/services/categories";
 import { getAllProviders } from "@/lib/services/providers";
 import { SelectOption } from "@/lib/types/select";
-import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+} from "@mui/material";
 import { FunctionComponent } from "react";
 
 type ProductFormProps = {
   isLoading: boolean;
   isUpdate: boolean;
+  error: string | undefined;
 };
 
 export const ProductForm: FunctionComponent<ProductFormProps> = ({
   isLoading,
   isUpdate,
+  error,
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         <RHFInputWithLabel name="name" label="Name" type="text" />
         <Box sx={{ display: "flex", gap: 2 }}>
           <RHFAutocompleteFetcher

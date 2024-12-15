@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateZoneDTO, Zone, ZoneDetails } from "../types/zone";
@@ -37,9 +37,7 @@ export const getAllZones = async (): Promise<Zone[]> => {
   return await response.json();
 };
 
-export const getZone = async (
-  zoneId: string
-): Promise<ZoneDetails> => {
+export const getZone = async (zoneId: string): Promise<ZoneDetails> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_APP_API_URL}zones/${zoneId}`,
     {
@@ -58,20 +56,26 @@ export const getZone = async (
 export const createZone = async (
   zone: CreateZoneDTO
 ): Promise<Paginated<Zone>> => {
-  const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}zones`,
-    {
-      method: "POST",
-      body: JSON.stringify(zone),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await fetchWithAuth(`${process.env.NEXT_APP_API_URL}zones`, {
+    method: "POST",
+    body: JSON.stringify(zone),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating zone");
+    if (response.status === 409)
+      throw new Error("Ya existe una zona con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating zone");
   }
 
   return await response.json();
@@ -81,8 +85,6 @@ export const updateZone = async (
   zoneId: string,
   zone: CreateZoneDTO
 ): Promise<void> => {
-  console.log(zoneId)
-  console.log(zone)
   const response = await fetchWithAuth(
     `${process.env.NEXT_APP_API_URL}zones/` + zoneId,
     {
@@ -96,6 +98,15 @@ export const updateZone = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating zone");
+    if (response.status === 409)
+      throw new Error("Ya existe una zona con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating zone");
   }
 };

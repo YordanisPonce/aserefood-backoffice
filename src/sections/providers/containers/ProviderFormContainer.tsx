@@ -19,6 +19,7 @@ export const ProviderFormContainer: FunctionComponent = () => {
   const { entityId: providerId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<CreateProvider> = {
     resolver: zodResolver(createProviderSchema()),
     defaultValues: {
@@ -31,6 +32,7 @@ export const ProviderFormContainer: FunctionComponent = () => {
 
   const onSubmit = async ({ name }: CreateProvider) => {
     setIsLoading(true);
+    setError(undefined);
     try {
       const createProviderDto: CreateProviderDTO = {
         name: name,
@@ -41,6 +43,7 @@ export const ProviderFormContainer: FunctionComponent = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -77,7 +80,11 @@ export const ProviderFormContainer: FunctionComponent = () => {
         {loadingData ? (
           <LoadingScreen sx={{ height: "100%" }} />
         ) : (
-          <ProviderForm isLoading={isLoading} isUpdate={providerId !== null} />
+          <ProviderForm
+            isLoading={isLoading}
+            isUpdate={providerId !== null}
+            error={error}
+          />
         )}
       </form>
     </FormProvider>

@@ -1,19 +1,28 @@
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
-import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+} from "@mui/material";
 import { FunctionComponent } from "react";
 
 type UserFormProps = {
   isLoading: boolean;
   isUpdate: boolean;
+  error: string | undefined;
 };
 
 export const UserForm: FunctionComponent<UserFormProps> = ({
   isLoading,
   isUpdate,
+  error,
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         <Box sx={{ display: "flex", gap: 2 }}>
           <RHFInputWithLabel name="name" label="Nombre" type="text" />
           <RHFInputWithLabel name="lastnames" label="Apellidos" type="text" />

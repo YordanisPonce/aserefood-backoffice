@@ -15,7 +15,10 @@ export const getCategories = async (
   params: SearchParams
 ): Promise<Paginated<Category>> => {
   const query: IQueryable = buildQueryParams(params);
-  query.isFlat = (params.isFlat === "true" || params.isFlat === "false") ? params.isFlat : undefined ;
+  query.isFlat =
+    params.isFlat === "true" || params.isFlat === "false"
+      ? params.isFlat
+      : undefined;
   const queryObject = new QueryParamsURLFactory(
     query,
     `${process.env.NEXT_APP_API_URL}categories`
@@ -85,7 +88,14 @@ export const createCategory = async (
     console.log(response);
     if (response.status === 409)
       throw new Error("Ya existe una categoría con el mismo nombre");
-    else throw new Error("Error creating category");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating category");
   }
 
   return await response.json();
@@ -108,6 +118,15 @@ export const updateCategory = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating category");
+    if (response.status === 409)
+      throw new Error("Ya existe una categoría con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating category");
   }
 };

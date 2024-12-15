@@ -53,7 +53,18 @@ export const createUser = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating user");
+    if (response.status === 409)
+      throw new Error(
+        "Ya existe un usuario que comparte el mismo nombre de usuario o email"
+      );
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating user");
   }
 
   return await response.json();
@@ -76,6 +87,17 @@ export const updateUser = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating user");
+    if (response.status === 409)
+      throw new Error(
+        "Ya existe un usuario que comparte el mismo nombre de usuario o email"
+      );
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating user");
   }
 };

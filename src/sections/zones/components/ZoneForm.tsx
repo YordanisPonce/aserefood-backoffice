@@ -1,23 +1,31 @@
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
-import { getAllMunicipalities, getAvaliablesMunicipalities } from "@/lib/services/municipalities";
-import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import { getAvaliablesMunicipalities } from "@/lib/services/municipalities";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+} from "@mui/material";
 import { FunctionComponent } from "react";
 
 type ZoneFormProps = {
   isLoading: boolean;
   isUpdate: boolean;
+  error: string | undefined;
 };
 
 export const ZoneForm: FunctionComponent<ZoneFormProps> = ({
   isLoading,
   isUpdate,
+  error,
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         <RHFInputWithLabel name="name" label="Nombre" type="text" />
-
         <RHFAutocompleteFetcher
           fullWidth
           name="municipalities"

@@ -22,12 +22,13 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
   const { entityId: municipalityId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const formOptions: UseFormProps<CreateMunicipality> = {
     resolver: zodResolver(createMunicipalitieSchema()),
     defaultValues: {
       name: undefined,
-      province: undefined,
+      province: null,
     },
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -36,10 +37,11 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
 
   const onSubmit = async ({ name, province }: CreateMunicipality) => {
     setIsLoading(true);
+    setError(undefined);
     try {
       const createMunicipaliyDTO: CreateMunicipalityDTO = {
         name,
-        provinceId: province.id,
+        provinceId: province?.id ?? 0,
       };
       if (!municipalityId) await createMunicipality(createMunicipaliyDTO);
       else await updateMunicipality(municipalityId, createMunicipaliyDTO);
@@ -47,6 +49,7 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -89,7 +92,11 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
         {loadingData ? (
           <LoadingScreen sx={{ height: "100%" }} />
         ) : (
-          <MunicipalityForm isLoading={isLoading} isUpdate={municipalityId !== null} />
+          <MunicipalityForm
+            isLoading={isLoading}
+            isUpdate={municipalityId !== null}
+            error={error}
+          />
         )}
       </form>
     </FormProvider>

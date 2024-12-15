@@ -67,14 +67,14 @@ export const CategoryFormContainer: FunctionComponent = () => {
         await createCategory({
           name,
           description,
-          parentId: parent?.id,
+          parentId: parent?.id ?? null,
         });
       } else if (formModality === CategoryFormModality.UpdateCategory) {
         const { name, description, parent } = category as CreateCategory;
         await updateCategory(categoryId, {
           name,
           description,
-          parentId: parent?.id,
+          parentId: parent?.id ?? null,
         });
       } else {
         const { name, description } = category as CreateSubCategory;

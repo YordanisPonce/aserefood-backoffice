@@ -69,7 +69,16 @@ export const createProvince = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error creating province");
+    if (response.status === 409)
+      throw new Error("Ya existe una provincia con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating province");
   }
 
   return await response.json();
@@ -92,6 +101,15 @@ export const updateProvince = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error updating province");
+    if (response.status === 409)
+      throw new Error("Ya existe una provincia con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating province");
   }
 };

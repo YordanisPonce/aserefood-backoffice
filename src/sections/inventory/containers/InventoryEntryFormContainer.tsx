@@ -26,6 +26,7 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
   const { entityId: inventoryEntryId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const formOptions: UseFormProps<CreateInventoryEntry | UpdateInventoryEntry> =
     {
@@ -57,6 +58,7 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
     inventoryEntry: CreateInventoryEntry | UpdateInventoryEntry
   ) => {
     setIsLoading(true);
+    setError(undefined);
     try {
       if (!inventoryEntryId) {
         const { price, product, quantity, zone } =
@@ -77,6 +79,7 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -119,6 +122,7 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
           <InventoryEntryForm
             isLoading={isLoading}
             isUpdate={inventoryEntryId !== null}
+            error={error}
           />
         )}
       </form>

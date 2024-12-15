@@ -2,8 +2,12 @@ import z from "zod";
 
 export const createZoneSchema = () =>
   z.object({
-    name: z.string().min(1, { message: "El nombre es requerida" }),
-    description: z.string().min(1, { message: "La descipción es requerida" }),
+    name: z
+      .string({ required_error: "El nombre es requerido" })
+      .min(1, { message: "El nombre es requerido" }),
+    description: z
+      .string({ required_error: "La descipción es requerida" })
+      .min(1, { message: "La descipción es requerida" }),
     municipalities: z
       .array(
         z.object({

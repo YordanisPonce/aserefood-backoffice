@@ -80,8 +80,16 @@ export const createProductCombo = async (
 
   if (!response.ok) {
     console.log(response);
-    if (response.status === 400) throw new Error(response.statusText);
-    throw new Error("Error creating product combo");
+    if (response.status === 409)
+      throw new Error("Ya existe un combo con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error creating product combo");
   }
 
   return await response.json();
@@ -106,7 +114,15 @@ export const updateProductCombo = async (
 
   if (!response.ok) {
     console.log(response);
-    if (response.status === 400) throw new Error(response.statusText);
-    throw new Error("Error updating product combo");
+    if (response.status === 409)
+      throw new Error("Ya existe un combo con el mismo nombre");
+    else if (response.status === 400) {
+      const error: {
+        message: string;
+        error: string;
+        statusCode: number;
+      } = await response.json();
+      throw new Error(error.message);
+    } else throw new Error("Error updating product combo");
   }
 };

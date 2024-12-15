@@ -19,6 +19,7 @@ export const ProvinceFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const { entityId: provinceId, handleCloseModal } = useModal();
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const formOptions: UseFormProps<CreateProvince> = {
     resolver: zodResolver(createProvinceSchema()),
@@ -32,6 +33,7 @@ export const ProvinceFormContainer: FunctionComponent = () => {
 
   const onSubmit = async ({ name }: CreateProvince) => {
     setIsLoading(true);
+    setError(undefined);
     try {
       const createProvinceDto: CreateProvinceDTO = {
         name: name,
@@ -43,6 +45,7 @@ export const ProvinceFormContainer: FunctionComponent = () => {
       methods.reset();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +82,11 @@ export const ProvinceFormContainer: FunctionComponent = () => {
         {loadingData ? (
           <LoadingScreen sx={{ height: "100%" }} />
         ) : (
-          <ProvinceForm isLoading={isLoading} isUpdate={provinceId !== null} />
+          <ProvinceForm
+            isLoading={isLoading}
+            isUpdate={provinceId !== null}
+            error={error}
+          />
         )}
       </form>
     </FormProvider>

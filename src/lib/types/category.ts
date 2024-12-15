@@ -33,5 +33,5 @@ export interface CreateSubCategory {
 export interface CreateCategoryDTO {
   name: string;
   description: string;
-  parentId?: number;
+  parentId: number | null;
 }

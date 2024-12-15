@@ -6,7 +6,7 @@ import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { createProductSchema } from "../utils/schema";
 import {
-  createProducts,
+  createProduct,
   getProduct,
   updateProduct,
 } from "@/lib/services/products";
@@ -19,6 +19,7 @@ export const ProductFormContainer: FunctionComponent = () => {
   const { entityId: productId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
 
   const formOptions: UseFormProps<CreateProduct> = {
     resolver: zodResolver(createProductSchema()),
@@ -43,6 +44,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     shortDescription,
   }: CreateProduct) => {
     setIsLoading(true);
+    setError(undefined);
     const createProductDto: CreateProductDTO = {
       categoryId: category?.id ?? 0,
       description,
@@ -54,7 +56,7 @@ export const ProductFormContainer: FunctionComponent = () => {
 
     try {
       if (!productId) {
-        await createProducts(createProductDto);
+        await createProduct(createProductDto);
       } else {
         await updateProduct(productId, createProductDto);
       }
@@ -62,6 +64,7 @@ export const ProductFormContainer: FunctionComponent = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -107,7 +110,11 @@ export const ProductFormContainer: FunctionComponent = () => {
         {loadingData ? (
           <LoadingScreen sx={{ height: "100%" }} />
         ) : (
-          <ProductForm isLoading={isLoading} isUpdate={productId !== null} />
+          <ProductForm
+            isLoading={isLoading}
+            isUpdate={productId !== null}
+            error={error}
+          />
         )}
       </form>
     </FormProvider>

@@ -2,11 +2,15 @@ import z from "zod";
 
 export const createProductSchema = () =>
   z.object({
-    name: z.string().min(1, { message: "El nombre es requerido" }),
+    name: z
+      .string({ required_error: "El nombre es requerido" })
+      .min(1, { message: "El nombre es requerido" }),
     shortDescription: z
-      .string()
+      .string({ required_error: "La descipción corta es requerida" })
       .min(1, { message: "La descipción corta es requerida" }),
-    description: z.string().min(1, { message: "La descipción es requerida" }),
+    description: z
+      .string({ required_error: "La descipción es requerida" })
+      .min(1, { message: "La descipción es requerida" }),
     providers: z
       .array(
         z.object({
@@ -29,5 +33,8 @@ export const createProductSchema = () =>
         id: z.number(),
         name: z.string(),
       })
-      .nullable(),
+      .nullable()
+      .refine((obj) => obj !== null, {
+        message: "Es necesario seleccionar una categoría",
+      }),
   });
