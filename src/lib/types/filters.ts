@@ -38,4 +38,5 @@ export type IQueryable = {
   pagination?: IPagination;
   search?: string;
   isFlat?: string
+  municipalityId?: string
 }

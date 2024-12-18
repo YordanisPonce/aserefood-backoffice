@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import {
   Box,
@@ -16,6 +15,7 @@ import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import useUser from "../hooks/useUser";
+import ContactInfosList from "@/sections/contact-infos/components/ContactInfosList";
 
 export default function UserDetailsContainer() {
   const { entityId } = useModal();
@@ -31,13 +31,11 @@ export default function UserDetailsContainer() {
             sx={{
               display: "flex",
               flexDirection: "column",
-              maxHeight: "90vh",
-              overflow: "hidden",
             }}
           >
             <Box sx={{ p: 3, overflowY: "auto" }}>
               <Box display="flex" alignItems="center" mb={2}>
-                <Avatar sx={{ fontSize: 40, mr: 2 }}>
+                <Avatar sx={{ width: 60, height: 60, fontSize: 30, mr: 2 }}>
                   {user.name.charAt(0)}
                 </Avatar>
                 <Box>
@@ -102,6 +100,8 @@ export default function UserDetailsContainer() {
                   />
                 </ListItem>
               </List>
+              <Divider sx={{ my: 2 }} />
+              <ContactInfosList userId={entityId} />
             </Box>
           </Box>
         ) : (

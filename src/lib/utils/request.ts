@@ -17,6 +17,7 @@ export class QueryParamsURLFactory {
     const pagination = this.query?.pagination;
     const search = this.query?.search;
     const isFlat = this.query?.isFlat;
+    const municipalityId = this.query?.municipalityId;
 
     // Add pagination
     if (pagination) {
@@ -33,6 +34,10 @@ export class QueryParamsURLFactory {
     // Add ifFlat (only categories)
     if (isFlat !== undefined) {
       queryParams.set("isFlat", isFlat);
+    }
+
+    if (municipalityId !== undefined) {
+      queryParams.set("municipalityId", municipalityId);
     }
 
     // Generate complete URL if baseUrl is provided

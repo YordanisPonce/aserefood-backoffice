@@ -20,4 +20,5 @@ export type SearchParams = {
   pageSize: number;
   currentModal?: string;
   isFlat?: string;
+  municipalityId?: string
 };

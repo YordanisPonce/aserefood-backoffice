@@ -7,48 +7,28 @@ import {
   IconButton,
   Popover,
   Typography,
-  Drawer,
   Button,
 } from "@mui/material";
 import { FilterList as FilterListIcon } from "@mui/icons-material";
-import useFiltersResponsiveOptions from "./hooks/useFiltersResponsiveOptions";
+import useFiltersActions from "./hooks/useFiltersResponsiveOptions";
 
 interface Props {
   contentFilters: ReactNode;
   handleReset: () => void;
-  handleApply: () => void;
 }
 
-export default function Filters({
-  contentFilters,
-  handleReset,
-  handleApply,
-}: Props) {
-  const {
-    isMobile,
-    handleClick,
-    handleClose,
-    isDrawerOpen,
-    anchorEl,
-    id,
-    open,
-  } = useFiltersResponsiveOptions();
+export default function Filters({ contentFilters, handleReset }: Props) {
+  const { handleClick, handleClose, anchorEl, id, open } = useFiltersActions();
 
   const filterContent = (
-    <Box
-      component={Paper}
-      sx={{ p: 2, width: isMobile ? "auto" : 300, mt: isMobile ? 7 : 0 }}
-    >
+    <Box component={Paper} sx={{ p: 2, width: 300 }}>
       <Typography variant="h6" component="div" sx={{ mb: 2 }}>
         Filtros
       </Typography>
       {contentFilters}
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mt: 3 }}>
-        <Button variant="outlined" size="small" action={handleReset} fullWidth>
+        <Button variant="outlined" size="small" onClick={handleReset} fullWidth>
           Limpiar Filtros
-        </Button>
-        <Button variant="contained" size="small" action={handleApply} fullWidth>
-          Aplicar Filtros
         </Button>
       </Box>
     </Box>
@@ -84,28 +64,22 @@ export default function Filters({
           </Box>
         </IconButton>
       </Box>
-      {isMobile ? (
-        <Drawer anchor="right" open={isDrawerOpen} onClose={handleClose}>
-          {filterContent}
-        </Drawer>
-      ) : (
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-        >
-          {filterContent}
-        </Popover>
-      )}
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+      >
+        {filterContent}
+      </Popover>
     </>
   );
 }
