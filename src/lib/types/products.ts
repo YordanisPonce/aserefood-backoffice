@@ -1,3 +1,4 @@
+import { SearchParams } from "./pagination";
 import { Provider } from "./provider";
 
 export interface Product {
@@ -25,7 +26,7 @@ export interface CreateProduct {
   description: string;
   shortDescription: string;
   image: File | null;
-  isService: StatesProducts
+  isService: StatesProducts;
   category: {
     id: number;
     name: string;
@@ -51,4 +52,10 @@ export interface ProductDetails {
 export enum StatesProducts {
   SERVICE = "Con servicio",
   NOTSERVICE = "Sin servicio",
+}
+
+// filers
+export interface ProductsFilters extends SearchParams {
+  providerId: number;
+  isService: boolean;
 }

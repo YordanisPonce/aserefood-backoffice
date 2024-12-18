@@ -1,4 +1,4 @@
-import { IQueryable } from "../types/filters";
+import { IFilter, IQueryable } from "../types/filters";
 import { SearchParams } from "../types/pagination";
 import { toLowerCamelCase } from "./string-formatter";
 
@@ -17,7 +17,9 @@ export class QueryParamsURLFactory {
     const pagination = this.query?.pagination;
     const search = this.query?.search;
     const isFlat = this.query?.isFlat;
-    const municipalityId = this.query?.municipalityId;
+
+    const filters = this.query.filters;
+
 
     // Add pagination
     if (pagination) {
@@ -36,9 +38,16 @@ export class QueryParamsURLFactory {
       queryParams.set("isFlat", isFlat);
     }
 
-    if (municipalityId !== undefined) {
-      queryParams.set("municipalityId", municipalityId);
-    }
+    if (filters)
+      filters.forEach((filter) => {
+        if (typeof filter.value === "number")
+          queryParams.set(filter.field, filter.value.toString());
+        else if (typeof filter.value === "boolean")
+          queryParams.set(filter.field, filter.value ? "true" : "false");
+        else if (typeof filter.value === "string")
+          queryParams.set(filter.field, filter.value);
+      });
+
 
     // Generate complete URL if baseUrl is provided
     if (this.baseUrl) {
@@ -70,6 +79,15 @@ export const buildQueryParams = (params?: SearchParams): IQueryable => {
     const [field, order] = sort.split(":");
     sortList.push({ field, isAsc: order === "asc" });
   }
+
+  const excludeKeys = new Set(["page", "pageSize", "search", "sort"]);
+  const filters = Object.entries(params || {})
+    .filter(([key]) => !excludeKeys.has(key))
+    .map(([key, value]) => ({
+      field: key,
+      value: value as any,
+    }));
+
   const query: IQueryable = {
     pagination: {
       page: page ? +page : 1,
@@ -77,6 +95,7 @@ export const buildQueryParams = (params?: SearchParams): IQueryable => {
     },
     search,
     sorts: sortList,
+    filters: filters,
   };
   return query;
 };

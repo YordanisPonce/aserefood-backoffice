@@ -9,9 +9,12 @@ import { ProductFormContainer } from "@/sections/products/containers/ProductForm
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import ProductDetailsContainer from "@/sections/products/containers/ProductDetailsContainer/ProductDetailsContainer";
 import DeleteEntityContainer from "@/components/containers/DeleteEntityContainer";
+import { ProductsFilters } from "@/lib/types/products";
+
+
 
 type ProductsPageProps = {
-  searchParams: SearchParams;
+  searchParams: ProductsFilters;
 };
 export default async function ProductsPage({
   searchParams,
