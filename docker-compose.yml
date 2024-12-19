@@ -1,0 +1,12 @@
+services:
+  frontend:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3050:8083"
+    networks:
+      - asere-food
+
+networks:
+  asere-food:
+    external: true
