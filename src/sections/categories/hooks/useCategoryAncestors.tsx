@@ -1,7 +1,7 @@
 "use client";
 import { getCategoryAncestors } from "@/lib/services/categories";
 import { Category } from "@/lib/types/category";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 interface Props {
   categoryId: string | null;
 }
@@ -10,7 +10,7 @@ export default function useCategoryAncestors({ categoryId }: Props) {
   const [loadingData, setLoadingData] = useState(false);
   const [ancestors, setAscestors] = useState<Category[]>([]);
 
-  const fetchCategoryAncestors = async () => {
+  const fetchCategoryAncestors = useCallback(async () => {
     if (categoryId) {
       setError(undefined);
       setLoadingData(true);
@@ -23,9 +23,9 @@ export default function useCategoryAncestors({ categoryId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("categoryId undefined");
-  };
+  }, [categoryId]);
   useEffect(() => {
     fetchCategoryAncestors();
-  }, []);
+  }, [fetchCategoryAncestors]);
   return { ancestors, loadingData, error, fetchCategoryAncestors };
 }

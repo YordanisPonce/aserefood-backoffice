@@ -1,7 +1,7 @@
 "use client";
 import { getInventoryEntry } from "@/lib/services/inventory";
 import { InventoryEntryDetails } from "@/lib/types/inventory";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 interface Props {
   inventoryEntryId: string | null;
 }
@@ -12,7 +12,7 @@ export default function useInventoryEntry({ inventoryEntryId }: Props) {
     InventoryEntryDetails | undefined
   >(undefined);
 
-  const fetchInventoryEntry = async () => {
+  const fetchInventoryEntry = useCallback(async () => {
     if (inventoryEntryId) {
       setLoadingData(true);
       try {
@@ -25,9 +25,9 @@ export default function useInventoryEntry({ inventoryEntryId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("inventoryEntryId undefined");
-  };
+  }, [inventoryEntryId]);
   useEffect(() => {
     fetchInventoryEntry();
-  }, []);
+  }, [fetchInventoryEntry]);
   return { inventoryEntry, loadingData, error, fetchInventoryEntry };
 }

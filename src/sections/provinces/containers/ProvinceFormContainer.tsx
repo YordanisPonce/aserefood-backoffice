@@ -68,7 +68,7 @@ export const ProvinceFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (provinceId) updateForm(provinceId);
-  }, []);
+  }, [provinceId, updateForm]);
 
   return (
     <FormProvider {...methods}>

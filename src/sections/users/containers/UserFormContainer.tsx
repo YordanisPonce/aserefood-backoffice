@@ -99,7 +99,7 @@ export const UserFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (userId) updateForm(userId);
-  }, []);
+  }, [userId, updateForm]);
 
   return (
     <FormProvider {...methods}>

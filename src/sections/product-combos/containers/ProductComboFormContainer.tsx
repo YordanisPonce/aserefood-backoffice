@@ -125,7 +125,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (productComboId) updateForm(productComboId);
-  }, []);
+  }, [productComboId, updateForm]);
 
   return (
     <FormProvider {...methods}>

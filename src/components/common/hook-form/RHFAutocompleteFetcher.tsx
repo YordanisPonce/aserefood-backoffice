@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { AutocompleteProps } from "@mui/material";
 
@@ -45,7 +45,7 @@ export default function RHFAutocompleteFetcher<
   const [options, setOptions] = useState<T[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const loadDataAsync = async () => {
+  const loadDataAsync = useCallback(async () => {
     setIsLoading(true);
     try {
       const res = await onFetch();
@@ -59,11 +59,11 @@ export default function RHFAutocompleteFetcher<
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [onFetch]) 
 
   useEffect(() => {
     void loadDataAsync();
-  }, []);
+  }, [loadDataAsync]);
 
   return (
     <RHFAutocomplete

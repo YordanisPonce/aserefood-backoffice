@@ -1,7 +1,7 @@
 "use client";
 import { getUser } from "@/lib/services/user";
 import { User } from "@/lib/types/users";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 interface Props {
   userId: string | null;
 }
@@ -10,7 +10,7 @@ export default function useUser({ userId }: Props) {
   const [loadingData, setLoadingData] = useState(false);
   const [user, setUser] = useState<User | undefined>(undefined);
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     if (userId) {
       setLoadingData(true);
       try {
@@ -23,9 +23,9 @@ export default function useUser({ userId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("userId undefined");
-  };
+  }, [userId]);
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [fetchUser]);
   return { user, loadingData, error, fetchUser };
 }

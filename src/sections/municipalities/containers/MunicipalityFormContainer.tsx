@@ -78,7 +78,7 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (municipalityId) updateForm(municipalityId);
-  }, []);
+  }, [municipalityId, updateForm]);
 
   return (
     <FormProvider {...methods}>

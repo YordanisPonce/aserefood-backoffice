@@ -98,7 +98,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (deliveryMethodId) updateForm(deliveryMethodId);
-  }, []);
+  }, [deliveryMethodId, updateForm]);
 
   return (
     <FormProvider {...methods}>

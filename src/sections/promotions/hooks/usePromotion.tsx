@@ -1,7 +1,7 @@
 "use client";
 import { getPromotion } from "@/lib/services/promotions";
 import { PromotionDetails } from "@/lib/types/promotion";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 interface Props {
   promotionId: string | null;
 }
@@ -12,7 +12,7 @@ export default function usePromotion({ promotionId }: Props) {
     undefined
   );
 
-  const fetchPromotion = async () => {
+  const fetchPromotion = useCallback(async () => {
     if (promotionId) {
       setLoadingData(true);
       try {
@@ -25,9 +25,9 @@ export default function usePromotion({ promotionId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("promotionId undefined");
-  };
+  }, [promotionId]) 
   useEffect(() => {
     fetchPromotion();
-  }, []);
+  }, [fetchPromotion]);
   return { promotion, loadingData, error, fetchPromotion };
 }

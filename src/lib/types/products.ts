@@ -41,7 +41,6 @@ export interface ProductDetails {
   image: string;
   description: string;
   shortDescription: string;
-  image: string;
   isService: boolean;
   categoryId: number;
   categoryName: string;

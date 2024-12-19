@@ -1,7 +1,7 @@
 "use client";
 import { getCategory } from "@/lib/services/categories";
 import { CategoryDetails } from "@/lib/types/category";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 interface Props {
   categoryId: string | null;
 }
@@ -12,7 +12,7 @@ export default function useCategory({ categoryId }: Props) {
     undefined
   );
 
-  const fetchCategory = async () => {
+  const fetchCategory = useCallback(async () => {
     if (categoryId) {
       setError(undefined);
       setLoadingData(true);
@@ -25,9 +25,9 @@ export default function useCategory({ categoryId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("categoryId undefined");
-  };
+  }, [categoryId]);
   useEffect(() => {
     fetchCategory();
-  }, []);
+  }, [fetchCategory]);
   return { category, loadingData, error, fetchCategory };
 }

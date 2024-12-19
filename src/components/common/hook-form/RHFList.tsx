@@ -7,15 +7,15 @@ import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import RHFInputWithLabel from "./RHFInputWithLabel";
 import RHFAutocompleteFetcher from "./RHFAutocompleteFetcher";
 import { getAllProducts } from "@/lib/services/products";
-interface RHFListProps<T extends { [key: string]: any }> {
+interface RHFListProps<T extends Record<string, unknown>> {
   name: string;
   titleList: string;
   titleButton: string;
   noDataText: string;
-  propertyMap: T;
+  propertyMap: Record<keyof T, string>;
 }
 
-export default function RHFList<T extends { [key: string]: any }>({
+export default function RHFList<T extends Record<string, unknown>>({
   name,
   titleList,
   noDataText,
@@ -30,12 +30,12 @@ export default function RHFList<T extends { [key: string]: any }>({
     name,
   });
 
-  function bodyItemRendering(field: any, index: number) {
+  function bodyItemRendering(field: Record<"id", string>, index: number) {
     const renderingComponents: Array<ReactNode> = new Array<ReactNode>();
 
     for (const key in field) {
       if (field.hasOwnProperty(key)) {
-        const property = field[key];
+        const property = field[key as keyof typeof field];
         if (typeof property === "number")
           renderingComponents.push(
             <RHFInputWithLabel

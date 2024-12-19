@@ -116,7 +116,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (promotionId) updateForm(promotionId);
-  }, []);
+  }, [promotionId, updateForm]);
 
   return (
     <FormProvider {...methods}>

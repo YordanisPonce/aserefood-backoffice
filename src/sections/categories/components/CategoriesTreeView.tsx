@@ -20,7 +20,7 @@ export default function CategoriesTreeView({ categories, pagination }: Props) {
   const pathname = usePathname();
   useEffect(() => {
     router.replace(pathname);
-  }, []);
+  }, [router, pathname]);
   const onEdit = (item: DataTree) => {
     handleOpenModal(modalTypes.categories.form.name, item.id);
   };

@@ -4,11 +4,10 @@ import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
-import useUrlParams from "@/lib/hooks/useUrlParams";
 import { Category } from "@/lib/types/category";
 import { Pagination } from "@/lib/types/pagination";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 interface Props {
@@ -19,15 +18,13 @@ interface Props {
 export default function CategoriesTableView({ categories, pagination }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const { updateSearchParams } = useUrlParams();
   const { handleOpenModal } = useModal();
 
   useEffect(() => {
     const searchUrl = new URLSearchParams();
     searchUrl.set("isFlat", "false");
     router.replace(`${pathname}?${searchUrl.toString()}`);
-  }, []);
+  }, [pathname, router]);
 
   const onViewDetails = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.categories.details.name, params.row.id);

@@ -1,3 +1,4 @@
+import { JwtPayload } from "@/lib/types/auth";
 import { jwtDecode } from "jwt-decode";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";

@@ -1,7 +1,7 @@
 "use client";
 import { getProduct } from "@/lib/services/products";
 import { ProductDetails } from "@/lib/types/products";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 interface Props {
   productId: string | null;
 }
@@ -10,7 +10,7 @@ export default function useProduct({ productId }: Props) {
   const [loadingData, setLoadingData] = useState(false);
   const [product, setProduct] = useState<ProductDetails | undefined>(undefined);
 
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     if (productId) {
       setLoadingData(true);
       try {
@@ -23,9 +23,9 @@ export default function useProduct({ productId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("productId undefined");
-  };
+  }, [productId]);
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [fetchProduct]);
   return { product, loadingData, error, fetchProduct };
 }

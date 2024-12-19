@@ -129,7 +129,7 @@ export const CategoryFormContainer: FunctionComponent = () => {
   useEffect(() => {
     if (categoryId && formModality === CategoryFormModality.UpdateCategory)
       updateForm(categoryId);
-  }, []);
+  }, [categoryId, formModality, updateForm ]);
 
   return (
     <FormProvider {...methods}>

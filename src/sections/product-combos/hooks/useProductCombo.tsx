@@ -1,9 +1,9 @@
 "use client";
 import { getProductCombo } from "@/lib/services/productCombos";
 import { ProductComboDetails } from "@/lib/types/productCombo";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 interface Props {
-    productComboId: string | null;
+  productComboId: string | null;
 }
 export default function useProductCombo({ productComboId }: Props) {
   const [error, setError] = useState<string | undefined>(undefined);
@@ -12,7 +12,7 @@ export default function useProductCombo({ productComboId }: Props) {
     ProductComboDetails | undefined
   >(undefined);
 
-  const fetchProductCombo = async () => {
+  const fetchProductCombo = useCallback(async () => {
     if (productComboId) {
       setLoadingData(true);
       try {
@@ -25,9 +25,9 @@ export default function useProductCombo({ productComboId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("productComboId undefined");
-  };
+  }, [productComboId]);
   useEffect(() => {
     fetchProductCombo();
-  }, []);
+  }, [fetchProductCombo]);
   return { productCombo, loadingData, error, fetchProductCombo };
 }

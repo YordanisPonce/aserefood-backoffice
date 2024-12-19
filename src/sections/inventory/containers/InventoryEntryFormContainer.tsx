@@ -105,7 +105,7 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (inventoryEntryId) updateForm(inventoryEntryId);
-  }, []);
+  }, [inventoryEntryId, updateForm]);
 
   return (
     <FormProvider {...methods}>

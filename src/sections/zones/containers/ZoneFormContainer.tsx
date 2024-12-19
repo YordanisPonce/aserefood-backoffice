@@ -74,7 +74,7 @@ export const ZoneFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (zoneId) updateForm(zoneId);
-  }, []);
+  }, [zoneId, updateForm]);
 
   return (
     <FormProvider {...methods}>

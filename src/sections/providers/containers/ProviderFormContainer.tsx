@@ -66,7 +66,7 @@ export const ProviderFormContainer: FunctionComponent = () => {
 
   useEffect(() => {
     if (providerId) updateForm(providerId);
-  }, []);
+  }, [providerId, updateForm]);
 
   return (
     <FormProvider {...methods}>

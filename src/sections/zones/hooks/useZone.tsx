@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ZoneDetails } from "../containers/ZoneDetailsContainer";
 import { getZone } from "@/lib/services/zones";
 interface Props {
@@ -10,7 +10,7 @@ export default function useZone({ zoneId }: Props) {
   const [loadingData, setLoadingData] = useState(false);
   const [zone, setZone] = useState<ZoneDetails | undefined>(undefined);
 
-  const fetchZone = async () => {
+  const fetchZone = useCallback(async () => {
     if (zoneId) {
       setLoadingData(true);
       try {
@@ -23,9 +23,9 @@ export default function useZone({ zoneId }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("zoneId undefined");
-  };
+  }, [zoneId]);
   useEffect(() => {
     fetchZone();
-  }, []);
+  }, [fetchZone]);
   return { zone, loadingData, error, fetchZone };
 }

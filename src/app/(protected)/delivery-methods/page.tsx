@@ -30,13 +30,13 @@ export default async function DeliveryMethodsPage({ searchParams }: PageProps) {
         deliveryMethods={data}
       />
       <Modal
-        formPath={modalTypes.deliveryMethods.form.name}
+        formPath={[modalTypes.deliveryMethods.form.name]}
         titleModal={modalTypes.deliveryMethods.form.title}
       >
         <DeliveryMethodFormContainer />
       </Modal>
       <Modal
-        formPath={modalTypes.deliveryMethods.details.name}
+        formPath={[modalTypes.deliveryMethods.details.name]}
         titleModal={modalTypes.deliveryMethods.details.title}
       >
         <DeliveryMethodDetailsContainer />
