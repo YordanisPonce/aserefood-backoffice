@@ -11,7 +11,7 @@ import {
 } from "@mui/x-data-grid";
 import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import EmptyContent from "../empty-content/empty-content";
 import SearchItem from "../search/SearchItem";
 import { Pagination } from "@/lib/types/pagination";
@@ -25,6 +25,7 @@ type Props = Omit<DataGridProps, "pagination" | "rows"> & {
   rowHeight?: number;
   withoutSearch?: boolean;
   withoutBorder?: boolean;
+  filters?: ReactNode;
 };
 
 const RootDataGrid: React.FC<Props> = ({
@@ -36,6 +37,7 @@ const RootDataGrid: React.FC<Props> = ({
   rowHeight,
   withoutSearch = false,
   withoutBorder = false,
+  filters,
   ...other
 }) => {
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
@@ -67,10 +69,21 @@ const RootDataGrid: React.FC<Props> = ({
 
   const dataGridContent = (
     <Stack sx={{ gap: 3 }}>
-      {!withoutSearch && (
-        <SearchItem placeholder={"Buscar"} width="100%" onSearch={onSearch} />
-      )}
-
+      <Box display={"flex"} gap={1} alignItems={"center"}>
+        {!withoutSearch && (
+          <SearchItem
+            sx={{
+              height: "40px",
+              fontSize: "14px",
+              width: "100%",
+            }}
+            placeholder={"Buscar"}
+            size="small"
+            onSearch={onSearch}
+          />
+        )}
+        {filters && filters}
+      </Box>
       <DataGrid
         {...other}
         rows={data}

@@ -16,8 +16,8 @@ export type Pagination = {
 export type SearchParams = {
   sort?: string;
   search?: string;
-  page: number;
-  pageSize: number;
+  page?: number;
+  pageSize?: number;
   currentModal?: string;
   isFlat?: string;
   municipalityId?: string

@@ -56,6 +56,6 @@ export enum StatesProducts {
 
 // filers
 export interface ProductsFilters extends SearchParams {
-  providerId: number;
-  isService: boolean;
+  providerId?: number;
+  isService?: boolean;
 }

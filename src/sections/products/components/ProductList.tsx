@@ -7,6 +7,7 @@ import { Pagination } from "@/lib/types/pagination";
 import { Product } from "@/lib/types/products";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import ProductsFilters from "./Filters/ProductsFilters";
 
 type ProductListProps = {
   products: Product[];
@@ -67,6 +68,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
       data={products}
       pagination={pagination}
       disableSelection
+      filters={<ProductsFilters />}
     />
   );
 };
