@@ -1,14 +1,14 @@
 "use client";
 import { getAllMunicipalities } from "@/lib/services/municipalities";
 import { Municipality } from "@/lib/types/municipality";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export default function useAllMunicipalities() {
   const [municipalities, setMunicipalities] = useState<Municipality[]>([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
 
-  async function fetchMunicipalities() {
+  const fetchMunicipalities = useCallback(async () => {
     setLoading(true);
     setError(undefined);
     try {
@@ -19,11 +19,11 @@ export default function useAllMunicipalities() {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
   useEffect(() => {
     fetchMunicipalities();
-  }, []);
+  }, [fetchMunicipalities]);
 
   return { municipalities, isLoading, error, fetchMunicipalities };
 }
