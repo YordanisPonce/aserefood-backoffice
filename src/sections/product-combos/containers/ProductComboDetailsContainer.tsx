@@ -9,8 +9,6 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  Card,
-  CardMedia,
 } from "@mui/material";
 import {
   Description,
@@ -22,6 +20,7 @@ import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import useProductCombo from "../hooks/useProductCombo";
+import PreviewImage from "@/components/partials/PreviewImage/PreviewImage";
 
 export default function ProductComboDetailsContainer() {
   const { entityId } = useModal();
@@ -42,20 +41,15 @@ export default function ProductComboDetailsContainer() {
               overflow: "hidden",
             }}
           >
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image={productCombo.image || "/images/product-place-holder.png"}
-                alt={`Product image ${
-                  productCombo.image || "/images/product-place-holder.png"
-                }`}
-                sx={{
-                  objectFit: "cover",
-                  cursor: "pointer",
-                }}
+            <Box display={"flex"} justifyContent={"center"}>
+              <PreviewImage
+                preview={
+                  productCombo.image
+                    ? productCombo.image
+                    : "images/place-holder.png"
+                }
               />
-            </Card>
+            </Box>
             <Box sx={{ p: 3, overflowY: "auto" }}>
               <Box display="flex" alignItems="center" mb={2}>
                 <ShoppingBasket

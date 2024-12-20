@@ -38,7 +38,7 @@ export const createProductComboSchema = () =>
       .refine((obj) => obj !== null, {
         message: "Es necesario seleccionar una zona",
       }),
-    isActive: z.boolean(),
+    isActive: z.string(),
     productComboItems: z
       .array(createProductComboItemSchema())
       .min(1, { message: "Debe agregar al menos un artículo" }),

@@ -9,6 +9,7 @@ import {
   CreatePromotion,
   CreatePromotionDTO,
   DiscountOption,
+  StatesPromotions,
 } from "@/lib/types/promotion";
 import { createPromotionSchema } from "../utils/shcema";
 import {
@@ -17,13 +18,19 @@ import {
   updatePromotion,
 } from "@/lib/services/promotions";
 import { PromotionForm } from "../components/PromotionForm";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 
 export const PromotionFormContainer: FunctionComponent = () => {
   const { entityId: promotionId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
-  const formOptions: UseFormProps<CreatePromotion> = {
+  const formOptions: UseFormProps<
+    CreatePromotion & {
+      productsOrCombos: { message: string };
+      dateRange: { message: string };
+    }
+  > = {
     resolver: zodResolver(createPromotionSchema()),
     defaultValues: {
       name: undefined,
@@ -33,16 +40,23 @@ export const PromotionFormContainer: FunctionComponent = () => {
       discountValue: 1,
       endDate: new Date().toISOString(),
       startDate: new Date().toISOString(),
-      image: undefined,
-      isActive: false,
+      image: null,
+      isActive: StatesPromotions.INACTIVA,
       productCombos: [],
       products: [],
     },
     mode: "onSubmit",
     reValidateMode: "onChange",
   };
-  const methods = useForm<CreatePromotion>(formOptions);
-
+  const methods = useForm<
+    CreatePromotion & {
+      productsOrCombos: { message: string };
+      dateRange: { message: string };
+    }
+  >(formOptions);
+  const {
+    formState: { errors },
+  } = methods;
   const onSubmit = async ({
     name,
     description,
@@ -50,14 +64,16 @@ export const PromotionFormContainer: FunctionComponent = () => {
     discountOption,
     discountValue,
     endDate,
-    image,
-    isActive,
+    image: file,
+    isActive: state,
     productCombos,
     products,
     startDate,
   }: CreatePromotion) => {
     setIsLoading(true);
     try {
+      const image = file ? await fileToBase64(file) : null;
+
       const createPromotionDTO: CreatePromotionDTO = {
         name: name,
         code,
@@ -67,7 +83,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
         endDate: endDate,
         startDate: startDate,
         image,
-        isActive,
+        isActive: state === StatesPromotions.ACTIVA ? true : false,
         productComboIds: productCombos.map((productCombo) => productCombo.id),
         productIds: products.map((product) => product.id),
       };
@@ -99,8 +115,12 @@ export const PromotionFormContainer: FunctionComponent = () => {
           discountValue: promotion.discountValue,
           endDate: promotion.endDate,
           startDate: promotion.startDate,
-          image: promotion.image,
-          isActive: promotion.isActive,
+          image: promotion.image
+            ? base64ToFile(promotion.image, promotion.name)
+            : null,
+          isActive: promotion.isActive
+            ? StatesPromotions.ACTIVA
+            : StatesPromotions.INACTIVA,
           name: promotion.name,
           productCombos: promotion.productCombos,
           products: promotion.products,
@@ -134,6 +154,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
             isLoading={isLoading}
             isUpdate={promotionId !== null}
             error={error}
+            errors={errors}
           />
         )}
       </form>

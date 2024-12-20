@@ -39,7 +39,7 @@ export interface CreateProductCombo {
     id: number;
     name: string;
   } | null;
-  isActive: boolean;
+  isActive: StatesProductCombos;
   productComboItems: CreateProductComboItem[];
 }
 
@@ -63,4 +63,9 @@ export interface CreateProductComboDTO {
     productId: number;
     amount: number;
   }[];
+}
+
+export enum StatesProductCombos {
+  ACTIVE = "Activo",
+  INACTIVE = "Inactivo",
 }

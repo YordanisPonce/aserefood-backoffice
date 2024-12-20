@@ -27,7 +27,7 @@ export interface DeliveryMethodDetails {
 export interface CreateDeliveryMethod {
   name: string;
   estimatedArrivalTime: string;
-  isFree: boolean;
+  isFree: StatesDeliveryMethods;
   pickUpDirection: string;
   cost: number;
   minimalDeliveryPrice: number;
@@ -45,4 +45,9 @@ export interface CreateDeliveryMethodDTO {
   cost: number;
   minimalDeliveryPrice: number;
   municipalityId: number;
+}
+
+export enum StatesDeliveryMethods {
+  FREE = "Gratis",
+  PAYMENT = "De Pago",
 }

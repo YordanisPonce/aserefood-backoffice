@@ -25,6 +25,7 @@ export interface CreateProduct {
   description: string;
   shortDescription: string;
   image: File | null;
+  isService: StatesProducts
   category: {
     id: number;
     name: string;
@@ -45,4 +46,9 @@ export interface ProductDetails {
   categoryId: number;
   categoryName: string;
   providers: Provider[];
+}
+
+export enum StatesProducts {
+  SERVICE = "Con servicio",
+  NOTSERVICE = "Sin servicio",
 }

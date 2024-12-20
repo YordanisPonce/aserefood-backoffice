@@ -17,7 +17,7 @@ export interface PromotionDetails {
   description: string;
   discountOption: number;
   discountValue: number;
-  image: string;
+  image: string | null;
   isActive: true;
   productCombos: {
     id: number;
@@ -37,10 +37,10 @@ export interface CreatePromotion {
   description: string;
   discountOption: DiscountOption;
   discountValue: number;
-  image: string;
+  image: File | null;
   startDate: string;
   endDate: string;
-  isActive: boolean;
+  isActive: StatesPromotions;
   productCombos: {
     id: number;
     name: string;
@@ -57,7 +57,7 @@ export interface CreatePromotionDTO {
   description: string;
   discountOption: number;
   discountValue: number;
-  image: string;
+  image: string | null;
   startDate: string;
   endDate: string;
   isActive: boolean;
@@ -68,4 +68,9 @@ export interface CreatePromotionDTO {
 export enum DiscountOption {
   PERCENTAGE = "Porcentaje",
   FIXED_AMOUNT = "Cantidad Fija",
+}
+
+export enum StatesPromotions {
+  ACTIVA = "Activa",
+  INACTIVA = "Inactiva",
 }

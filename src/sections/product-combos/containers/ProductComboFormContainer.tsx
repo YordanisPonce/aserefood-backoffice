@@ -9,6 +9,7 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import {
   CreateProductCombo,
   CreateProductComboDTO,
+  StatesProductCombos,
 } from "@/lib/types/productCombo";
 import { createProductComboSchema } from "../utils/schema";
 import {
@@ -30,7 +31,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
       name: undefined,
       description: undefined,
       image: undefined,
-      isActive: false,
+      isActive: StatesProductCombos.INACTIVE,
       price: 1,
       productComboItems: [],
       shortDescription: undefined,
@@ -45,7 +46,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
     name,
     description,
     image: file,
-    isActive,
+    isActive: state,
     price,
     productComboItems,
     shortDescription,
@@ -60,7 +61,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
       name: name,
       description,
       image,
-      isActive,
+      isActive: state === StatesProductCombos.ACTIVE ? true : false,
       price,
       productComboItems: productComboItems.map((productCombo) => {
         return {
@@ -95,7 +96,9 @@ export const ProductComboFormContainer: FunctionComponent = () => {
           image: productCombo.image
             ? base64ToFile(productCombo.image, productCombo.name)
             : null,
-          isActive: productCombo.isActive,
+          isActive: productCombo.isActive
+            ? StatesProductCombos.ACTIVE
+            : StatesProductCombos.INACTIVE,
           price: productCombo.price,
           productComboItems: productCombo.productComboItems.map(
             (productCombo) => {

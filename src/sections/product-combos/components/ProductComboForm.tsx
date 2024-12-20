@@ -2,7 +2,9 @@ import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocomplet
 import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import RHFList from "@/components/common/hook-form/RHFList";
+import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
 import { getAllZones } from "@/lib/services/zones";
+import { StatesProductCombos } from "@/lib/types/productCombo";
 import {
   Alert,
   Box,
@@ -49,7 +51,15 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
           />
           <RHFInputWithLabel name="price" label="Precio" type="number" />
         </Box>
-
+        <RHFRadioGroup
+          name="isActive"
+          label="Estado del Combo"
+          options={[
+            { label: "Activo", value: StatesProductCombos.ACTIVE },
+            { label: "Inactivo", value: StatesProductCombos.INACTIVE },
+          ]}
+          direction="row"
+        />
         <RHFList<{ product: string; amount: string }>
           name="productComboItems"
           titleList="Artículos"
@@ -57,7 +67,6 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
           noDataText="Inserte Articulos como parte del Combo"
           propertyMap={{ product: "Producto", amount: "Importe" }}
         />
-
         <RHFInputImageUpload name="image" placeholder="Imagen del Combo" />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>

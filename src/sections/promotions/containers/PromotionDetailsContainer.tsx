@@ -8,14 +8,18 @@ import {
   ListItem,
   ListItemText,
   Divider,
-  Card,
-  CardMedia,
 } from "@mui/material";
-import { CalendarToday, LocalOffer, Description } from "@mui/icons-material";
+import {
+  CalendarToday,
+  LocalOffer,
+  Description,
+  CalendarMonth,
+} from "@mui/icons-material";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import usePromotion from "../hooks/usePromotion";
+import PreviewImage from "@/components/partials/PreviewImage/PreviewImage";
 
 export default function PromotionDetailsContainer() {
   const { entityId } = useModal();
@@ -35,31 +39,27 @@ export default function PromotionDetailsContainer() {
               overflow: "hidden",
             }}
           >
-            <Card>
-              <CardMedia
-                component="img"
-                height="140"
-                image={
+            <Box display={"flex"} justifyContent={"center"}>
+              <PreviewImage
+                preview={
                   promotion.image ? promotion.image : "images/place-holder.png"
                 }
-                alt={`Product image ${
-                  promotion.image ? promotion.image : "images/place-holder.png"
-                }`}
-                sx={{
-                  objectFit: "cover",
-                  cursor: "pointer",
-                }}
               />
-            </Card>
+            </Box>
             <Box sx={{ p: 3, overflow: "hidden" }}>
-              <Typography
-                id="promotion-details-modal"
-                variant="h6"
-                component="h2"
-                gutterBottom
-              >
-                {promotion.name}
-              </Typography>
+              <Box display="flex" alignItems="center" mb={2}>
+                <CalendarMonth
+                  sx={{ fontSize: 40, mr: 2, color: "primary.main" }}
+                />
+                <Typography
+                  id="promotion-details-modal"
+                  variant="h6"
+                  component="h2"
+                  gutterBottom
+                >
+                  {promotion.name}
+                </Typography>
+              </Box>
               <Chip
                 label={promotion.isActive ? "Activa" : "Inactiva"}
                 color={promotion.isActive ? "success" : "error"}

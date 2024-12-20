@@ -9,6 +9,7 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import {
   CreateDeliveryMethod,
   CreateDeliveryMethodDTO,
+  StatesDeliveryMethods,
 } from "@/lib/types/deliveryMethod";
 import {
   createDeliveryMethod,
@@ -21,13 +22,14 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
   const { entityId: deliveryMethodId, handleCloseModal } = useModal();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
+  const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<CreateDeliveryMethod> = {
     resolver: zodResolver(createDeliveryMethodSchema()),
     defaultValues: {
       name: undefined,
       cost: 1,
       estimatedArrivalTime: undefined,
-      isFree: false,
+      isFree: StatesDeliveryMethods.PAYMENT,
       minimalDeliveryPrice: 1,
       municipality: null,
       pickUpDirection: undefined,
@@ -41,7 +43,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
     name,
     cost,
     estimatedArrivalTime,
-    isFree,
+    isFree: state,
     minimalDeliveryPrice,
     municipality,
     pickUpDirection,
@@ -51,7 +53,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
       const createDeliveryMethodDTO: CreateDeliveryMethodDTO = {
         name: name,
         cost,
-        isFree,
+        isFree: state === StatesDeliveryMethods.FREE ? true : false,
         estimatedArrivalTime,
         minimalDeliveryPrice,
         municipalityId: municipality?.id ?? 0,
@@ -65,6 +67,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +82,9 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
           name: deliveryMethod.name,
           cost: deliveryMethod.cost,
           estimatedArrivalTime: deliveryMethod.estimatedArrivalTime,
-          isFree: deliveryMethod.isFree,
+          isFree: deliveryMethod.isFree
+            ? StatesDeliveryMethods.FREE
+            : StatesDeliveryMethods.PAYMENT,
           minimalDeliveryPrice: deliveryMethod.minimalDeliveryPrice,
           municipality: {
             id: deliveryMethod.municipality.id,
@@ -115,6 +120,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
           <DeliveryMethodForm
             isLoading={isLoading}
             isUpdate={deliveryMethodId !== null}
+            error={error}
           />
         )}
       </form>

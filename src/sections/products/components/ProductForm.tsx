@@ -1,8 +1,10 @@
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
 import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
+import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
 import { getAllCategories } from "@/lib/services/categories";
 import { getAllProviders } from "@/lib/services/providers";
+import { StatesProducts } from "@/lib/types/products";
 import { SelectOption } from "@/lib/types/select";
 import {
   Alert,
@@ -63,10 +65,16 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
           type="text"
           multiline
         />
-        <RHFInputImageUpload
-          name="image"
-          placeholder="Imagen del Producto"
+        <RHFRadioGroup
+          name="isService"
+          label="Estado del Producto"
+          options={[
+            { label: "Con Servicio", value: StatesProducts.SERVICE },
+            { label: "Sin Servicio", value: StatesProducts.NOTSERVICE },
+          ]}
+          direction="row"
         />
+        <RHFInputImageUpload name="image" placeholder="Imagen del Producto" />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>

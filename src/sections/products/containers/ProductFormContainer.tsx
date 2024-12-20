@@ -1,6 +1,10 @@
 "use client";
 
-import { CreateProduct, CreateProductDTO } from "@/lib/types/products";
+import {
+  CreateProduct,
+  CreateProductDTO,
+  StatesProducts,
+} from "@/lib/types/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
@@ -29,6 +33,7 @@ export const ProductFormContainer: FunctionComponent = () => {
       description: undefined,
       name: undefined,
       image: null,
+      isService: StatesProducts.SERVICE,
       providers: [],
       shortDescription: undefined,
     },
@@ -43,6 +48,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     description,
     image: file,
     category,
+    isService: state,
     providers,
     shortDescription,
   }: CreateProduct) => {
@@ -54,7 +60,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     const createProductDto: CreateProductDTO = {
       categoryId: category?.id ?? 0,
       description,
-      isService: false,
+      isService: state === StatesProducts.SERVICE ? true : false,
       image,
       name,
       shortDescription,
@@ -87,6 +93,9 @@ export const ProductFormContainer: FunctionComponent = () => {
           image: product.image
             ? base64ToFile(product.image, product.name)
             : null,
+          isService: product.isService
+            ? StatesProducts.SERVICE
+            : StatesProducts.NOTSERVICE,
           shortDescription: product.shortDescription,
           providers: product.providers,
           category: {

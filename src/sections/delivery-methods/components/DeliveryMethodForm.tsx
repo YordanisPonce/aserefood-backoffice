@@ -1,22 +1,33 @@
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
 import RHFCheckboxWithLabel from "@/components/common/hook-form/RHFCheckboxWithLabel";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
+import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
 import { getAllMunicipalities } from "@/lib/services/municipalities";
-import { Box, Button, CircularProgress, DialogActions } from "@mui/material";
+import { StatesDeliveryMethods } from "@/lib/types/deliveryMethod";
+import {
+  Alert,
+  Box,
+  Button,
+  CircularProgress,
+  DialogActions,
+} from "@mui/material";
 import { FunctionComponent } from "react";
 
 type DeliveryMethodFormProps = {
   isLoading: boolean;
   isUpdate: boolean;
+  error: string | undefined;
 };
 
 export const DeliveryMethodForm: FunctionComponent<DeliveryMethodFormProps> = ({
   isLoading,
   isUpdate,
+  error,
 }) => {
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {error && <Alert severity="error">{error}</Alert>}
         <Box sx={{ display: "flex", gap: 2 }}>
           <RHFInputWithLabel name="name" label="Name" type="text" />
           <RHFInputWithLabel
@@ -47,7 +58,15 @@ export const DeliveryMethodForm: FunctionComponent<DeliveryMethodFormProps> = ({
             type="number"
           />
         </Box>
-        <RHFCheckboxWithLabel name="isFree" label="Es libre?" />
+        <RHFRadioGroup
+          name="isFree"
+          label="Estado de la Promoción"
+          options={[
+            { label: "Gratis", value: StatesDeliveryMethods.FREE },
+            { label: "De Pago", value: StatesDeliveryMethods.PAYMENT },
+          ]}
+          direction="row"
+        />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>
