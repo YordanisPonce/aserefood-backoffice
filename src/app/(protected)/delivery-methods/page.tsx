@@ -1,3 +1,4 @@
+import DeleteEntityContainer from "@/components/containers/DeleteEntityContainer";
 import Modal from "@/components/partials/Modal/Modal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import SectionHeader from "@/components/partials/SectionHeader/SectionHeader";
@@ -40,6 +41,15 @@ export default async function DeliveryMethodsPage({ searchParams }: PageProps) {
         titleModal={modalTypes.deliveryMethods.details.title}
       >
         <DeliveryMethodDetailsContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.deliveryMethods.delete.name]}
+        titleModal={modalTypes.deliveryMethods.delete.title}
+      >
+        <DeleteEntityContainer
+          message={modalTypes.deliveryMethods.delete.message}
+          title={modalTypes.deliveryMethods.delete.subTitle}
+        />
       </Modal>
     </Paper>
   );

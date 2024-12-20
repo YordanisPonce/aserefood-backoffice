@@ -10,7 +10,8 @@ import { deleteZone } from "@/lib/services/zones";
 import { deleteUser } from "@/lib/services/user";
 import { deleteCategory } from "@/lib/services/categories";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
-
+import { deletePromotion } from "../services/promotions";
+import { deleteDeliveryMethod } from "../services/deliveryMethods";
 
 interface Props {
   currentModal: string | null;
@@ -59,9 +60,15 @@ export default function useDeleteEntity({
           case modalTypes.categories.delete.name:
             await deleteCategory(entityId);
             break;
+          case modalTypes.promotions.delete.name:
+            await deletePromotion(entityId);
+            break;
+          case modalTypes.deliveryMethods.delete.name:
+            await deleteDeliveryMethod(entityId);
+            break;
           default:
             break;
-        }    
+        }
         handleCloseModal();
       } catch (error) {
         console.log(error);

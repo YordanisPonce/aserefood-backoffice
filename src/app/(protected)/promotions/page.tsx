@@ -8,6 +8,7 @@ import { PromotionsList } from "@/sections/promotions/components/PromotionsList"
 import { getPromotions } from "@/lib/services/promotions";
 import { PromotionFormContainer } from "@/sections/promotions/containers/PromotionFormContainer";
 import PromotionDetailsContainer from "@/sections/promotions/containers/PromotionDetailsContainer";
+import DeleteEntityContainer from "@/components/containers/DeleteEntityContainer";
 
 type PromotionsPageProps = {
   searchParams: SearchParams;
@@ -39,6 +40,15 @@ export default async function PromotionsPage({
         titleModal={modalTypes.promotions.details.title}
       >
         <PromotionDetailsContainer />
+      </Modal>
+      <Modal
+        formPath={[modalTypes.promotions.delete.name]}
+        titleModal={modalTypes.promotions.delete.title}
+      >
+        <DeleteEntityContainer
+          message={modalTypes.promotions.delete.message}
+          title={modalTypes.promotions.delete.subTitle}
+        />
       </Modal>
     </Paper>
   );
