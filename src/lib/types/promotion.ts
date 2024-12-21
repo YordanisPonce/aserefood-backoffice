@@ -35,7 +35,7 @@ export interface CreatePromotion {
   code: string;
   name: string;
   description: string;
-  discountOption: DiscountOption;
+  discountOption: string;
   discountValue: number;
   image: File | null;
   startDate: string;
@@ -55,7 +55,7 @@ export interface CreatePromotionDTO {
   code: string;
   name: string;
   description: string;
-  discountOption: number;
+  discountOption: DiscountOption;
   discountValue: number;
   image: string | null;
   startDate: string;
@@ -66,11 +66,26 @@ export interface CreatePromotionDTO {
 }
 
 export enum DiscountOption {
-  PERCENTAGE = "Porcentaje",
-  FIXED_AMOUNT = "Cantidad Fija",
+  PERCENTAGE = 1,
+  FIXED_AMOUNT = 2,
 }
 
 export enum StatesPromotions {
   ACTIVA = "Activa",
   INACTIVA = "Inactiva",
 }
+
+export const promotionsDiscountOptionMap: Map<DiscountOption, string> = new Map(
+  [
+    [DiscountOption.PERCENTAGE, "Porcentaje"],
+    [DiscountOption.FIXED_AMOUNT, "Cantidad Fija"],
+  ]
+);
+
+export const invertedPromotionsDiscountOptionMap: Map<string, DiscountOption> =
+  new Map(
+    Array.from(promotionsDiscountOptionMap.entries()).map(([key, value]) => [
+      value,
+      key,
+    ])
+  );

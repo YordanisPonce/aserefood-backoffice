@@ -1,4 +1,7 @@
-import { DiscountOption } from "@/lib/types/promotion";
+import {
+  DiscountOption,
+  promotionsDiscountOptionMap,
+} from "@/lib/types/promotion";
 import { fileMaxSizeMB } from "@/lib/utils/fileTransformers";
 import z from "zod";
 
@@ -15,10 +18,19 @@ export const createPromotionSchema = () =>
       description: z
         .string({ required_error: "La descipción es requerida" })
         .min(1, { message: "La descipción es requerida" }),
-      discountOption: z.enum([
-        DiscountOption.FIXED_AMOUNT,
-        DiscountOption.PERCENTAGE,
-      ]),
+      discountOption: z.enum(
+        [
+          promotionsDiscountOptionMap.get(
+            DiscountOption.FIXED_AMOUNT
+          ) as string,
+          promotionsDiscountOptionMap.get(DiscountOption.PERCENTAGE) as string,
+        ],
+        {
+          errorMap: () => ({
+            message: "Se debe de seleccionar una opción de descuento.",
+          }),
+        }
+      ),
       discountValue: z.number().min(1, {
         message: "El valor de descuento tiene que ser un número positivo",
       }),
@@ -63,18 +75,21 @@ export const createPromotionSchema = () =>
             message: "No se pueden repetir los productos.",
           }
         ),
-        image: z
-              .custom<File>((value) => {
-                return !value || value instanceof File;
-              }, "Debe seleccionar una imagen")
-              .refine((file) => !file || file.type.startsWith("image/"), {
-                message: "El archivo debe ser una imagen válida (jpg, png, gif, etc.)",
-              })
-              .refine((file) => !file || file.size <= fileMaxSizeMB * 1024 * 1024, {
-                message:
-                  "El tamaño de la imagen no debe exceder los " + fileMaxSizeMB + " MB",
-              })
-              .optional(),
+      image: z
+        .custom<File>((value) => {
+          return !value || value instanceof File;
+        }, "Debe seleccionar una imagen")
+        .refine((file) => !file || file.type.startsWith("image/"), {
+          message:
+            "El archivo debe ser una imagen válida (jpg, png, gif, etc.)",
+        })
+        .refine((file) => !file || file.size <= fileMaxSizeMB * 1024 * 1024, {
+          message:
+            "El tamaño de la imagen no debe exceder los " +
+            fileMaxSizeMB +
+            " MB",
+        })
+        .optional(),
     })
     .refine(
       (data) => {

@@ -9,6 +9,7 @@ import { getAllProducts } from "@/lib/services/products";
 import {
   CreatePromotion,
   DiscountOption,
+  promotionsDiscountOptionMap,
   StatesPromotions,
 } from "@/lib/types/promotion";
 import {
@@ -91,7 +92,10 @@ export const PromotionForm: FunctionComponent<PromotionFormProps> = ({
           <RHFAutocomplete
             name="discountOption"
             label="Opciones de descuento"
-            options={[DiscountOption.FIXED_AMOUNT, DiscountOption.PERCENTAGE]}
+            options={[
+              promotionsDiscountOptionMap.get(DiscountOption.FIXED_AMOUNT),
+              promotionsDiscountOptionMap.get(DiscountOption.PERCENTAGE),
+            ]}
             size="small"
             fullWidth
           />

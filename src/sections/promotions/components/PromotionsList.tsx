@@ -4,7 +4,7 @@ import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Pagination } from "@/lib/types/pagination";
-import { Promotion } from "@/lib/types/promotion";
+import { Promotion, promotionsDiscountOptionMap } from "@/lib/types/promotion";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
@@ -43,6 +43,12 @@ export const PromotionsList: FunctionComponent<PromotionsListProps> = ({
       headerName: "Opción de Descuento",
       sortable: false,
       flex: 0.8,
+      renderCell: ({ row }) => (
+        <Chip
+          label={promotionsDiscountOptionMap.get(row.discountOption)}
+          variant="filled"
+        />
+      ),
     },
     {
       field: "discountValue",

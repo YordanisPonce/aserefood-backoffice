@@ -9,6 +9,8 @@ import {
   CreatePromotion,
   CreatePromotionDTO,
   DiscountOption,
+  invertedPromotionsDiscountOptionMap,
+  promotionsDiscountOptionMap,
   StatesPromotions,
 } from "@/lib/types/promotion";
 import { createPromotionSchema } from "../utils/shcema";
@@ -36,7 +38,9 @@ export const PromotionFormContainer: FunctionComponent = () => {
       name: undefined,
       description: undefined,
       code: undefined,
-      discountOption: DiscountOption.FIXED_AMOUNT,
+      discountOption: promotionsDiscountOptionMap.get(
+        DiscountOption.FIXED_AMOUNT
+      ),
       discountValue: 1,
       endDate: new Date().toISOString(),
       startDate: new Date().toISOString(),
@@ -73,12 +77,16 @@ export const PromotionFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     try {
       const image = file ? await fileToBase64(file) : null;
+      const discountOptionValue =
+        invertedPromotionsDiscountOptionMap.get(discountOption);
 
       const createPromotionDTO: CreatePromotionDTO = {
         name: name,
         code,
         description,
-        discountOption: discountOption === DiscountOption.PERCENTAGE ? 1 : 2,
+        discountOption: discountOptionValue
+          ? discountOptionValue
+          : DiscountOption.PERCENTAGE,
         discountValue,
         endDate: endDate,
         startDate: startDate,
@@ -108,10 +116,9 @@ export const PromotionFormContainer: FunctionComponent = () => {
         methods.reset({
           code: promotion.code,
           description: promotion.description,
-          discountOption:
-            promotion.discountOption === 1
-              ? DiscountOption.PERCENTAGE
-              : DiscountOption.FIXED_AMOUNT,
+          discountOption: promotionsDiscountOptionMap.get(
+            promotion.discountOption
+          ),
           discountValue: promotion.discountValue,
           endDate: promotion.endDate,
           startDate: promotion.startDate,
