@@ -27,6 +27,7 @@ export interface ModalTypes {
   categories: SectionModal;
   subcategories: SectionModal;
   deliveryMethods: SectionModal;
+  orders: SectionModal;
 }
 
 export const modalTypes: ModalTypes = {
@@ -232,6 +233,23 @@ export const modalTypes: ModalTypes = {
       subTitle: "¿Seguro que desea eliminar el Método de entrega?",
       message:
         "La acción de eliminación de un método de entrega es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
+    },
+  },
+  orders: {
+    details: {
+      name: "details-order",
+      title: "Información de Orden de Compra",
+    },
+    form: {
+      name: "form-order",
+      title: "Formualrio de Orden de Compra",
+    },
+    delete: {
+      name: "delete-order",
+      title: "Eliminación de Orden de Compra",
+      subTitle: "¿Seguro que desea eliminar la Orden de Compra?",
+      message:
+        "La acción de eliminación de una orden de compra es irreversible y no se prodrá recuperar la información una vez se haya eliminado.",
     },
   },
 };

@@ -6,6 +6,7 @@ interface Routes {
   home: Route;
   login: Route;
   dashboard: Route;
+  orders: Route;
   categories: Route;
   products: Route;
   productCombos: Route;
@@ -23,6 +24,7 @@ export const routes: Routes = {
   home: { path: "/" },
   login: { path: "/login" },
   dashboard: { path: "/dashboard" },
+  orders: { path: "/orders" },
   categories: { path: "/categories" },
   products: { path: "/products" },
   productCombos: { path: "/product-combos" },

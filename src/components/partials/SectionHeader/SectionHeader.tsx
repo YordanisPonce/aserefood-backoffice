@@ -7,7 +7,7 @@ import useModal from "../Modal/hooks/useModal";
 
 interface SectionHeaderProps {
   titleSection: string;
-  titleButton: string;
+  titleButton?: string;
   createAction?: string;
 }
 
@@ -42,9 +42,15 @@ export default function SectionHeader({
       >
         {titleSection}
       </Typography>
-      <Button variant="contained" onClick={handleClick} startIcon={<AddIcon />}>
-        {titleButton}
-      </Button>
+      {titleButton && (
+        <Button
+          variant="contained"
+          onClick={handleClick}
+          startIcon={<AddIcon />}
+        >
+          {titleButton}
+        </Button>
+      )}
     </Box>
   );
 }

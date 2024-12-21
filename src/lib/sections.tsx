@@ -10,6 +10,7 @@ import {
   HomeWorkRounded as HomeWorkRoundedIcon,
   CalendarMonth as CalendarMonthIcon,
   LocalShipping as LocalShippingIcon,
+  ShoppingBasket as ShoppingBasketIcon,
 } from "@mui/icons-material";
 import { routes } from "@/lib/config/routes";
 
@@ -25,6 +26,11 @@ export const sections: Section[] = [
     name: "Dashboard",
     path: routes.dashboard.path,
     icon: <InboxIcon />,
+  },
+  {
+    name: "Órdenes de Compra",
+    path: routes.orders.path,
+    icon: <ShoppingBasketIcon />,
   },
   {
     name: "Categorías",
