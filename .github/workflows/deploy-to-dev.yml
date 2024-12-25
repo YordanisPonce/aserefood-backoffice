@@ -23,5 +23,8 @@ jobs:
     - name: Stop docker compose
       run: docker compose down || true
     
+    - name: Build docker compose
+      run: docker compose build --no-cache
+
     - name: Start docker compose
-      run: docker compose up -d --build
+      run: docker compose up -d 
