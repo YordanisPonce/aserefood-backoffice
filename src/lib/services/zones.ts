@@ -15,7 +15,7 @@ export const getZones = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}zones`
+    `${process.env.NEXT_PUBLIC_API_URL}zones`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -34,7 +34,7 @@ export const getZones = async (
 
 export const getAllZones = async (): Promise<Zone[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}zones/all`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}zones/all`)
   );
 
   if (!response.ok) {
@@ -47,7 +47,7 @@ export const getAllZones = async (): Promise<Zone[]> => {
 
 export const getZone = async (zoneId: string): Promise<ZoneDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}zones/${zoneId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}zones/${zoneId}`,
     {
       cache: "no-store",
     }
@@ -64,13 +64,16 @@ export const getZone = async (zoneId: string): Promise<ZoneDetails> => {
 export const createZone = async (
   zone: CreateZoneDTO
 ): Promise<Paginated<Zone>> => {
-  const response = await fetchWithAuth(`${process.env.NEXT_APP_API_URL}zones`, {
-    method: "POST",
-    body: JSON.stringify(zone),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_PUBLIC_API_URL}zones`,
+    {
+      method: "POST",
+      body: JSON.stringify(zone),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (!response.ok) {
     console.log(response);
@@ -94,7 +97,7 @@ export const updateZone = async (
   zone: CreateZoneDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}zones/` + zoneId,
+    `${process.env.NEXT_PUBLIC_API_URL}zones/` + zoneId,
     {
       method: "PATCH",
       body: JSON.stringify(zone),
@@ -121,7 +124,7 @@ export const updateZone = async (
 
 export const deleteZone = async (zoneId: string): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}zones/` + zoneId,
+    `${process.env.NEXT_PUBLIC_API_URL}zones/` + zoneId,
     {
       method: "DELETE",
       headers: {

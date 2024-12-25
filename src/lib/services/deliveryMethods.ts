@@ -15,7 +15,7 @@ export const getDeliveryMethods = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}delivery-methods`
+    `${process.env.NEXT_PUBLIC_API_URL}delivery-methods`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -36,7 +36,7 @@ export const getDeliveryMethod = async (
   deliveryMethodId: string
 ): Promise<DeliveryMethodDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}delivery-methods/${deliveryMethodId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}delivery-methods/${deliveryMethodId}`,
     {
       cache: "no-store",
     }
@@ -54,7 +54,7 @@ export const createDeliveryMethod = async (
   deliveryMethod: CreateDeliveryMethodDTO
 ): Promise<Paginated<DeliveryMethod>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}delivery-methods`,
+    `${process.env.NEXT_PUBLIC_API_URL}delivery-methods`,
     {
       method: "POST",
       body: JSON.stringify(deliveryMethod),
@@ -77,7 +77,7 @@ export const updateDeliveryMethod = async (
   deliveryMethod: CreateDeliveryMethodDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}delivery-methods/` + deliveryMethodId,
+    `${process.env.NEXT_PUBLIC_API_URL}delivery-methods/` + deliveryMethodId,
     {
       method: "PATCH",
       body: JSON.stringify(deliveryMethod),

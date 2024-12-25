@@ -15,7 +15,7 @@ export const getProviders = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}providers`
+    `${process.env.NEXT_PUBLIC_API_URL}providers`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -34,7 +34,7 @@ export const getProviders = async (
 
 export const getAllProviders = async (): Promise<Provider[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}providers/all`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}providers/all`)
   );
 
   if (!response.ok) {
@@ -47,7 +47,7 @@ export const getAllProviders = async (): Promise<Provider[]> => {
 
 export const getProvider = async (providerId: string): Promise<Provider> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}providers/${providerId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}providers/${providerId}`,
     {
       cache: "no-store",
     }
@@ -65,7 +65,7 @@ export const createProvider = async (
   provider: CreateProviderDTO
 ): Promise<Paginated<Provider>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}providers`,
+    `${process.env.NEXT_PUBLIC_API_URL}providers`,
     {
       method: "POST",
       body: JSON.stringify(provider),
@@ -97,7 +97,7 @@ export const updateProvider = async (
   provider: CreateProviderDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}providers/` + providerId,
+    `${process.env.NEXT_PUBLIC_API_URL}providers/` + providerId,
     {
       method: "PATCH",
       body: JSON.stringify(provider),
@@ -124,7 +124,7 @@ export const updateProvider = async (
 
 export const deleteProvider = async (providerId: string): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}providers/` + providerId,
+    `${process.env.NEXT_PUBLIC_API_URL}providers/` + providerId,
     {
       method: "DELETE",
       headers: {

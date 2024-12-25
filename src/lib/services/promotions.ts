@@ -16,7 +16,7 @@ export const getPromotions = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}promotions`
+    `${process.env.NEXT_PUBLIC_API_URL}promotions`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -37,7 +37,7 @@ export const getPromotion = async (
   promotionId: string
 ): Promise<PromotionDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}promotions/${promotionId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}promotions/${promotionId}`,
     {
       cache: "no-store",
     }
@@ -55,7 +55,7 @@ export const createPromotion = async (
   promotion: CreatePromotionDTO
 ): Promise<Paginated<Promotion>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}promotions`,
+    `${process.env.NEXT_PUBLIC_API_URL}promotions`,
     {
       method: "POST",
       body: JSON.stringify(promotion),
@@ -85,7 +85,7 @@ export const updatePromotion = async (
   promotion: CreatePromotionDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}promotions/` + promotionId,
+    `${process.env.NEXT_PUBLIC_API_URL}promotions/` + promotionId,
     {
       method: "PATCH",
       body: JSON.stringify(promotion),

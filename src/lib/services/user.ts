@@ -6,7 +6,7 @@ import { CreateUserDTO, UpdateUserDTO, User } from "../types/users";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
-const usersTag = "users"
+const usersTag = "users";
 
 export const getUsers = async (
   params: SearchParams
@@ -14,7 +14,7 @@ export const getUsers = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}users`
+    `${process.env.NEXT_PUBLIC_API_URL}users`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -33,7 +33,7 @@ export const getUsers = async (
 
 export const getUser = async (userId: string): Promise<User> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}users/${userId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}users/${userId}`,
     {
       cache: "no-store",
     }
@@ -50,13 +50,16 @@ export const getUser = async (userId: string): Promise<User> => {
 export const createUser = async (
   user: CreateUserDTO
 ): Promise<Paginated<User>> => {
-  const response = await fetchWithAuth(`${process.env.NEXT_APP_API_URL}users`, {
-    method: "POST",
-    body: JSON.stringify(user),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await fetchWithAuth(
+    `${process.env.NEXT_PUBLIC_API_URL}users`,
+    {
+      method: "POST",
+      body: JSON.stringify(user),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
   if (!response.ok) {
     console.log(response);
@@ -82,7 +85,7 @@ export const updateUser = async (
   user: UpdateUserDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}users/` + userId,
+    `${process.env.NEXT_PUBLIC_API_URL}users/` + userId,
     {
       method: "PATCH",
       body: JSON.stringify(user),
@@ -111,7 +114,7 @@ export const updateUser = async (
 
 export const deleteUser = async (userId: string): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}users/` + userId,
+    `${process.env.NEXT_PUBLIC_API_URL}users/` + userId,
     {
       method: "DELETE",
       headers: {

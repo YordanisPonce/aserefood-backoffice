@@ -1,6 +1,6 @@
 import ForgotPasswordCard from "@/components/partials/ForgotPasswordCard/ForgotPasswordCard";
 import { Box } from "@mui/material";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function ForgotPasswordPage() {
   return (
@@ -13,7 +13,9 @@ export default function ForgotPasswordPage() {
         backgroundColor: "#f5f5f5",
       }}
     >
-      <ForgotPasswordCard />
+      <Suspense>
+        <ForgotPasswordCard />
+      </Suspense>
     </Box>
   );
 }

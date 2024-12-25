@@ -15,7 +15,7 @@ jobs:
     
     - name: Create env
       run: |
-        echo "NEXT_APP_API_URL=${{ vars.NEXT_APP_API_URL_DEV }}" >> .env.production
+        echo "NEXT_PUBLIC_API_URL=${{ vars.NEXT_APP_API_URL_DEV }}" >> .env.production
         echo "NEXTAUTH_SECRET=${{ vars.NEXTAUTH_SECRET_DEV }}" >> .env.production
         echo "NEXTAUTH_URL=${{ vars.NEXTAUTH_URL_DEV }}" >> .env.production
         echo "NEXT_PUBLIC_SESSION_COOKIE_NAME=${{ vars.NEXT_PUBLIC_SESSION_COOKIE_NAME_DEV }}" >> .env.production

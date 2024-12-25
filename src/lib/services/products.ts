@@ -7,7 +7,7 @@ import { CreateProductDTO, Product, ProductDetails } from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
-const productsTag = "products"
+const productsTag = "products";
 
 export const getProducts = async (
   params: SearchParams
@@ -15,7 +15,7 @@ export const getProducts = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}products`
+    `${process.env.NEXT_PUBLIC_API_URL}products`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -34,7 +34,7 @@ export const getProducts = async (
 
 export const getAllProducts = async (): Promise<Product[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}products/all`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}products/all`)
   );
 
   if (!response.ok) {
@@ -49,7 +49,7 @@ export const getProduct = async (
   productId: string
 ): Promise<ProductDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}products/${productId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}products/${productId}`,
     {
       cache: "no-store",
     }
@@ -67,7 +67,7 @@ export const createProduct = async (
   product: CreateProductDTO
 ): Promise<Paginated<Product>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}products`,
+    `${process.env.NEXT_PUBLIC_API_URL}products`,
     {
       method: "POST",
       body: JSON.stringify(product),
@@ -99,7 +99,7 @@ export const updateProduct = async (
   product: CreateProductDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}products/` + productId,
+    `${process.env.NEXT_PUBLIC_API_URL}products/` + productId,
     {
       method: "PATCH",
       body: JSON.stringify(product),
@@ -126,7 +126,7 @@ export const updateProduct = async (
 
 export const deleteProduct = async (productId: string): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}products/` + productId,
+    `${process.env.NEXT_PUBLIC_API_URL}products/` + productId,
     {
       method: "DELETE",
       headers: {

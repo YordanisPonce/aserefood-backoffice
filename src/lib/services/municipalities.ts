@@ -14,7 +14,7 @@ export const getMunicipalities = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}municipalities`
+    `${process.env.NEXT_PUBLIC_API_URL}municipalities`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -35,7 +35,7 @@ export const getMunicipality = async (
   municipalityId: string
 ): Promise<Municipality> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}municipalities/${municipalityId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}municipalities/${municipalityId}`,
     {
       cache: "no-store",
     }
@@ -51,7 +51,7 @@ export const getMunicipality = async (
 
 export const getAllMunicipalities = async (): Promise<Municipality[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}municipalities/all`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}municipalities/all`)
   );
 
   if (!response.ok) {
@@ -66,7 +66,7 @@ export const getAvaliablesMunicipalities = async (): Promise<
   Municipality[]
 > => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}municipalities/available`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}municipalities/available`)
   );
 
   if (!response.ok) {
@@ -81,7 +81,7 @@ export const createMunicipality = async (
   municipality: CreateMunicipalityDTO
 ): Promise<Paginated<Municipality>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}municipalities`,
+    `${process.env.NEXT_PUBLIC_API_URL}municipalities`,
     {
       method: "POST",
       body: JSON.stringify(municipality),
@@ -113,7 +113,7 @@ export const updateMunicipality = async (
   municipality: CreateMunicipalityDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}municipalities/` + municipalityId,
+    `${process.env.NEXT_PUBLIC_API_URL}municipalities/` + municipalityId,
     {
       method: "PATCH",
       body: JSON.stringify(municipality),
@@ -142,7 +142,7 @@ export const deleteMunicipality = async (
   municiplalityId: string
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}municipalities/` + municiplalityId,
+    `${process.env.NEXT_PUBLIC_API_URL}municipalities/` + municiplalityId,
     {
       method: "DELETE",
       headers: {

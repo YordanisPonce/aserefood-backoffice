@@ -1,7 +1,6 @@
-"use client";
 import ChangePasswordCard from "@/components/partials/ChangePasswordCard/ChangePasswordCard";
 import { Box } from "@mui/material";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function ChangePasswordPage() {
   return (
@@ -14,7 +13,9 @@ export default function ChangePasswordPage() {
         backgroundColor: "#f5f5f5",
       }}
     >
-      <ChangePasswordCard />
+      <Suspense>
+        <ChangePasswordCard />
+      </Suspense>
     </Box>
   );
 }

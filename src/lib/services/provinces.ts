@@ -14,7 +14,7 @@ export const getProvinces = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}provinces`
+    `${process.env.NEXT_PUBLIC_API_URL}provinces`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -33,7 +33,7 @@ export const getProvinces = async (
 
 export const getProvince = async (provinceId: string): Promise<Province> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}provinces/${provinceId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}provinces/${provinceId}`,
     {
       cache: "no-store",
     }
@@ -49,7 +49,7 @@ export const getProvince = async (provinceId: string): Promise<Province> => {
 
 export const getAllProvinces = async (): Promise<Province[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}provinces/all`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}provinces/all`)
   );
 
   if (!response.ok) {
@@ -64,7 +64,7 @@ export const createProvince = async (
   province: CreateProvinceDTO
 ): Promise<Paginated<Province>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}provinces`,
+    `${process.env.NEXT_PUBLIC_API_URL}provinces`,
     {
       method: "POST",
       body: JSON.stringify(province),
@@ -96,7 +96,7 @@ export const updateProvince = async (
   province: CreateProvinceDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}provinces/` + provinceId,
+    `${process.env.NEXT_PUBLIC_API_URL}provinces/` + provinceId,
     {
       method: "PATCH",
       body: JSON.stringify(province),
@@ -123,7 +123,7 @@ export const updateProvince = async (
 
 export const deleteProvince = async (provinceId: string): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}provinces/` + provinceId,
+    `${process.env.NEXT_PUBLIC_API_URL}provinces/` + provinceId,
     {
       method: "DELETE",
       headers: {

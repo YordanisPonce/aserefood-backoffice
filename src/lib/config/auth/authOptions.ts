@@ -13,14 +13,17 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await fetch(process.env.NEXT_APP_API_URL + "auth/login", {
-          method: "POST",
-          body: JSON.stringify({
-            email: credentials?.email,
-            password: credentials?.password,
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
+        const res = await fetch(
+          process.env.NEXT_PUBLIC_API_URL + "auth/login",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+            }),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
         const user = await res.json();
 
         if (!res.ok) {

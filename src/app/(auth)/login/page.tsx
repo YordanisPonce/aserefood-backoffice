@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import LoginCard from "../../../components/partials/LoginCard/LoginCard";
 import { Box } from "@mui/material";
 
@@ -13,7 +13,9 @@ export default function Login() {
         backgroundColor: "#f5f5f5",
       }}
     >
-      <LoginCard />
+      <Suspense>
+        <LoginCard />
+      </Suspense>
     </Box>
   );
 }

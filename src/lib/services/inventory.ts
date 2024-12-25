@@ -20,7 +20,7 @@ export const getInventoryEntries = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}inventory-entries`
+    `${process.env.NEXT_PUBLIC_API_URL}inventory-entries`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -41,7 +41,7 @@ export const getInventoryEntry = async (
   inventroyEntryId: string
 ): Promise<InventoryEntryDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}inventory-entries/${inventroyEntryId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}inventory-entries/${inventroyEntryId}`,
     {
       cache: "no-store",
     }
@@ -59,7 +59,7 @@ export const createInventoryEntry = async (
   inventoryEntries: CreateInventoryEntryDTO[]
 ): Promise<Paginated<InventoryEntry>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}inventory-entries`,
+    `${process.env.NEXT_PUBLIC_API_URL}inventory-entries`,
     {
       method: "POST",
       body: JSON.stringify(inventoryEntries),
@@ -89,7 +89,7 @@ export const updateInventoryEntry = async (
   inventoryEntry: UpdateInventoryEntryDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}inventory-entries/` + inventoryEntryId,
+    `${process.env.NEXT_PUBLIC_API_URL}inventory-entries/` + inventoryEntryId,
     {
       method: "PATCH",
       body: JSON.stringify(inventoryEntry),
@@ -116,7 +116,7 @@ export const deleteInventoryEntry = async (
   inventoryEntryId: string
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}inventory-entries/` + inventoryEntryId,
+    `${process.env.NEXT_PUBLIC_API_URL}inventory-entries/` + inventoryEntryId,
     {
       method: "DELETE",
       headers: {

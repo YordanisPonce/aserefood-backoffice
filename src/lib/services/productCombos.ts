@@ -11,7 +11,7 @@ import {
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
-const productCombosTag = "product-combos"
+const productCombosTag = "product-combos";
 
 export const getProductCombos = async (
   params: SearchParams
@@ -19,7 +19,7 @@ export const getProductCombos = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}product-combos`
+    `${process.env.NEXT_PUBLIC_API_URL}product-combos`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -38,7 +38,7 @@ export const getProductCombos = async (
 
 export const getAllProductCombos = async (): Promise<ProductCombo[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}product-combos/all`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}product-combos/all`)
   );
 
   if (!response.ok) {
@@ -53,7 +53,7 @@ export const getProductCombo = async (
   productComboId: string
 ): Promise<ProductComboDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}product-combos/${productComboId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}product-combos/${productComboId}`,
     {
       cache: "no-store",
     }
@@ -71,7 +71,7 @@ export const createProductCombo = async (
   productCombo: CreateProductComboDTO
 ): Promise<Paginated<ProductCombo>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}product-combos`,
+    `${process.env.NEXT_PUBLIC_API_URL}product-combos`,
     {
       method: "POST",
       body: JSON.stringify(productCombo),
@@ -105,7 +105,7 @@ export const updateProductCombo = async (
   console.log(productComboId);
   console.log(productCombo);
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}product-combos/` + productComboId,
+    `${process.env.NEXT_PUBLIC_API_URL}product-combos/` + productComboId,
     {
       method: "PATCH",
       body: JSON.stringify(productCombo),
@@ -134,7 +134,7 @@ export const deleteProductCombo = async (
   productComboId: string
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}product-combos/` + productComboId,
+    `${process.env.NEXT_PUBLIC_API_URL}product-combos/` + productComboId,
     {
       method: "DELETE",
       headers: {

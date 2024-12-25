@@ -24,7 +24,7 @@ export const getCategories = async (
       : undefined;
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}categories`
+    `${process.env.NEXT_PUBLIC_API_URL}categories`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -47,7 +47,7 @@ export const getCategory = async (
   categoryId: string
 ): Promise<CategoryDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}categories/${categoryId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}categories/${categoryId}`,
     {
       cache: "no-store",
     }
@@ -63,7 +63,7 @@ export const getCategory = async (
 
 export const getAllCategories = async (): Promise<SelectOption[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}categories/all`)
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}categories/all`)
   );
 
   if (!response.ok) {
@@ -78,7 +78,9 @@ export const getCategoryAncestors = async (
   categoryId: string
 ): Promise<Category[]> => {
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_APP_API_URL}categories/ancestors/` + categoryId)
+    new URL(
+      `${process.env.NEXT_PUBLIC_API_URL}categories/ancestors/` + categoryId
+    )
   );
 
   if (!response.ok) {
@@ -93,7 +95,7 @@ export const createCategory = async (
   category: CreateCategoryDTO
 ): Promise<Paginated<Category>> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}categories`,
+    `${process.env.NEXT_PUBLIC_API_URL}categories`,
     {
       method: "POST",
       body: JSON.stringify(category),
@@ -125,7 +127,7 @@ export const updateCategory = async (
   category: CreateCategoryDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}categories/` + categoryId,
+    `${process.env.NEXT_PUBLIC_API_URL}categories/` + categoryId,
     {
       method: "PATCH",
       body: JSON.stringify(category),
@@ -153,7 +155,7 @@ export const updateCategory = async (
 export const deleteCategory = async (categoryId: string): Promise<void> => {
   // aqui se espera a que la api responda
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}categories/` + categoryId,
+    `${process.env.NEXT_PUBLIC_API_URL}categories/` + categoryId,
     {
       method: "DELETE",
       headers: {
