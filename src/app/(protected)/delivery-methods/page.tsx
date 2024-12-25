@@ -44,3 +44,5 @@ export default async function DeliveryMethodsPage({ searchParams }: PageProps) {
     </Paper>
   );
 }
+
+export const dynamic = 'force-dynamic'

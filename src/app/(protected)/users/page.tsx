@@ -51,3 +51,5 @@ export default async function UserManagementPage({
     </Paper>
   );
 }
+
+export const dynamic = "force-dynamic";

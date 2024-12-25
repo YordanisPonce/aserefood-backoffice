@@ -19,3 +19,5 @@ export default function ChangePasswordPage() {
     </Box>
   );
 }
+
+export const dynamic = 'force-dynamic'

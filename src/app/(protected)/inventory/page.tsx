@@ -53,3 +53,5 @@ export default async function Page({ searchParams }: PageProps) {
     </Paper>
   );
 }
+
+export const dynamic = "force-dynamic";
