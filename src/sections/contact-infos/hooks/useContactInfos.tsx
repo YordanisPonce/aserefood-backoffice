@@ -28,7 +28,7 @@ export default function useContactInfos({ userId, filters }: Props) {
     clientHandlePageSizeChange,
   } = useClientPagination({ setSearchParams });
 
-  const fetchContactInfos = async () => {
+  const fetchContactInfos = useCallback(async () => {
     if (userId) {
       setLoadingData(true);
       setError(undefined);
@@ -46,14 +46,7 @@ export default function useContactInfos({ userId, filters }: Props) {
         setLoadingData(false);
       }
     } else throw new Error("userId no está definido");
-  };
-
-  const debouncedFetchContactInfos = useCallback(
-    debounce(() => {
-      fetchContactInfos();
-    }, 500),
-    [searchParams]
-  );
+  }, [searchParams, setPagination, userId]);
 
   useEffect(() => {
     setSearchParams((prev) => ({
@@ -67,12 +60,17 @@ export default function useContactInfos({ userId, filters }: Props) {
   }, [filters]);
 
   useEffect(() => {
+    const handler = debounce(() => {
+      fetchContactInfos();
+    }, 500);
     if (isFirstRender.current) {
       isFirstRender.current = false;
       fetchContactInfos();
-    } else debouncedFetchContactInfos();
-    return () => debouncedFetchContactInfos.cancel();
-  }, [searchParams]);
+    } else {
+      handler();
+    }
+    return () => handler.cancel();
+  }, [searchParams, fetchContactInfos]);
 
   return {
     contactInfos,

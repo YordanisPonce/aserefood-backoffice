@@ -19,7 +19,7 @@ export const getContactInfos = async (
 
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}${
+    `${process.env.NEXT_PUBLIC_API_URL}${
       contactInfosPath + contactInfosSearchPath + contactInfosAdminPath
     }/` + userId
   );
@@ -42,7 +42,7 @@ export const getContactInfo = async (
   contactInfoId: string
 ): Promise<ContactInfoDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}${
+    `${process.env.NEXT_PUBLIC_API_URL}${
       contactInfosPath + contactInfosAdminPath
     }/${contactInfoId}`,
     {
