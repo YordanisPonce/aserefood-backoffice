@@ -8,15 +8,10 @@ import {
   ListItemText,
   Divider,
 } from "@mui/material";
-import {
-  ShoppingCart,
-  AttachMoney,
-  LocalShipping,
-  Person,
-} from "@mui/icons-material";
+import { ShoppingCart, AttachMoney, LocalShipping } from "@mui/icons-material";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
-import useOrder from "../hooks/useOrder";
+import useOrder from "../../hooks/useOrder";
 import {
   orderPaymentSelectionMap,
   orderStatusColorMap,
@@ -24,6 +19,7 @@ import {
 } from "@/lib/types/order";
 import DialogSections from "@/sections/components/DialogSections";
 import DeliveryMethodDetails from "@/sections/delivery-methods/components/DeliveryMethodDetails";
+import OrderDetailsContactInfoSection from "./components/OrderDetailsContactInfoSection";
 
 interface Props {
   orderId: string | null;
@@ -50,7 +46,7 @@ export default function OrderDetails({ orderId }: Props) {
               overflow: "hidden",
             }}
           >
-            <Box sx={{ p: 3, overflowY: "auto" }}>
+            <Box sx={{ p: 3 }}>
               <Box display="flex" alignItems="center" mb={2}>
                 <ShoppingCart
                   sx={{ fontSize: 40, mr: 2, color: "primary.main" }}
@@ -101,32 +97,24 @@ export default function OrderDetails({ orderId }: Props) {
                 Monto total: ${order.totalAmount}
               </Typography>
               <Divider sx={{ my: 2 }} />
-              <Box display="flex" alignItems="center" mb={1}>
+              <Box display="flex" alignItems="center" mb={1} gap={1}>
                 <LocalShipping sx={{ mr: 1 }} color="action" />
                 <Typography variant="subtitle2">Método de Entrega:</Typography>
+                <DialogSections
+                  buttonTitle="Ver Método de entrega"
+                  title="Información del Método de Entrega"
+                >
+                  <DeliveryMethodDetails
+                    deliveryMethodId={order.deliveryMethodId.toString()}
+                  />
+                </DialogSections>
               </Box>
-              <DialogSections
-                buttonTitle="Ver Método de entrega"
-                title="Información del Método de Entrega"
-              >
-                <DeliveryMethodDetails
-                  deliveryMethodId={order.deliveryMethodId.toString()}
-                />
-              </DialogSections>
-              <Box display="flex" alignItems="center" mb={1}>
-                <Person sx={{ mr: 1 }} color="action" />
-                <Typography variant="subtitle2">
-                  Información de Contacto:
-                </Typography>
-              </Box>
-              <DialogSections
-                buttonTitle="Ver Información de Contacto"
-                title="Información de Contacto"
-              >
-                <DeliveryMethodDetails
-                  deliveryMethodId={order.deliveryMethodId.toString()}
-                />
-              </DialogSections>
+
+              <OrderDetailsContactInfoSection
+                contactInfoId={order.contactInfoId.toString()}
+              />
+
+              <Box sx={{ padding: 1 }}></Box>
               <Divider sx={{ my: 2 }} />
               <Typography variant="subtitle2" gutterBottom>
                 Artículos de la Orden:

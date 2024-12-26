@@ -14,7 +14,7 @@ export const getOrders = async (
   const query: IQueryable = buildQueryParams(params);
   const queryObject = new QueryParamsURLFactory(
     query,
-    `${process.env.NEXT_APP_API_URL}${ordersPath}`
+    `${process.env.NEXT_PUBLIC_API_URL}${ordersPath}`
   );
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
@@ -33,7 +33,7 @@ export const getOrders = async (
 
 export const getOrder = async (orderId: string): Promise<OrderDetails> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}${ordersPath}/${orderId}`,
+    `${process.env.NEXT_PUBLIC_API_URL}${ordersPath}/${orderId}`,
     {
       cache: "no-store",
     }
@@ -52,7 +52,7 @@ export const updateOrder = async (
   order: UpdateOrderDTO
 ): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}${ordersPath}/` + orderId,
+    `${process.env.NEXT_PUBLIC_API_URL}${ordersPath}/` + orderId,
     {
       method: "PATCH",
       body: JSON.stringify(order),

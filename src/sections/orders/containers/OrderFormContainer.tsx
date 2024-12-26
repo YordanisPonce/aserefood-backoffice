@@ -30,30 +30,27 @@ export const OrderFormContainer: FunctionComponent = () => {
   };
   const methods = useForm<UpdateOrder>(formOptions);
 
-  const onSubmit = useCallback(
-    async ({ status }: UpdateOrder) => {
-      setIsLoading(true);
-      setError(undefined);
+  const onSubmit = async ({ status }: UpdateOrder) => {
+    setIsLoading(true);
+    setError(undefined);
 
-      try {
-        if (orderId) {
-          const orderStatus = orderStatusMapInverted.get(status);
-          if (orderStatus)
-            await updateOrder(orderId, {
-              status: orderStatus,
-            });
-        }
-        await revalidateServerTags("orders");
-        handleCloseModal();
-      } catch (error) {
-        console.log(error);
-        if (error instanceof Error) setError(error.message);
-      } finally {
-        setIsLoading(false);
+    try {
+      if (orderId) {
+        const orderStatus = orderStatusMapInverted.get(status);
+        if (orderStatus)
+          await updateOrder(orderId, {
+            status: orderStatus,
+          });
       }
-    },
-    [orderId]
-  );
+      await revalidateServerTags("orders");
+      handleCloseModal();
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error) setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const updateForm = useCallback(
     async (orderId: string) => {

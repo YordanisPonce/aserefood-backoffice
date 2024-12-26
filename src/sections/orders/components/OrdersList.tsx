@@ -25,7 +25,7 @@ export const OrdersList: FunctionComponent<OrdersListProps> = ({
 }) => {
   const { handleOpenModal } = useModal();
   const onEdit = (params: GridRenderCellParams) => () => {
-    handleOpenModal(modalTypes.orders.details.name, params.row.id);
+    handleOpenModal(modalTypes.orders.form.name, params.row.id);
   };
   const onViewDetails = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.orders.details.name, params.row.id);

@@ -1,5 +1,5 @@
 "use client";
-import { Box, Button, Dialog, DialogTitle } from "@mui/material";
+import { Box, Button, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import React, { ReactNode } from "react";
 import useDialog from "./Dialog/hooks/useDialog";
 import CloseIcon from "@mui/icons-material/Close";
@@ -20,7 +20,7 @@ export default function DialogSections({
   return (
     <>
       <Button onClick={handleOpenDialog}>{buttonTitle}</Button>
-      <Dialog open={open} onClose={handleCloseDialog} maxWidth="lg">
+      <Dialog open={open} onClose={handleCloseDialog} maxWidth={"sm"} fullWidth>
         <Box
           sx={{
             display: "flex",
@@ -34,15 +34,7 @@ export default function DialogSections({
             onClick={handleCloseDialog}
           />
         </Box>
-        <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          width={500}
-          p={2}
-        >
-          {children}
-        </Box>
+        <DialogContent>{children}</DialogContent>
       </Dialog>
     </>
   );

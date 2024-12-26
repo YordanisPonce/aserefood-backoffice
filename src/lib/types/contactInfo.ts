@@ -22,7 +22,7 @@ export interface ContactInfoDetails {
     id: number;
     name: string;
   };
-  userId: string;
+  userId: number;
 }
 
 // Filters
