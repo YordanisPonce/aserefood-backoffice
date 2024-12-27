@@ -1,5 +1,4 @@
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
-import RHFCheckboxWithLabel from "@/components/common/hook-form/RHFCheckboxWithLabel";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
 import { getAllMunicipalities } from "@/lib/services/municipalities";
