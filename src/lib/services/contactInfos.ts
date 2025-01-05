@@ -15,8 +15,7 @@ export const getContactInfos = async (
   userId: string
 ): Promise<Paginated<ContactInfo>> => {
   const query: IQueryable = buildQueryParams(params);
-  query.municipalityId = params.municipalityId;
-
+  
   const queryObject = new QueryParamsURLFactory(
     query,
     `${process.env.NEXT_PUBLIC_API_URL}${

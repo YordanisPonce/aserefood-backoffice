@@ -1,9 +1,11 @@
+import { SearchParams } from "./pagination";
+
 export interface Category {
   id: number;
   name: string;
   description: string;
   parentId: number;
-  parentName: string
+  parentName: string;
   children: Category[];
 }
 
@@ -12,7 +14,7 @@ export interface CategoryDetails {
   name: string;
   description: string;
   parentId: number;
-  parentName: string
+  parentName: string;
   children: CategoryDetails[];
 }
 
@@ -34,4 +36,11 @@ export interface CreateCategoryDTO {
   name: string;
   description: string;
   parentId: number | null;
+}
+
+// filters
+
+export interface CategoriesFilters extends SearchParams {
+  parentId?: number;
+  isFlat?: boolean;
 }

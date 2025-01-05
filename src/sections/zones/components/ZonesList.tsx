@@ -7,6 +7,7 @@ import { Pagination } from "@/lib/types/pagination";
 import { Zone } from "@/lib/types/zone";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import ZonesFilters from "./Filters/ZonesFilters";
 
 type ZonesListProps = {
   zones: Zone[];
@@ -63,6 +64,7 @@ export const ZonesList: FunctionComponent<ZonesListProps> = ({
       data={zones}
       pagination={pagination}
       disableSelection
+      filters={<ZonesFilters />}
     />
   );
 };

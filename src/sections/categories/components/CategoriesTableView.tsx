@@ -9,6 +9,7 @@ import { Pagination } from "@/lib/types/pagination";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import CategoriesFilters from "./Filters/CategoriesFilters";
 
 interface Props {
   categories: Category[];
@@ -63,6 +64,7 @@ export default function CategoriesTableView({ categories, pagination }: Props) {
       data={categories}
       pagination={pagination}
       disableSelection
+      filters={<CategoriesFilters />}
     />
   );
 }

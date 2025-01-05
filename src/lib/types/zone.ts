@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface Zone {
   id: number;
   name: string;
@@ -27,4 +29,11 @@ export interface CreateZoneDTO {
   name: string;
   description: string;
   municipalityIds: number[];
+}
+
+// filters
+
+export interface ZonesFilters extends SearchParams {
+  provinceId?: number;
+  municipalityId?: number;
 }

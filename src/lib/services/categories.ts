@@ -8,7 +8,6 @@ import {
 } from "../types/category";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { SelectOption } from "../types/select";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
@@ -18,10 +17,6 @@ export const getCategories = async (
   params: SearchParams
 ): Promise<Paginated<Category>> => {
   const query: IQueryable = buildQueryParams(params);
-  query.isFlat =
-    params.isFlat === "true" || params.isFlat === "false"
-      ? params.isFlat
-      : undefined;
   const queryObject = new QueryParamsURLFactory(
     query,
     `${process.env.NEXT_PUBLIC_API_URL}categories`
@@ -61,7 +56,7 @@ export const getCategory = async (
   return await response.json();
 };
 
-export const getAllCategories = async (): Promise<SelectOption[]> => {
+export const getAllCategories = async (): Promise<Category[]> => {
   const response = await fetchWithAuth(
     new URL(`${process.env.NEXT_PUBLIC_API_URL}categories/all`)
   );
