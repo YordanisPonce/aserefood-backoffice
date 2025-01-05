@@ -1,0 +1,37 @@
+"use client";
+import { SearchParams } from "@/lib/types/pagination";
+import { debounce } from "lodash";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useCallback, useMemo } from "react";
+
+export default function useFiltersUrl() {
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const debouncedUpdateFiltersInUrl = useMemo(
+    () =>
+      debounce((updatedFilters: SearchParams) => {
+        const searchUrl = new URLSearchParams(searchParams);
+        Object.entries(updatedFilters).forEach(([key, value]) => {
+          if (value !== undefined) {
+            if (typeof value === "number") searchUrl.set(key, value.toString());
+            else if (typeof value === "boolean")
+              searchUrl.set(key, value ? "true" : "false");
+            else searchUrl.set(key, value);
+          } else searchUrl.delete(key);
+        });
+        replace(`${pathname}?${searchUrl.toString()}`);
+      }, 300),
+    [searchParams, pathname, replace]
+  );
+
+  const updateFiltersInUrl = useCallback(
+    (updatedFilters: SearchParams) => {
+      debouncedUpdateFiltersInUrl(updatedFilters);
+    },
+    [debouncedUpdateFiltersInUrl]
+  );
+
+  return { updateFiltersInUrl };
+}

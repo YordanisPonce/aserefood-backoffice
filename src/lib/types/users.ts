@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface User {
   id: string;
   username: string;
@@ -48,4 +50,11 @@ export interface UpdateUserDTO {
 export enum Role {
   Customer = "customer",
   Admin = "admin",
+}
+
+// filters
+
+export interface UsersFilters extends SearchParams {
+  role?: Role;
+  isActive?: boolean;
 }

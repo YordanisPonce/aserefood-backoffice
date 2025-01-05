@@ -1,18 +1,18 @@
 "use client";
-import { ProductsFilters } from "@/lib/types/products";
+import { UsersFilters } from "@/lib/types/users";
 import useFiltersUrl from "@/sections/hooks/useFiltersUrl";
 import { useState } from "react";
 
-export default function useProductsFilters() {
+export default function useUsersFilters() {
   const { updateFiltersInUrl } = useFiltersUrl();
 
-  const [filters, setFilters] = useState<ProductsFilters>({
-    providerId: undefined,
-    isService: undefined,
+  const [filters, setFilters] = useState<UsersFilters>({
+    role: undefined,
+    isActive: undefined,
   });
 
-  async function handleChangeFilters(updatedFilters: ProductsFilters) {
-    let newFilters: ProductsFilters = {};
+  async function handleChangeFilters(updatedFilters: UsersFilters) {
+    let newFilters: UsersFilters = {};
     await setFilters((prev) => {
       newFilters = {
         ...prev,
@@ -24,9 +24,9 @@ export default function useProductsFilters() {
   }
 
   function handleReset() {
-    const filtersReset: ProductsFilters = {
-      providerId: undefined,
-      isService: undefined,
+    const filtersReset: UsersFilters = {
+      role: undefined,
+      isActive: undefined,
     };
     setFilters(filtersReset);
 

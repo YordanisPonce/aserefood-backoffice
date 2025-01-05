@@ -9,6 +9,7 @@ import { User } from "@/lib/types/users";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import UsersFilters from "./Filters/UsersFilters";
 
 type UserListProps = {
   users: User[];
@@ -116,6 +117,7 @@ export const UsersList: FunctionComponent<UserListProps> = ({
       pagination={pagination}
       disableSelection
       density="comfortable"
+      filters={<UsersFilters />}
     />
   );
 };
