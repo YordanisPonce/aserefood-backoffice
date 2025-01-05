@@ -16,10 +16,7 @@ export class QueryParamsURLFactory {
     const queryParams = new URLSearchParams();
     const pagination = this.query?.pagination;
     const search = this.query?.search;
-    const isFlat = this.query?.isFlat;
-
     const filters = this.query.filters;
-
 
     // Add pagination
     if (pagination) {
@@ -33,11 +30,6 @@ export class QueryParamsURLFactory {
       queryParams.set("search", search);
     }
 
-    // Add ifFlat (only categories)
-    if (isFlat !== undefined) {
-      queryParams.set("isFlat", isFlat);
-    }
-
     if (filters)
       filters.forEach((filter) => {
         if (typeof filter.value === "number")
@@ -47,7 +39,6 @@ export class QueryParamsURLFactory {
         else if (typeof filter.value === "string")
           queryParams.set(filter.field, filter.value);
       });
-
 
     // Generate complete URL if baseUrl is provided
     if (this.baseUrl) {
@@ -81,11 +72,11 @@ export const buildQueryParams = (params?: SearchParams): IQueryable => {
   }
 
   const excludeKeys = new Set(["page", "pageSize", "search", "sort"]);
-  const filters = Object.entries(params || {})
+  const filters: IFilter[] = Object.entries(params || {})
     .filter(([key]) => !excludeKeys.has(key))
     .map(([key, value]) => ({
       field: key,
-      value: value as any,
+      value: value,
     }));
 
   const query: IQueryable = {

@@ -1,5 +1,4 @@
 import { getProducts } from "@/lib/services/products";
-import { SearchParams } from "@/lib/types/pagination";
 import { ProductList } from "@/sections/products/components/ProductList";
 import { Paper } from "@mui/material";
 import React from "react";
