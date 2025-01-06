@@ -31,6 +31,19 @@ export const getUsers = async (
   return await response.json();
 };
 
+export const getAllUsers = async (): Promise<User[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}users/all`)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching users");
+  }
+
+  return await response.json();
+};
+
 export const getUser = async (userId: string): Promise<User> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}users/${userId}`,

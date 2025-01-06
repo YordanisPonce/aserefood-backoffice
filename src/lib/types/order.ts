@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface Order {
   id: number;
   code: string;
@@ -44,6 +46,14 @@ export enum OrderStatus {
   CANCELLED = 4,
   DELIVERED = 5,
   REFUNDED = 6,
+}
+
+// filters
+export interface OrdersFilters extends SearchParams {
+  deliveryMethodId?: number;
+  municipalityId?: number;
+  userId?: number;
+  code?: string;
 }
 
 export enum PaymentSelection {

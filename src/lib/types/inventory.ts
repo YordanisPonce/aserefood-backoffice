@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface InventoryEntry {
   id: number;
   productId: number;
@@ -46,4 +48,10 @@ export interface UpdateInventoryEntry {
 export interface UpdateInventoryEntryDTO {
   quantity: 0;
   price: 0;
+}
+
+// filters
+export interface InventoryEntriesFilters extends SearchParams {
+  zoneId?: number;
+  productId?: number;
 }

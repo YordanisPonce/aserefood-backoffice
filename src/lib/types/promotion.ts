@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface Promotion {
   id: number;
   code: string;
@@ -89,3 +91,10 @@ export const invertedPromotionsDiscountOptionMap: Map<string, DiscountOption> =
       key,
     ])
   );
+
+// filters
+export interface PromotionsFilters extends SearchParams {
+  productComboId?: number;
+  productId?: number;
+  isActive?: boolean;
+}

@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface Municipality {
   id: number;
   name: string;
@@ -15,4 +17,9 @@ export interface CreateMunicipality {
 export interface CreateMunicipalityDTO {
   name: string;
   provinceId: number;
+}
+
+// filters
+export interface MunicipalitiesFilters extends SearchParams {
+  provinceId?: number;
 }

@@ -13,6 +13,7 @@ import { Pagination } from "@/lib/types/pagination";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import OrdersFilters from "./Filters/OrdersFilters";
 
 type OrdersListProps = {
   orders: Order[];
@@ -102,6 +103,7 @@ export const OrdersList: FunctionComponent<OrdersListProps> = ({
       data={orders}
       pagination={pagination}
       disableSelection
+      filters={<OrdersFilters />}
     />
   );
 };

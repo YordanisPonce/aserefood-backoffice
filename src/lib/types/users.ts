@@ -1,7 +1,7 @@
 import { SearchParams } from "./pagination";
 
 export interface User {
-  id: string;
+  id: number;
   username: string;
   email: string;
   name: string;

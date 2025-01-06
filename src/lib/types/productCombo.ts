@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface ProductCombo {
   id: number;
   name: string;
@@ -68,4 +70,11 @@ export interface CreateProductComboDTO {
 export enum StatesProductCombos {
   ACTIVE = "Activo",
   INACTIVE = "Inactivo",
+}
+
+// filters
+export interface ProductCombosFilters extends SearchParams {
+  productId?: number;
+  zoneId?: number;
+  isActive?: boolean;
 }

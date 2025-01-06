@@ -8,6 +8,7 @@ import { Promotion, promotionsDiscountOptionMap } from "@/lib/types/promotion";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import PromotionsFilters from "./Filters/PromotionsFilters";
 
 type PromotionsListProps = {
   promotions: Promotion[];
@@ -102,6 +103,7 @@ export const PromotionsList: FunctionComponent<PromotionsListProps> = ({
       data={promotions}
       pagination={pagination}
       disableSelection
+      filters={<PromotionsFilters />}
     />
   );
 };

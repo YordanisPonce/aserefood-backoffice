@@ -8,6 +8,7 @@ import { ProductCombo } from "@/lib/types/productCombo";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import ProductCombosFilters from "./Filters/ProductCombosFilters";
 
 type ProductCombosListProps = {
   productCombos: ProductCombo[];
@@ -93,6 +94,7 @@ export const ProductCombosList: FunctionComponent<ProductCombosListProps> = ({
       data={productCombos}
       pagination={pagination}
       disableSelection
+      filters={<ProductCombosFilters />}
     />
   );
 };

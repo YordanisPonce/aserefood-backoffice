@@ -36,6 +36,19 @@ export const getDeliveryMethods = async (
   return await response.json();
 };
 
+export const getAllDeliveryMethods = async (): Promise<DeliveryMethod[]> => {
+  const response = await fetchWithAuth(
+    new URL(`${process.env.NEXT_PUBLIC_API_URL}delivery-methods/all`)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching delivery methods");
+  }
+
+  return await response.json();
+};
+
 export const getDeliveryMethod = async (
   deliveryMethodId: string
 ): Promise<DeliveryMethodDetails> => {

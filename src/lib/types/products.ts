@@ -2,7 +2,7 @@ import { SearchParams } from "./pagination";
 import { Provider } from "./provider";
 
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   description: string;
   shortDescription: string;

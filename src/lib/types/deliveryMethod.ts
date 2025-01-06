@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface DeliveryMethod {
   id: number;
   name: string;
@@ -50,4 +52,10 @@ export interface CreateDeliveryMethodDTO {
 export enum StatesDeliveryMethods {
   FREE = "Gratis",
   PAYMENT = "De Pago",
+}
+// filters
+export interface DeliveryMethodsFilters extends SearchParams {
+  provinceId?: number;
+  municipalityId?: number;
+  isFree?: boolean;
 }

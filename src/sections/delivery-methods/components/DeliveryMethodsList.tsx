@@ -8,6 +8,7 @@ import { Pagination } from "@/lib/types/pagination";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import DeliveryMethodsFilters from "./Filters/DeliveryMethodsFilters";
 
 type DeliveryMethodsProps = {
   deliveryMethods: DeliveryMethod[];
@@ -87,6 +88,7 @@ export const DeliveryMethodsList: FunctionComponent<DeliveryMethodsProps> = ({
       data={deliveryMethods}
       pagination={pagination}
       disableSelection
+      filters={<DeliveryMethodsFilters />}
     />
   );
 };

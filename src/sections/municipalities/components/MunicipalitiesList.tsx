@@ -7,6 +7,7 @@ import { Municipality } from "@/lib/types/municipality";
 import { Pagination } from "@/lib/types/pagination";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import MunicipalitiesFilters from "./Filters/MunicipalitiesFilters";
 
 type MunicipalitiesListProps = {
   municipalities: Municipality[];
@@ -48,6 +49,7 @@ export const MunicipalitiesList: FunctionComponent<MunicipalitiesListProps> = ({
       data={municipalities}
       pagination={pagination}
       disableSelection
+      filters={<MunicipalitiesFilters />}
     />
   );
 };

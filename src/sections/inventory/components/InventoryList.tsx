@@ -1,5 +1,4 @@
 "use client";
-
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
 import useModal from "@/components/partials/Modal/hooks/useModal";
@@ -9,6 +8,7 @@ import { Pagination } from "@/lib/types/pagination";
 import { fCurrency } from "@/lib/utils/formatter";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { FunctionComponent } from "react";
+import InventoryEntriesFilters from "./Filters/InventoryEntriesFilters";
 
 type InventoryListProps = {
   inventoryEntries: InventoryEntry[];
@@ -78,6 +78,7 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
       data={inventoryEntries}
       pagination={pagination}
       disableSelection
+      filters={<InventoryEntriesFilters />}
     />
   );
 };
