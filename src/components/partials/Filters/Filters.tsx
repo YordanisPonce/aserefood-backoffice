@@ -38,9 +38,6 @@ export default function Filters({ contentFilters, handleReset }: Props) {
     <>
       <Box
         sx={{
-          position: "sticky",
-          top: 0,
-          zIndex: 1100,
           backgroundColor: "background.paper",
           p: 1,
           display: "flex",
