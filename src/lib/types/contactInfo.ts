@@ -1,3 +1,5 @@
+import { SearchParams } from "./pagination";
+
 export interface ContactInfo {
   id: number;
   name: string;
@@ -26,7 +28,7 @@ export interface ContactInfoDetails {
 }
 
 // Filters
-export interface ContactInfoFilters {
-  search?: string;
+export interface ContactInfosFilters extends SearchParams {
   municipalityId?: number;
+  provinceId?: number
 }

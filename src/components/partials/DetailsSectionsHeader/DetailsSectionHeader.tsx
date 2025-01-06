@@ -1,10 +1,9 @@
 import { Box, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
-import Filters from "../Filters/Filters";
 
 interface Props {
   title: string;
-  filters: { handleReset: () => void; component: ReactNode };
+  filters: ReactNode;
 }
 
 export default function DetailsSectionHeader({ title, filters }: Props) {
@@ -13,12 +12,7 @@ export default function DetailsSectionHeader({ title, filters }: Props) {
       <Typography variant="h6" gutterBottom>
         {title}
       </Typography>
-      {filters && (
-        <Filters
-          handleReset={filters.handleReset}
-          contentFilters={filters.component}
-        />
-      )}
+      {filters && filters}
     </Box>
   );
 }

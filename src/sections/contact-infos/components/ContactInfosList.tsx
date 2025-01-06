@@ -6,9 +6,9 @@ import { ContactInfo } from "@/lib/types/contactInfo";
 import CardList from "@/components/partials/CardList/CardList";
 import ContactInfoCard from "./ContactInfoCard";
 import useContactInfosFilters from "./contact-info-filters/hooks/useContactInfosFilters";
-import ContactInfosFilters from "./contact-info-filters/ContactInfosFilters";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import DetailsSectionHeader from "@/components/partials/DetailsSectionsHeader/DetailsSectionHeader";
+import ContactInfosFiltersComponent from "./contact-info-filters/ContactInfoFilters";
 
 interface Props {
   userId: string | null;
@@ -30,15 +30,13 @@ export default function ContactInfosList({ userId }: Props) {
     <>
       <DetailsSectionHeader
         title="Información de Contactos"
-        filters={{
-          handleReset: handleReset,
-          component: (
-            <ContactInfosFilters
-              filters={filters}
-              handleFilterChange={handleFilterChange}
-            />
-          ),
-        }}
+        filters={
+          <ContactInfosFiltersComponent
+            filters={filters}
+            handleChangeFilters={handleFilterChange}
+            handleReset={handleReset}
+          />
+        }
       />
       {!loadingData ? (
         !error ? (

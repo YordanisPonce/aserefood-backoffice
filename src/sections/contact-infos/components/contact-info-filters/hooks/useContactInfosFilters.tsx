@@ -1,14 +1,15 @@
 "use client";
-import { ContactInfoFilters } from "@/lib/types/contactInfo";
+import { ContactInfosFilters } from "@/lib/types/contactInfo";
 import { useState } from "react";
 
 export default function useContactInfosFilters() {
-  const [filters, setFilters] = useState<ContactInfoFilters>({
+  const [filters, setFilters] = useState<ContactInfosFilters>({
     search: "",
     municipalityId: undefined,
+    provinceId: undefined,
   });
 
-  function handleFilterChange(updatedFilters: ContactInfoFilters) {
+  function handleFilterChange(updatedFilters: ContactInfosFilters) {
     setFilters((filters) => ({
       ...filters,
       ...updatedFilters,
@@ -19,6 +20,7 @@ export default function useContactInfosFilters() {
     setFilters({
       search: "",
       municipalityId: undefined,
+      provinceId: undefined,
     });
   }
   return { filters, handleFilterChange, handleReset };

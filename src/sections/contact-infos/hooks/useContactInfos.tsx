@@ -2,13 +2,12 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { debounce } from "lodash";
 import { getContactInfos } from "@/lib/services/contactInfos";
-import { ContactInfo, ContactInfoFilters } from "@/lib/types/contactInfo";
-import { SearchParams } from "@/lib/types/pagination";
+import { ContactInfo, ContactInfosFilters } from "@/lib/types/contactInfo";
 import useClientPagination from "@/sections/hooks/useClientPagination";
 
 interface Props {
   userId: string | null;
-  filters: ContactInfoFilters;
+  filters: ContactInfosFilters;
 }
 
 export default function useContactInfos({ userId, filters }: Props) {
@@ -16,7 +15,7 @@ export default function useContactInfos({ userId, filters }: Props) {
   const [error, setError] = useState<string | undefined>(undefined);
   const [loadingData, setLoadingData] = useState(false);
   const [contactInfos, setContactInfos] = useState<ContactInfo[]>([]);
-  const [searchParams, setSearchParams] = useState<SearchParams>({
+  const [searchParams, setSearchParams] = useState<ContactInfosFilters>({
     page: 1,
     pageSize: 10,
   });
@@ -26,7 +25,7 @@ export default function useContactInfos({ userId, filters }: Props) {
     setPagination,
     clientHandleChangePage,
     clientHandlePageSizeChange,
-  } = useClientPagination({ setSearchParams });
+  } = useClientPagination({ setSearchParams: setSearchParams });
 
   const fetchContactInfos = useCallback(async () => {
     if (userId) {
@@ -53,8 +52,9 @@ export default function useContactInfos({ userId, filters }: Props) {
       ...prev,
       search: filters.search,
       municipalityId: filters.municipalityId
-        ? filters.municipalityId.toString()
+        ? filters.municipalityId
         : undefined,
+      provinceId: filters.provinceId ? filters.provinceId : undefined,
       page: 1,
     }));
   }, [filters]);
