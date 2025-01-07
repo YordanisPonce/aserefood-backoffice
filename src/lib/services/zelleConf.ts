@@ -1,10 +1,11 @@
+"use server";
 import { UpdateZelleConfDTO, ZelleConf } from "../types/zelleConf";
 import { fetchWithAuth } from "../utils/fetcher";
 
 const zelleConfPath = "zelle-conf";
 const zelleConfTag = "zelle-conf";
 
-export const getZelleConf = async (): Promise<ZelleConf> => {
+export const getZelleConf = async (): Promise<ZelleConf | undefined> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${zelleConfPath}`,
     {
@@ -17,7 +18,7 @@ export const getZelleConf = async (): Promise<ZelleConf> => {
   if (!response.ok) {
     console.log(response);
     if (response.status === 404) {
-      throw new Error("No existe zelle conf aún");
+      return undefined;
     } else throw new Error("Error fetching zelle conf");
   }
 
@@ -30,7 +31,7 @@ export const updateZelleConf = async (
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${zelleConfPath}`,
     {
-      method: "PATCH",
+      method: "PUT",
       body: JSON.stringify(zelleConf),
       headers: {
         "Content-Type": "application/json",

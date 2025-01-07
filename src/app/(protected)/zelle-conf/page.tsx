@@ -5,12 +5,7 @@ import { Box } from "@mui/material";
 import React from "react";
 
 export default async function ZellConfPage() {
-  let zelleConf: ZelleConf | undefined = undefined;
-  try {
-    zelleConf = await getZelleConf();
-  } catch (error) {
-    zelleConf = undefined;
-  }
+  const zelleConf: ZelleConf | undefined = await getZelleConf();
 
   return (
     <Box
@@ -25,3 +20,5 @@ export default async function ZellConfPage() {
     </Box>
   );
 }
+
+export const dynamic = "force-dynamic";

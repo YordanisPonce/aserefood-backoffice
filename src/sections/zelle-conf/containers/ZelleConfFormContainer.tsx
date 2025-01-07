@@ -24,7 +24,7 @@ export default function ZelleConfFormContainer({ zellConf }: Props) {
           qr: zellConf.qr ? base64ToFile(zellConf.qr, "qr") : null,
         }
       : {
-          phoneNumber: "Introduzca por primera vez el número telefónico",
+          phoneNumber: undefined,
           qr: null,
         },
     mode: "onSubmit",

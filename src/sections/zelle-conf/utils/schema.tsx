@@ -10,14 +10,13 @@ export const updateZelleConfSchema = () =>
       }),
     qr: z
       .custom<File>((value) => {
-        return !value || value instanceof File;
-      }, "Debe seleccionar una imagen")
-      .refine((file) => !file || file.type.startsWith("image/"), {
+        return value instanceof File;
+      }, "Debe seleccionar un QR")
+      .refine((file) => file instanceof File && file.type.startsWith("image/"), {
         message: "El archivo debe ser una imagen válida (jpg, png, gif, etc.)",
       })
-      .refine((file) => !file || file.size <= fileMaxSizeMB * 1024 * 1024, {
+      .refine((file) => file.size <= fileMaxSizeMB * 1024 * 1024, {
         message:
           "El tamaño de la imagen no debe exceder los " + fileMaxSizeMB + " MB",
-      })
-      .optional(),
+      }),
   });

@@ -19,13 +19,17 @@ export default function ZelleConfForm({ error, isLoading }: Props) {
       height={"100%"}
     >
       {error && <Alert severity="error">{error}</Alert>}
-      <Box display={"flex"} flexDirection={"column"} gap={4}>  
+      <Box display={"flex"} flexDirection={"column"} gap={4}>
         <RHFInputWithLabel
           name="phoneNumber"
           label="Número Telefónico"
           type="text"
         />
-        <RHFInputImageUpload name="qr" placeholder="Código QR" />
+        <RHFInputImageUpload
+          name="qr"
+          placeholder="Código QR"
+          required={true}
+        />
       </Box>
       <Button
         type="submit"

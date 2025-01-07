@@ -47,7 +47,7 @@ const InputImageUpload = ({
       variant="contained"
       component="label"
     >
-      {placeholder + `${!required && " (Opcional) "}`}
+      {placeholder + `${!required ? " (Opcional)" : ""}`}
       <input
         type="file"
         accept={accept}

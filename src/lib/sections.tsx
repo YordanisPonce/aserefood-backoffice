@@ -11,6 +11,7 @@ import {
   CalendarMonth as CalendarMonthIcon,
   LocalShipping as LocalShippingIcon,
   ShoppingBasket as ShoppingBasketIcon,
+  SettingsSuggest as SettingsSuggestIcon,
 } from "@mui/icons-material";
 import { routes } from "@/lib/config/routes";
 
@@ -86,5 +87,10 @@ export const sections: Section[] = [
     name: "Usuarios",
     path: routes.users.path,
     icon: <PeopleAltRoundedIcon />,
+  },
+  {
+    name: "Configuración de Zelle",
+    path: routes.zelleConf.path,
+    icon: <SettingsSuggestIcon />,
   },
 ];
