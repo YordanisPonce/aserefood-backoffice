@@ -1,3 +1,5 @@
 export const TOGGLE_DRAWER_OPEN = "TOGGLE_DRAWER_OPEN";
 export type TOGGLE_DRAWER_OPEN = typeof TOGGLE_DRAWER_OPEN;
+export const SNACKBAR_OPEN = "SNACKBAR_OPEN";
+export type SNACKBAR_OPEN = typeof SNACKBAR_OPEN;
 

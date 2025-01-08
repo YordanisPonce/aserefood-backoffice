@@ -10,6 +10,12 @@ const reducer = (state: IGlobalState, action: TAction): IGlobalState => {
         isDrawerOpen: action.payload,
       };
     }
+    case "SNACKBAR_OPEN": {
+      return {
+        ...state,
+        snackBarOpen: action.payload,
+      };
+    }
 
     default:
       return state;
