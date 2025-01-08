@@ -16,10 +16,13 @@ import {
   orderPaymentSelectionMap,
   orderStatusColorMap,
   orderStatusMap,
+  PaymentSelection,
 } from "@/lib/types/order";
 import DialogSections from "@/sections/components/DialogSections";
 import DeliveryMethodDetails from "@/sections/delivery-methods/components/DeliveryMethodDetails";
 import OrderDetailsContactInfoSection from "./components/OrderDetailsContactInfoSection";
+import OrderDetailsPaymentOnlineSection from "./components/OrderDetailsPaymentOnlineSection/OrderDetailsPaymentOnlineSection";
+import OrderDetailsPaymentTransferSection from "./components/OrderDetailsPaymentTransferSection/OrderDetailsPaymentTransferSection";
 
 interface Props {
   orderId: string | null;
@@ -42,7 +45,6 @@ export default function OrderDetails({ orderId }: Props) {
             sx={{
               display: "flex",
               flexDirection: "column",
-              maxHeight: "90vh",
               overflow: "hidden",
             }}
           >
@@ -113,6 +115,12 @@ export default function OrderDetails({ orderId }: Props) {
               <OrderDetailsContactInfoSection
                 contactInfoId={order.contactInfoId.toString()}
               />
+
+              {order.paymentSelection === PaymentSelection.Online ? (
+                <OrderDetailsPaymentOnlineSection orderId={orderId} />
+              ) : (
+                <OrderDetailsPaymentTransferSection orderId={orderId} />
+              )}
 
               <Box sx={{ padding: 1 }}></Box>
               <Divider sx={{ my: 2 }} />
