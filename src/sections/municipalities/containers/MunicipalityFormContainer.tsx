@@ -17,9 +17,11 @@ import {
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import { MunicipalityForm } from "../components/MunicipalityForm";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const MunicipalityFormContainer: FunctionComponent = () => {
   const { entityId: municipalityId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -43,13 +45,24 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
         name,
         provinceId: province?.id ?? 0,
       };
-      if (!municipalityId) await createMunicipality(createMunicipaliyDTO);
-      else await updateMunicipality(municipalityId, createMunicipaliyDTO);
+      if (!municipalityId) {
+        await createMunicipality(createMunicipaliyDTO);
+        openSnackBar("Municipio creado con éxito", "success");
+      } else {
+        await updateMunicipality(municipalityId, createMunicipaliyDTO);
+        openSnackBar(
+          `Municipio con identificador ${municipalityId} actualizado con éxito`,
+          "success"
+        );
+      }
       await revalidateServerTags("municipalities");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

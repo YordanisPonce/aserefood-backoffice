@@ -14,9 +14,11 @@ import { createProviderSchema } from "../utils/schema";
 import { ProviderForm } from "../components/ProviderForm";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const ProviderFormContainer: FunctionComponent = () => {
   const { entityId: providerId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -37,13 +39,24 @@ export const ProviderFormContainer: FunctionComponent = () => {
       const createProviderDto: CreateProviderDTO = {
         name: name,
       };
-      if (!providerId) await createProvider(createProviderDto);
-      else await updateProvider(providerId, createProviderDto);
+      if (!providerId) {
+        await createProvider(createProviderDto);
+        openSnackBar("Proveedor creado con éxito", "success");
+      } else {
+        await updateProvider(providerId, createProviderDto);
+        openSnackBar(
+          `Proveedor con identificador ${providerId} actualizado con éxito`,
+          "success"
+        );
+      }
       await revalidateServerTags("providers");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

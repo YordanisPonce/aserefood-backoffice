@@ -14,11 +14,13 @@ import {
 import { ProvinceForm } from "../components/ProvinceForm";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const ProvinceFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const { entityId: provinceId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [error, setError] = useState<string | undefined>(undefined);
 
   const formOptions: UseFormProps<CreateProvince> = {
@@ -38,14 +40,25 @@ export const ProvinceFormContainer: FunctionComponent = () => {
       const createProvinceDto: CreateProvinceDTO = {
         name: name,
       };
-      if (!provinceId) await createProvince(createProvinceDto);
-      else await updateProvince(provinceId, createProvinceDto);
+      if (!provinceId) {
+        await createProvince(createProvinceDto);
+        openSnackBar("Provincia creada con éxito", "success");
+      } else {
+        await updateProvince(provinceId, createProvinceDto);
+        openSnackBar(
+          `Provincia con identificador ${provinceId} actualizada con éxito`,
+          "success"
+        );
+      }
       await revalidateServerTags("provinces");
       handleCloseModal();
       methods.reset();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

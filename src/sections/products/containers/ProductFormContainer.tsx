@@ -19,9 +19,11 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import { ProductForm } from "../components/ProductForm";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const ProductFormContainer: FunctionComponent = () => {
   const { entityId: productId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -69,14 +71,22 @@ export const ProductFormContainer: FunctionComponent = () => {
     try {
       if (!productId) {
         await createProduct(createProductDto);
+        openSnackBar("Producto creado con éxito", "success");
       } else {
         await updateProduct(productId, createProductDto);
+        openSnackBar(
+          `Producto con identificador ${productId} actualizado con éxito`,
+          "success"
+        );
       }
       await revalidateServerTags("products");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

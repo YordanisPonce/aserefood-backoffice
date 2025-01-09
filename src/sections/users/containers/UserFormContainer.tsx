@@ -9,11 +9,13 @@ import { createUser, getUser, updateUser } from "@/lib/services/user";
 import { UserForm } from "../components/UserForm";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const UserFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const { entityId: userId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<CreateUser | UpdateUser> = {
     resolver: zodResolver(!userId ? createUserSchema() : updateUserSchema()),
@@ -54,6 +56,7 @@ export const UserFormContainer: FunctionComponent = () => {
           phoneNumber,
           email,
         });
+        openSnackBar("Usuario creado con éxito", "success");
       } else {
         const { username, email, name, lastnames, phoneNumber } =
           user as UpdateUser;
@@ -65,12 +68,19 @@ export const UserFormContainer: FunctionComponent = () => {
           phoneNumber,
           email,
         });
+        openSnackBar(
+          `Usuario con identificador ${userId} actualizado con éxito`,
+          "success"
+        );
       }
       await revalidateServerTags("users");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

@@ -21,9 +21,11 @@ import {
   updateInventoryEntrySchema,
 } from "../utils/schema";
 import { InventoryEntryForm } from "../components/InventoryEntryForm";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const InventoryEntryFormContainer: FunctionComponent = () => {
   const { entityId: inventoryEntryId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -71,15 +73,23 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
             zoneId: zone?.id ?? 0,
           },
         ]);
+        openSnackBar("Entrada de inventario creada con éxito", "success");
       } else {
         const { price, quantity } = inventoryEntry as UpdateInventoryEntry;
         await updateInventoryEntry(inventoryEntryId, { price, quantity });
+        openSnackBar(
+          `Entrada de inventario con identificador ${inventoryEntryId} actualizada con éxito`,
+          "success"
+        );
       }
       await revalidateServerTags("inventory");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

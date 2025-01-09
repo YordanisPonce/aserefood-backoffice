@@ -9,9 +9,11 @@ import { createZone, getZone, updateZone } from "@/lib/services/zones";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import { ZoneForm } from "../components/ZoneForm";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const ZoneFormContainer: FunctionComponent = () => {
   const { entityId: zoneId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -41,13 +43,24 @@ export const ZoneFormContainer: FunctionComponent = () => {
         description,
         municipalityIds: municipalities.map((municipality) => municipality.id),
       };
-      if (!zoneId) await createZone(createZoneDto);
-      else await updateZone(zoneId, createZoneDto);
+      if (!zoneId) {
+        await createZone(createZoneDto);
+        openSnackBar("Zona creada con éxito", "success");
+      } else {
+        await updateZone(zoneId, createZoneDto);
+        openSnackBar(
+          `Zona con identificador ${zoneId} actualizada con éxito`,
+          "success"
+        );
+      }
       await revalidateServerTags("zones");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

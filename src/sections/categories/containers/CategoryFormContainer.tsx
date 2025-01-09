@@ -16,6 +16,7 @@ import {
 } from "@/lib/services/categories";
 import { CategoryForm } from "../components/CategoryForm";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export enum CategoryFormModality {
   CreateCategory = 0,
@@ -25,6 +26,7 @@ export enum CategoryFormModality {
 
 export const CategoryFormContainer: FunctionComponent = () => {
   const { entityId: categoryId, handleCloseModal, currentModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -69,6 +71,7 @@ export const CategoryFormContainer: FunctionComponent = () => {
           description,
           parentId: parent?.id ?? null,
         });
+        openSnackBar("Categoría creada con éxito", "success");
       } else if (formModality === CategoryFormModality.UpdateCategory) {
         const { name, description, parent } = category as CreateCategory;
         await updateCategory(categoryId, {
@@ -76,6 +79,10 @@ export const CategoryFormContainer: FunctionComponent = () => {
           description,
           parentId: parent?.id ?? null,
         });
+        openSnackBar(
+          `Categoría con identificador ${categoryId} actualizada con éxito`,
+          "success"
+        );
       } else {
         const { name, description } = category as CreateSubCategory;
         await createCategory({
@@ -83,12 +90,16 @@ export const CategoryFormContainer: FunctionComponent = () => {
           description,
           parentId: +categoryId,
         });
+        openSnackBar("Categoría creada con éxito", "success");
       }
       await revalidateServerTags("categories");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +140,7 @@ export const CategoryFormContainer: FunctionComponent = () => {
   useEffect(() => {
     if (categoryId && formModality === CategoryFormModality.UpdateCategory)
       updateForm(categoryId);
-  }, [categoryId, formModality, updateForm ]);
+  }, [categoryId, formModality, updateForm]);
 
   return (
     <FormProvider {...methods}>

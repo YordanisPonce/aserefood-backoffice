@@ -17,9 +17,11 @@ import {
   updateDeliveryMethod,
 } from "@/lib/services/deliveryMethods";
 import { DeliveryMethodForm } from "../components/DeliveryMethodForm";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const DeliveryMethodFormContainer: FunctionComponent = () => {
   const { entityId: deliveryMethodId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -59,15 +61,25 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
         municipalityId: municipality?.id ?? 0,
         pickUpDirection,
       };
-      if (!deliveryMethodId)
+      if (!deliveryMethodId) {
         await createDeliveryMethod(createDeliveryMethodDTO);
-      else
+        openSnackBar("Método de entrega creado con éxito", "success");
+      } else {
         await updateDeliveryMethod(deliveryMethodId, createDeliveryMethodDTO);
+        openSnackBar(
+          `Método de entrega con identificador ${deliveryMethodId} actualizado con éxito`,
+          "success"
+        );
+      }
+
       await revalidateServerTags("delivery-methods");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

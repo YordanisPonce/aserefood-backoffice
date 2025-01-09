@@ -21,9 +21,11 @@ import {
 } from "@/lib/services/promotions";
 import { PromotionForm } from "../components/PromotionForm";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const PromotionFormContainer: FunctionComponent = () => {
   const { entityId: promotionId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -95,12 +97,23 @@ export const PromotionFormContainer: FunctionComponent = () => {
         productComboIds: productCombos.map((productCombo) => productCombo.id),
         productIds: products.map((product) => product.id),
       };
-      if (!promotionId) await createPromotion(createPromotionDTO);
-      else await updatePromotion(promotionId, createPromotionDTO);
+      if (!promotionId) {
+        await createPromotion(createPromotionDTO);
+        openSnackBar("Promoción creada con éxito", "success");
+      } else {
+        await updatePromotion(promotionId, createPromotionDTO);
+        openSnackBar(
+          `Promoción con identificador ${promotionId} actualizada con éxito`,
+          "success"
+        );
+      }
       await revalidateServerTags("promotions");
       handleCloseModal();
     } catch (error) {
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
       console.log(error);
     } finally {
       setIsLoading(false);

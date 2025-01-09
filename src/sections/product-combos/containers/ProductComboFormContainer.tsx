@@ -19,9 +19,11 @@ import {
 } from "@/lib/services/productCombos";
 import { ProductComboForm } from "../components/ProductComboForm";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 export const ProductComboFormContainer: FunctionComponent = () => {
   const { entityId: productComboId, handleCloseModal } = useModal();
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -73,13 +75,24 @@ export const ProductComboFormContainer: FunctionComponent = () => {
       zoneId: zone?.id ?? 0,
     };
     try {
-      if (!productComboId) await createProductCombo(createProductComboDTO);
-      else await updateProductCombo(productComboId, createProductComboDTO);
+      if (!productComboId) {
+        await createProductCombo(createProductComboDTO);
+        openSnackBar("Combo de producto creado con éxito", "success");
+      } else {
+        await updateProductCombo(productComboId, createProductComboDTO);
+        openSnackBar(
+          `Combo de producto con identificador ${productComboId} actualizado con éxito`,
+          "success"
+        );
+      }
       await revalidateServerTags("product-combos");
       handleCloseModal();
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }

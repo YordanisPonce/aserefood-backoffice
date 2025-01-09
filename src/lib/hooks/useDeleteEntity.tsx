@@ -12,6 +12,7 @@ import { deleteCategory } from "@/lib/services/categories";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { deletePromotion } from "../services/promotions";
 import { deleteDeliveryMethod } from "../services/deliveryMethods";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 interface Props {
   currentModal: string | null;
@@ -24,6 +25,7 @@ export default function useDeleteEntity({
   entityId,
   handleCloseModal,
 }: Props) {
+  const { openSnackBar } = useSnackBar();
   const [error, setError] = useState<string | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,36 +37,80 @@ export default function useDeleteEntity({
         switch (currentModal) {
           case modalTypes.products.delete.name:
             await deleteProduct(entityId);
+            openSnackBar(
+              `El Producto con identificador ${entityId} ha sido eliminado con éxito`,
+              "success"
+            );
             break;
           case modalTypes.productCombos.delete.name:
             await deleteProductCombo(entityId);
+            openSnackBar(
+              `El Combo de producto con identificador ${entityId} ha sido eliminado con éxito`,
+              "success"
+            );
             break;
           case modalTypes.providers.delete.name:
             await deleteProvider(entityId);
+            openSnackBar(
+              `El Proveedor con identificador ${entityId} ha sido eliminado con éxito`,
+              "success"
+            );
             break;
           case modalTypes.provinces.delete.name:
             await deleteProvince(entityId);
+            openSnackBar(
+              `La Provincia con identificador ${entityId} ha sido eliminada con éxito`,
+              "success"
+            );
             break;
           case modalTypes.municipalities.delete.name:
             await deleteMunicipality(entityId);
+            openSnackBar(
+              `El Municipio con identificador ${entityId} ha sido eliminado con éxito`,
+              "success"
+            );
             break;
           case modalTypes.inventory.delete.name:
             await deleteInventoryEntry(entityId);
+            openSnackBar(
+              `La Entrada de inventario con identificador ${entityId} ha sido eliminada con éxito`,
+              "success"
+            );
             break;
           case modalTypes.zones.delete.name:
             await deleteZone(entityId);
+            openSnackBar(
+              `La Zona con identificador ${entityId} ha sido eliminada con éxito`,
+              "success"
+            );
             break;
           case modalTypes.users.delete.name:
             await deleteUser(entityId);
+            openSnackBar(
+              `El Usuario con identificador ${entityId} ha sido eliminado con éxito`,
+              "success"
+            );
             break;
           case modalTypes.categories.delete.name:
             await deleteCategory(entityId);
+            openSnackBar(
+              `La Categoría con identificador ${entityId} ha sido eliminada con éxito`,
+              "success"
+            );
             break;
           case modalTypes.promotions.delete.name:
             await deletePromotion(entityId);
+            openSnackBar(
+              `La Promoción con identificador ${entityId} ha sido eliminada con éxito`,
+              "success"
+            );
             break;
           case modalTypes.deliveryMethods.delete.name:
             await deleteDeliveryMethod(entityId);
+            openSnackBar(
+              `El Método de entrega con identificador ${entityId} ha sido eliminado con éxito`,
+              "success"
+            );
             break;
           default:
             break;
@@ -72,7 +118,10 @@ export default function useDeleteEntity({
         handleCloseModal();
       } catch (error) {
         console.log(error);
-        if (error instanceof Error) setError(error.message);
+        if (error instanceof Error) {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       } finally {
         setIsLoading(false);
       }
