@@ -20,8 +20,12 @@ import {
   updatePromotion,
 } from "@/lib/services/promotions";
 import { PromotionForm } from "../components/PromotionForm";
-import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import {
+  createFileFromUrl,
+  createSerializeFile,
+} from "@/lib/utils/fileTransformers";
+
 
 export const PromotionFormContainer: FunctionComponent = () => {
   const { entityId: promotionId, handleCloseModal } = useModal();
@@ -78,7 +82,6 @@ export const PromotionFormContainer: FunctionComponent = () => {
   }: CreatePromotion) => {
     setIsLoading(true);
     try {
-      const image = file ? await fileToBase64(file) : null;
       const discountOptionValue =
         invertedPromotionsDiscountOptionMap.get(discountOption);
 
@@ -92,7 +95,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
         discountValue,
         endDate: endDate,
         startDate: startDate,
-        image,
+        image: file ? await createSerializeFile(file) : null,
         isActive: state === StatesPromotions.ACTIVA ? true : false,
         productComboIds: productCombos.map((productCombo) => productCombo.id),
         productIds: products.map((product) => product.id),
@@ -136,7 +139,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
           endDate: promotion.endDate,
           startDate: promotion.startDate,
           image: promotion.image
-            ? base64ToFile(promotion.image, promotion.name)
+            ? await createFileFromUrl(promotion.image, promotion.name)
             : null,
           isActive: promotion.isActive
             ? StatesPromotions.ACTIVA

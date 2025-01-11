@@ -1,4 +1,3 @@
-
 export const fileMaxSizeMB = 2;
 
 export function fileToBase64(file: File): Promise<string> {
@@ -26,3 +25,48 @@ export function base64ToFile(base64: string, fileName: string): File {
   return new File([byteArray], `${fileName}.${extension}`, { type: mimeType });
 }
 
+export async function createFileFromUrl(
+  imageUrl: string,
+  fileName: string
+): Promise<File> {
+  try {
+    // Descarga la imagen desde la URL
+    const response = await fetch(
+      imageUrl
+    );
+
+    if (!response.ok) {
+      throw new Error(`Error al descargar la imagen: ${response.statusText}`);
+    }
+
+    // Convierte la respuesta a un Blob
+    const blob = await response.blob();
+
+    // Crea un objeto File a partir del Blob
+    const file = new File([blob], fileName, {
+      type: blob.type,
+    });
+
+    return file;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export interface SerializableFile {
+  name: string;
+  type: string;
+  buffer: number[];
+}
+
+export async function createSerializeFile(
+  file: File
+): Promise<SerializableFile> {
+  const arrayBuffer = await file.arrayBuffer();
+  return {
+    name: file.name,
+    type: file.type,
+    buffer: Array.from(new Uint8Array(arrayBuffer)), // Convertir a array JSON serializable,
+  };
+}

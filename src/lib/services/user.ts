@@ -5,6 +5,7 @@ import { Paginated, SearchParams } from "../types/pagination";
 import { CreateUserDTO, UpdateUserDTO, User } from "../types/users";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { createFormDataBody } from "../utils/request-body";
 
 const usersTag = "users";
 
@@ -67,10 +68,7 @@ export const createUser = async (
     `${process.env.NEXT_PUBLIC_API_URL}users`,
     {
       method: "POST",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(user),
     }
   );
 
@@ -101,10 +99,7 @@ export const updateUser = async (
     `${process.env.NEXT_PUBLIC_API_URL}users/` + userId,
     {
       method: "PATCH",
-      body: JSON.stringify(user),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(user),
     }
   );
 

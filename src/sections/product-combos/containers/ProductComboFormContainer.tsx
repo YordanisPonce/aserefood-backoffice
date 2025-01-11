@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
@@ -18,8 +17,12 @@ import {
   updateProductCombo,
 } from "@/lib/services/productCombos";
 import { ProductComboForm } from "../components/ProductComboForm";
-import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import {
+  createFileFromUrl,
+  createSerializeFile,
+} from "@/lib/utils/fileTransformers";
+
 
 export const ProductComboFormContainer: FunctionComponent = () => {
   const { entityId: productComboId, handleCloseModal } = useModal();
@@ -32,7 +35,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
     defaultValues: {
       name: undefined,
       description: undefined,
-      image: undefined,
+      image: null,
       isActive: StatesProductCombos.INACTIVE,
       price: 1,
       productComboItems: [],
@@ -57,12 +60,10 @@ export const ProductComboFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
 
-    const image = file ? await fileToBase64(file) : null;
-
     const createProductComboDTO: CreateProductComboDTO = {
       name: name,
       description,
-      image,
+      image: file ? await createSerializeFile(file) : null,
       isActive: state === StatesProductCombos.ACTIVE ? true : false,
       price,
       productComboItems: productComboItems.map((productCombo) => {
@@ -107,7 +108,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
           name: productCombo.name,
           description: productCombo.description,
           image: productCombo.image
-            ? base64ToFile(productCombo.image, productCombo.name)
+            ? await createFileFromUrl(productCombo.image, productCombo.name)
             : null,
           isActive: productCombo.isActive
             ? StatesProductCombos.ACTIVE

@@ -10,6 +10,7 @@ import {
 } from "../types/promotion";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { createFormDataBody } from "../utils/request-body";
 
 const promotionsTag = "promotions";
 const promotionsPath = "promotions";
@@ -62,10 +63,7 @@ export const createPromotion = async (
     `${process.env.NEXT_PUBLIC_API_URL}${promotionsPath}`,
     {
       method: "POST",
-      body: JSON.stringify(promotion),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(promotion),
     }
   );
 
@@ -92,10 +90,7 @@ export const updatePromotion = async (
     `${process.env.NEXT_PUBLIC_API_URL}${promotionsPath}/` + promotionId,
     {
       method: "PATCH",
-      body: JSON.stringify(promotion),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(promotion),
     }
   );
 

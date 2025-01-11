@@ -1,3 +1,4 @@
+import { SerializableFile } from "../utils/fileTransformers";
 import { SearchParams } from "./pagination";
 import { Provider } from "./provider";
 
@@ -15,7 +16,7 @@ export interface CreateProductDTO {
   name: string;
   description: string;
   shortDescription: string;
-  image: string | null;
+  image: SerializableFile | null;
   categoryId: number;
   providerIds: number[];
   isService: boolean;

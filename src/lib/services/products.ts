@@ -1,11 +1,11 @@
 "use server";
-
 import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { CreateProductDTO, Product, ProductDetails } from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { createFormDataBody } from "../utils/request-body";
 
 const productsTag = "products";
 
@@ -54,7 +54,6 @@ export const getProduct = async (
       cache: "no-store",
     }
   );
-
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching products");
@@ -70,10 +69,7 @@ export const createProduct = async (
     `${process.env.NEXT_PUBLIC_API_URL}products`,
     {
       method: "POST",
-      body: JSON.stringify(product),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(product),
     }
   );
 
@@ -102,10 +98,7 @@ export const updateProduct = async (
     `${process.env.NEXT_PUBLIC_API_URL}products/` + productId,
     {
       method: "PATCH",
-      body: JSON.stringify(product),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(product),
     }
   );
 

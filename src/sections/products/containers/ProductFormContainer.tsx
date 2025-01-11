@@ -18,8 +18,12 @@ import { revalidateServerTags } from "@/lib/utils/cache";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import { ProductForm } from "../components/ProductForm";
-import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import {
+  createFileFromUrl,
+  createSerializeFile,
+} from "@/lib/utils/fileTransformers";
+
 
 export const ProductFormContainer: FunctionComponent = () => {
   const { entityId: productId, handleCloseModal } = useModal();
@@ -57,13 +61,11 @@ export const ProductFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
 
-    const image = file ? await fileToBase64(file) : null;
-
     const createProductDto: CreateProductDTO = {
       categoryId: category?.id ?? 0,
       description,
       isService: state === StatesProducts.SERVICE ? true : false,
-      image,
+      image: file ? await createSerializeFile(file) : null,
       name,
       shortDescription,
       providerIds: providers.map((provider) => provider.id),
@@ -100,9 +102,7 @@ export const ProductFormContainer: FunctionComponent = () => {
         methods.reset({
           description: product.description,
           name: product.name,
-          image: product.image
-            ? base64ToFile(product.image, product.name)
-            : null,
+          image: await createFileFromUrl(product.image, product.name),
           isService: product.isService
             ? StatesProducts.SERVICE
             : StatesProducts.NOTSERVICE,

@@ -10,6 +10,10 @@ import { UserForm } from "../components/UserForm";
 import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import {
+  createFileFromUrl,
+  createSerializeFile,
+} from "@/lib/utils/fileTransformers";
 
 export const UserFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +31,7 @@ export const UserFormContainer: FunctionComponent = () => {
           lastnames: undefined,
           phoneNumber: undefined,
           username: undefined,
+          image: null,
         }
       : {
           name: undefined,
@@ -34,6 +39,7 @@ export const UserFormContainer: FunctionComponent = () => {
           lastnames: undefined,
           phoneNumber: undefined,
           username: undefined,
+          image: null,
         },
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -45,8 +51,15 @@ export const UserFormContainer: FunctionComponent = () => {
     setError(undefined);
     try {
       if (!userId) {
-        const { username, password, email, name, lastnames, phoneNumber } =
-          user as CreateUser;
+        const {
+          username,
+          password,
+          email,
+          name,
+          lastnames,
+          phoneNumber,
+          image: file,
+        } = user as CreateUser;
         await createUser({
           name,
           lastnames,
@@ -55,11 +68,18 @@ export const UserFormContainer: FunctionComponent = () => {
           role: "customer", // defualt value
           phoneNumber,
           email,
+          image: file ? await createSerializeFile(file) : null,
         });
         openSnackBar("Usuario creado con éxito", "success");
       } else {
-        const { username, email, name, lastnames, phoneNumber } =
-          user as UpdateUser;
+        const {
+          username,
+          email,
+          name,
+          lastnames,
+          phoneNumber,
+          image: file,
+        } = user as UpdateUser;
         await updateUser(userId, {
           name,
           lastnames,
@@ -67,6 +87,7 @@ export const UserFormContainer: FunctionComponent = () => {
           role: "customer", // defualt value
           phoneNumber,
           email,
+          image: file ? await createSerializeFile(file) : null,
         });
         openSnackBar(
           `Usuario con identificador ${userId} actualizado con éxito`,
@@ -97,6 +118,9 @@ export const UserFormContainer: FunctionComponent = () => {
           email: user.email,
           phoneNumber: user.phoneNumber,
           username: user.username,
+          image: user.image
+            ? await createFileFromUrl(user.image, user.username)
+            : null,
         });
       } catch {
         console.log("error");

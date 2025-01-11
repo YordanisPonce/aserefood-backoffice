@@ -10,6 +10,7 @@ import {
 } from "../types/productCombo";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { createFormDataBody } from "../utils/request-body";
 
 const productCombosTag = "product-combos";
 
@@ -74,10 +75,7 @@ export const createProductCombo = async (
     `${process.env.NEXT_PUBLIC_API_URL}product-combos`,
     {
       method: "POST",
-      body: JSON.stringify(productCombo),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(productCombo),
     }
   );
 
@@ -102,16 +100,11 @@ export const updateProductCombo = async (
   productComboId: string,
   productCombo: CreateProductComboDTO
 ): Promise<void> => {
-  console.log(productComboId);
-  console.log(productCombo);
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}product-combos/` + productComboId,
     {
       method: "PATCH",
-      body: JSON.stringify(productCombo),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(productCombo),
     }
   );
 

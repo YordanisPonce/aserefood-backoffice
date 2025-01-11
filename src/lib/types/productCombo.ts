@@ -1,3 +1,4 @@
+import { SerializableFile } from "../utils/fileTransformers";
 import { SearchParams } from "./pagination";
 
 export interface ProductCombo {
@@ -57,7 +58,7 @@ export interface CreateProductComboDTO {
   name: string;
   shortDescription: string;
   description: string;
-  image: string | null;
+  image: SerializableFile | null;
   price: number;
   zoneId: number;
   isActive: boolean;

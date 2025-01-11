@@ -1,3 +1,4 @@
+import { SerializableFile } from "../utils/fileTransformers";
 import { SearchParams } from "./pagination";
 
 export interface Promotion {
@@ -59,7 +60,7 @@ export interface CreatePromotionDTO {
   description: string;
   discountOption: DiscountOption;
   discountValue: number;
-  image: string | null;
+  image: SerializableFile | null;
   startDate: string;
   endDate: string;
   isActive: boolean;

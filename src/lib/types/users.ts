@@ -1,3 +1,4 @@
+import { SerializableFile } from "../utils/fileTransformers";
 import { SearchParams } from "./pagination";
 
 export interface User {
@@ -10,6 +11,7 @@ export interface User {
   isConfirmed: boolean;
   isActive: boolean;
   phoneNumber: string;
+  image: string;
 }
 
 export interface CreateUser {
@@ -19,6 +21,7 @@ export interface CreateUser {
   username: string;
   phoneNumber: string;
   password: string;
+  image: File | null;
 }
 
 export interface UpdateUser {
@@ -27,6 +30,7 @@ export interface UpdateUser {
   email: string;
   username: string;
   phoneNumber: string;
+  image: File | null;
 }
 export interface CreateUserDTO {
   name: string;
@@ -36,6 +40,7 @@ export interface CreateUserDTO {
   username: string;
   phoneNumber: string;
   password: string;
+  image: SerializableFile | null;
 }
 
 export interface UpdateUserDTO {
@@ -45,6 +50,7 @@ export interface UpdateUserDTO {
   role: string;
   username: string;
   phoneNumber: string;
+  image: SerializableFile | null;
 }
 
 export enum Role {
