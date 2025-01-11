@@ -24,7 +24,7 @@ export default async function ProductsPage({
     <Paper sx={{ p: 2 }}>
       <SectionHeader
         titleSection="Productos"
-        titleButton="Gestión de Producto"
+        titleButton="Crear Producto"
         createAction={modalTypes.products.form.name}
       />
       <ProductList pagination={{ page, total, pageSize }} products={data} />

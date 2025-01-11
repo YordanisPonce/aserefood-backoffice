@@ -5,7 +5,6 @@ import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
 import { getAllCategories } from "@/lib/services/categories";
 import { getAllProviders } from "@/lib/services/providers";
 import { StatesProducts } from "@/lib/types/products";
-import { SelectOption } from "@/lib/types/select";
 import {
   Alert,
   Box,
@@ -42,11 +41,12 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
             getOptionKey={(opt) => opt.id}
             size="small"
           />
-          <RHFAutocompleteFetcher<SelectOption>
+          <RHFAutocompleteFetcher
             fullWidth
-            name="category"
-            label="Categoría"
+            name="categories"
+            label="Categorías"
             onFetch={getAllCategories}
+            multiple={true}
             getOptionLabel={(opt) => opt.name}
             getOptionKey={(opt) => opt.id}
             size="small"

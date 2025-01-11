@@ -5,6 +5,7 @@ import useAllProviders from "@/sections/providers/hooks/useAllProviders";
 import { Box } from "@mui/material";
 import React from "react";
 import useProductsStatesOptions from "./hooks/useProductsStatesOptions";
+import useAllCategories from "@/sections/categories/hooks/useAllCategories";
 
 interface Props {
   filters: ProductsFilters;
@@ -21,8 +22,15 @@ export default function ProductsFiltersContent({
     error: errorAllProviders,
     isLoading: isLoadingAllProviders,
   } = useAllProviders();
-  const { productsStates, selectState } =
-    useProductsStatesOptions({ isService: filters.isService });
+  const {
+    categories,
+    error: errorAllCategories,
+    isLoading: isLoadingAllCategories,
+    fetchCategories,
+  } = useAllCategories();
+  const { productsStates, selectState } = useProductsStatesOptions({
+    isService: filters.isService,
+  });
   return (
     <Box display="flex" flexDirection="column" gap={2}>
       <SelectInputFilterFetcher
@@ -38,6 +46,24 @@ export default function ProductsFiltersContent({
               e.target.value === "" ? undefined : Number(e.target.value),
           })
         }
+      />
+
+      <SelectInputFilterFetcher
+        value={filters.categoryIds}
+        options={categories}
+        error={errorAllCategories}
+        isLoading={isLoadingAllCategories}
+        fetcher={fetchCategories}
+        label="Categorías"
+        multiple={true}
+        onChange={(e) => {
+          if (Array.isArray(e.target.value))
+            handleFilterChange({
+              ...filters,
+              categoryIds:
+                e.target.value.length === 0 ? undefined : e.target.value,
+            });
+        }}
       />
 
       <SelectInputFilter

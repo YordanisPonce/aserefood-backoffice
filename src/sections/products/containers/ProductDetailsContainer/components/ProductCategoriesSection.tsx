@@ -1,25 +1,27 @@
 "use client";
 import SectionFetchingDataError from "@/components/partials/Modal/components/SectionFetchingDataError";
+import { Category } from "@/lib/types/category";
+import useCategoriesAncestors from "@/sections/categories/hooks/useCategoriesAncestors";
 import useCategoryAncestors from "@/sections/categories/hooks/useCategoryAncestors";
-import { Category } from "@mui/icons-material";
+import { Category as CategoryIcon } from "@mui/icons-material";
 import { Box, Chip, CircularProgress, Typography } from "@mui/material";
 import React from "react";
 
 interface Props {
-  categoryId: string;
+  categories: Category[];
 }
 
-export default function ProductCategoriesSection({ categoryId }: Props) {
+export default function ProductCategoriesSection({ categories }: Props) {
   const {
     ancestors,
     loadingData: loadingDataCategoryAncestors,
     error: errorCategoryAncestors,
-    fetchCategoryAncestors,
-  } = useCategoryAncestors({ categoryId: categoryId });
+    fetchCategoriesAncestors,
+  } = useCategoriesAncestors({ categories });
 
   return (
     <Box display="flex" alignItems="center" mb={2}>
-      <Category sx={{ mr: 1 }} color="action" />
+      <CategoryIcon sx={{ mr: 1 }} color="action" />
       <Box display="flex" alignItems="center" gap={1}>
         <Typography variant="body2">Categorias:</Typography>
         {!loadingDataCategoryAncestors ? (
@@ -38,7 +40,7 @@ export default function ProductCategoriesSection({ categoryId }: Props) {
           ) : (
             <SectionFetchingDataError
               label="volver a cargar categorías"
-              reset={fetchCategoryAncestors}
+              reset={fetchCategoriesAncestors}
             />
           )
         ) : (

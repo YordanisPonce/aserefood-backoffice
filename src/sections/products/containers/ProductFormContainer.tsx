@@ -24,7 +24,6 @@ import {
   createSerializeFile,
 } from "@/lib/utils/fileTransformers";
 
-
 export const ProductFormContainer: FunctionComponent = () => {
   const { entityId: productId, handleCloseModal } = useModal();
   const { openSnackBar } = useSnackBar();
@@ -35,7 +34,7 @@ export const ProductFormContainer: FunctionComponent = () => {
   const formOptions: UseFormProps<CreateProduct> = {
     resolver: zodResolver(createProductSchema()),
     defaultValues: {
-      category: null,
+      categories: [],
       description: undefined,
       name: undefined,
       image: null,
@@ -53,7 +52,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     name,
     description,
     image: file,
-    category,
+    categories,
     isService: state,
     providers,
     shortDescription,
@@ -62,7 +61,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     setError(undefined);
 
     const createProductDto: CreateProductDTO = {
-      categoryId: category?.id ?? 0,
+      categoryIds: categories.map((category) => category.id),
       description,
       isService: state === StatesProducts.SERVICE ? true : false,
       image: file ? await createSerializeFile(file) : null,
@@ -108,10 +107,7 @@ export const ProductFormContainer: FunctionComponent = () => {
             : StatesProducts.NOTSERVICE,
           shortDescription: product.shortDescription,
           providers: product.providers,
-          category: {
-            id: product.categoryId,
-            name: product.categoryName,
-          },
+          categories: product.categories,
         });
       } catch {
         console.log("error");

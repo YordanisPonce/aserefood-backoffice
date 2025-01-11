@@ -44,12 +44,6 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
       flex: 2,
     },
     {
-      field: "categoryName",
-      headerName: "Categoría",
-      sortable: false,
-      flex: 0.8,
-    },
-    {
       field: "id",
       headerName: "Acciones",
       renderCell: (params) => (

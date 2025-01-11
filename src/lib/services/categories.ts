@@ -70,7 +70,7 @@ export const getAllCategories = async (): Promise<Category[]> => {
 };
 
 export const getCategoryAncestors = async (
-  categoryId: string
+  categoryId: number
 ): Promise<Category[]> => {
   const response = await fetchWithAuth(
     new URL(

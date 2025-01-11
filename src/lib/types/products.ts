@@ -1,4 +1,5 @@
 import { SerializableFile } from "../utils/fileTransformers";
+import { Category } from "./category";
 import { SearchParams } from "./pagination";
 import { Provider } from "./provider";
 
@@ -8,8 +9,6 @@ export interface Product {
   description: string;
   shortDescription: string;
   isService: boolean;
-  categoryId: number;
-  categoryName: string;
 }
 
 export interface CreateProductDTO {
@@ -17,7 +16,7 @@ export interface CreateProductDTO {
   description: string;
   shortDescription: string;
   image: SerializableFile | null;
-  categoryId: number;
+  categoryIds: number[];
   providerIds: number[];
   isService: boolean;
 }
@@ -28,10 +27,10 @@ export interface CreateProduct {
   shortDescription: string;
   image: File | null;
   isService: StatesProducts;
-  category: {
+  categories: {
     id: number;
     name: string;
-  } | null;
+  }[];
   providers: {
     id: number;
     name: string;
@@ -45,8 +44,7 @@ export interface ProductDetails {
   description: string;
   shortDescription: string;
   isService: boolean;
-  categoryId: number;
-  categoryName: string;
+  categories: Category[];
   providers: Provider[];
 }
 
@@ -59,4 +57,5 @@ export enum StatesProducts {
 export interface ProductsFilters extends SearchParams {
   providerId?: number;
   isService?: boolean;
+  categoryIds?: number[]
 }

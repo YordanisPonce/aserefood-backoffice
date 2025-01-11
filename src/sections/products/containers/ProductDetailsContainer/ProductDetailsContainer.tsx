@@ -75,9 +75,7 @@ export default function ProductDetailsContainer() {
                 {product.shortDescription}
               </Typography>
               <Divider sx={{ my: 2 }} />
-              <ProductCategoriesSection
-                categoryId={product.categoryId.toString()}
-              />
+              <ProductCategoriesSection categories={product.categories} />
               <Typography variant="body2">
                 <Description
                   sx={{ mr: 1, verticalAlign: "middle" }}

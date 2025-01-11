@@ -18,6 +18,14 @@ export default function useFiltersUrl() {
             if (typeof value === "number") searchUrl.set(key, value.toString());
             else if (typeof value === "boolean")
               searchUrl.set(key, value ? "true" : "false");
+            else if (Array.isArray(value)) {
+              value.forEach(() => {
+                searchUrl.delete(key);
+              })
+              value.forEach((value) => {
+                searchUrl.append(key, value);
+              })
+            }
             else searchUrl.set(key, value);
           } else searchUrl.delete(key);
         });

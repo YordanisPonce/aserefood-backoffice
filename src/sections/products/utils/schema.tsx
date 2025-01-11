@@ -30,15 +30,23 @@ export const createProductSchema = () =>
           message: "No se pueden repetir los proveedores.",
         }
       ),
-    category: z
-      .object({
-        id: z.number(),
-        name: z.string(),
-      })
-      .nullable()
-      .refine((obj) => obj !== null, {
-        message: "Es necesario seleccionar una categoría",
-      }),
+    categories: z
+      .array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+        })
+      )
+      .min(1, { message: "Debe incluir al menos una categoría" })
+      .refine(
+        (items) => {
+          const uniqueIds = new Set(items.map((item) => item.id));
+          return uniqueIds.size === items.length;
+        },
+        {
+          message: "No se pueden repetir las categorías.",
+        }
+      ),
     image: z
       .custom<File>((value) => {
         return !value || value instanceof File;

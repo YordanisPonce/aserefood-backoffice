@@ -13,11 +13,10 @@ interface Props {
   options: { id: number; name: string }[];
   isLoading: boolean;
   error: string | undefined;
-  value: number | undefined;
+  value: number | number[] | undefined;
   fetcher: () => Promise<void>;
-  onChange:
-    | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
-    | undefined;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  multiple?: boolean;
 }
 
 export default function SelectInputFilterFetcher({
@@ -28,17 +27,23 @@ export default function SelectInputFilterFetcher({
   value,
   fetcher,
   onChange,
+  multiple = false, // Propiedad para habilitar multiselección
 }: Props) {
   return (
     <TextField
       select
       label={label}
       variant="outlined"
-      value={!value || isLoading || options.length === 0 ? "" : value}
+      value={
+        !value || isLoading || options.length === 0 ? (multiple ? [] : "") : value
+      }
       onChange={onChange}
       fullWidth
+      SelectProps={{
+        multiple, // Habilitar multiselección en las propiedades del Select
+      }}
     >
-      <MenuItem value="">Todos</MenuItem>
+      {!multiple && <MenuItem value="">Todos</MenuItem>}
       {isLoading ? (
         <MenuItem disabled>
           <Box display="flex" alignItems="center" gap={1}>
