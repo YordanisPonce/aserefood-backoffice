@@ -15,6 +15,7 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import useUser from "../hooks/useUser";
 import ContactInfosList from "@/sections/contact-infos/components/ContactInfosList";
+import PreviewImage from "@/components/partials/PreviewImage/PreviewImage";
 
 interface Props {
   userId: string | null;
@@ -32,13 +33,17 @@ export default function UserDetails({ userId }: Props) {
             sx={{
               display: "flex",
               flexDirection: "column",
-              width: "100%"
+              width: "100%",
             }}
           >
             <Box sx={{ p: 3, overflowY: "auto" }}>
               <Box display="flex" alignItems="center" mb={2}>
-                <Avatar sx={{ width: 60, height: 60, fontSize: 30, mr: 2 }}>
-                  {user.name.charAt(0)}
+                <Avatar sx={{ width: 200, height: 200, fontSize: 30, mr: 2 }}>
+                  {user.image ? (
+                    <PreviewImage preview={user.image} />
+                  ) : (
+                    user.name.charAt(0)
+                  )}
                 </Avatar>
                 <Box>
                   <Typography
