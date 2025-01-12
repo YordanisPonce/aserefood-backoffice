@@ -60,7 +60,7 @@ export interface CreatePromotionDTO {
   description: string;
   discountOption: DiscountOption;
   discountValue: number;
-  image: SerializableFile | null;
+  image: string | null;
   startDate: string;
   endDate: string;
   isActive: boolean;

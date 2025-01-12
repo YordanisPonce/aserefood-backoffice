@@ -1,3 +1,4 @@
+import imageCompression from "browser-image-compression";
 export const fileMaxSizeMB = 2;
 
 export function fileToBase64(file: File): Promise<string> {
@@ -30,19 +31,14 @@ export async function createFileFromUrl(
   fileName: string
 ): Promise<File> {
   try {
-    // Descarga la imagen desde la URL
-    const response = await fetch(
-      imageUrl
-    );
+    const response = await fetch(imageUrl);
 
     if (!response.ok) {
       throw new Error(`Error al descargar la imagen: ${response.statusText}`);
     }
 
-    // Convierte la respuesta a un Blob
     const blob = await response.blob();
 
-    // Crea un objeto File a partir del Blob
     const file = new File([blob], fileName, {
       type: blob.type,
     });
@@ -67,6 +63,24 @@ export async function createSerializeFile(
   return {
     name: file.name,
     type: file.type,
-    buffer: Array.from(new Uint8Array(arrayBuffer)), // Convertir a array JSON serializable,
+    buffer: Array.from(new Uint8Array(arrayBuffer)),
   };
+}
+
+export async function compressImage(
+  file: File,
+  maxSizeMB: number,
+  maxWidthOrHeight: number
+): Promise<File> {
+  const options = {
+    maxSizeMB: maxSizeMB,
+    maxWidthOrHeight: maxWidthOrHeight,
+    useWebWorker: true,
+  };
+  const compressedBlob = await imageCompression(file, options);
+
+  return new File([compressedBlob], file.name, {
+    type: compressedBlob.type,
+    lastModified: Date.now(),
+  });
 }

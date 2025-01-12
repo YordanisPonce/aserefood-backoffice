@@ -25,7 +25,7 @@ import { ProductForm } from "../components/ProductForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import {
   createFileFromUrl,
-  createSerializeFile,
+  fileToBase64,
 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
@@ -73,11 +73,12 @@ export const ProductFormContainer: FunctionComponent = () => {
       categoryIds: categories.map((category) => category.id),
       description,
       isService: state === StatesProducts.SERVICE ? true : false,
-      image: file ? await createSerializeFile(file) : null,
+      image: file ? await fileToBase64(file) : null,
       name,
       shortDescription,
       providerIds: providers.map((provider) => provider.id),
     };
+
     try {
       if (!productId) {
         await createProduct(createProductDto);

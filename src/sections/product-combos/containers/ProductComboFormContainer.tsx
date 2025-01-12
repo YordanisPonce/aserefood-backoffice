@@ -25,7 +25,7 @@ import { ProductComboForm } from "../components/ProductComboForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import {
   createFileFromUrl,
-  createSerializeFile,
+  fileToBase64,
 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
@@ -72,7 +72,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
     const createProductComboDTO: CreateProductComboDTO = {
       name: name,
       description,
-      image: file ? await createSerializeFile(file) : null,
+      image: file ? await fileToBase64(file) : null,
       isActive: state === StatesProductCombos.ACTIVE ? true : false,
       price,
       productComboItems: productComboItems.map((productCombo) => {

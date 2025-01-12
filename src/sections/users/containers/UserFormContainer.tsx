@@ -17,7 +17,7 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import {
   createFileFromUrl,
-  createSerializeFile,
+  fileToBase64,
 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
@@ -78,7 +78,7 @@ export const UserFormContainer: FunctionComponent = () => {
           role: "customer", // defualt value
           phoneNumber,
           email,
-          image: file ? await createSerializeFile(file) : null,
+          image: file ? await fileToBase64(file) : null,
         });
         openSnackBar("Usuario creado con éxito", "success");
       } else {
@@ -97,7 +97,7 @@ export const UserFormContainer: FunctionComponent = () => {
           role: "customer", // defualt value
           phoneNumber,
           email,
-          image: file ? await createSerializeFile(file) : null,
+          image: file ? await fileToBase64(file) : null,
         });
         openSnackBar(
           `Usuario con identificador ${userId} actualizado con éxito`,

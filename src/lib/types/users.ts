@@ -40,7 +40,7 @@ export interface CreateUserDTO {
   username: string;
   phoneNumber: string;
   password: string;
-  image: SerializableFile | null;
+  image: string | null;
 }
 
 export interface UpdateUserDTO {
@@ -50,7 +50,7 @@ export interface UpdateUserDTO {
   role: string;
   username: string;
   phoneNumber: string;
-  image: SerializableFile | null;
+  image: string | null;
 }
 
 export enum Role {

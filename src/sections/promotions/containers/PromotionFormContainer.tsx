@@ -28,7 +28,7 @@ import { PromotionForm } from "../components/PromotionForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import {
   createFileFromUrl,
-  createSerializeFile,
+  fileToBase64,
 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
@@ -104,7 +104,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
         discountValue,
         endDate: endDate,
         startDate: startDate,
-        image: file ? await createSerializeFile(file) : null,
+        image: file ? await fileToBase64(file) : null,
         isActive: state === StatesPromotions.ACTIVA ? true : false,
         productComboIds: productCombos.map((productCombo) => productCombo.id),
         productIds: products.map((product) => product.id),

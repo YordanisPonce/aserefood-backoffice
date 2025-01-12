@@ -58,7 +58,7 @@ export interface CreateProductComboDTO {
   name: string;
   shortDescription: string;
   description: string;
-  image: SerializableFile | null;
+  image: string | null;
   price: number;
   zoneId: number;
   isActive: boolean;

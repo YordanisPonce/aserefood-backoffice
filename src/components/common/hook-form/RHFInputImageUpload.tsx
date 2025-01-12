@@ -1,6 +1,10 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { fileMaxSizeMB } from "@/lib/utils/fileTransformers";
+import {
+  compressImage,
+  fileMaxSizeMB,
+  fileToBase64,
+} from "@/lib/utils/fileTransformers";
 import InputImageUpload from "../input/InputImageUpload";
 
 type Props = {
@@ -38,9 +42,10 @@ export default function RHFInputImageUpload({
       setErrorUpload(undefined);
       const files = event.target.files;
       if (files && files[0]) {
-        const file = files[0];
+        const file = await compressImage(files[0], 1, 1600);
+
         if (file.size <= fileMaxSizeMB * 1024 * 1024) {
-          const previewURL = URL.createObjectURL(file);
+          const previewURL = await fileToBase64(file);
           setPreview(previewURL);
           onChange(file);
         } else {
@@ -64,7 +69,10 @@ export default function RHFInputImageUpload({
   };
 
   useEffect(() => {
-    setPreview(value ? URL.createObjectURL(value) : null);
+    const convertImage = async () => {
+      setPreview(value ? await fileToBase64(value) : null);
+    };
+    convertImage();
   }, [value, getValues, name]);
 
   return (

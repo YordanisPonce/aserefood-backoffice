@@ -6,6 +6,11 @@
 const nextConfig = {
   /* config options here */
   output: 'standalone',
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '2mb',
+    },
+  },
   images: {
     remotePatterns: [{
       protocol: "http", 

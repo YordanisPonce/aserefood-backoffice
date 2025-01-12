@@ -15,7 +15,7 @@ export interface CreateProductDTO {
   name: string;
   description: string;
   shortDescription: string;
-  image: SerializableFile | null;
+  image: string | null;
   categoryIds: number[];
   providerIds: number[];
   isService: boolean;
