@@ -22,15 +22,15 @@ export default function PreviewImage({ preview }: Props) {
             width: "100%",
             height: "100%",
             objectFit: "fill",
-            cursor: "pointer",
+            cursor: "pointer",     
           }}
+          onClick={handleOpenDialog}
         >
           <Image
             src={preview}
             alt="Vista previa"
             width={600}
-            height={240}
-            onClick={handleOpenDialog}
+            height={240}  
           />
         </CardMedia>
       </Card>
