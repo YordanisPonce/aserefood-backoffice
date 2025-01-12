@@ -1,3 +1,5 @@
+import { SerializableFile } from "../utils/fileTransformers";
+
 export interface ZelleConf {
   phoneNumber: string;
   qr: string;
@@ -10,5 +12,5 @@ export interface UpdateZelleConf {
 
 export interface UpdateZelleConfDTO {
   phoneNumber: string;
-  qr: string | null
+  qr: SerializableFile | null
 }

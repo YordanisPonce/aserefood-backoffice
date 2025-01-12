@@ -3,30 +3,30 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { updateZelleConfSchema } from "../utils/schema";
 import { revalidateServerTags } from "@/lib/utils/cache";
-import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
+import {
+  createFileFromUrl,
+  createSerializeFile,
+} from "@/lib/utils/fileTransformers";
 import { UpdateZelleConf, ZelleConf } from "@/lib/types/zelleConf";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { updateZelleConf } from "@/lib/services/zelleConf";
 import ZelleConfForm from "../components/ZelleConfForm";
+import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 
 interface Props {
-  zellConf: ZelleConf | undefined;
+  zelleConf: ZelleConf | undefined;
 }
 
-export default function ZelleConfFormContainer({ zellConf }: Props) {
+export default function ZelleConfFormContainer({ zelleConf }: Props) {
+  const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<UpdateZelleConf> = {
     resolver: zodResolver(updateZelleConfSchema()),
-    defaultValues: zellConf
-      ? {
-          phoneNumber: zellConf.phoneNumber,
-          qr: zellConf.qr ? base64ToFile(zellConf.qr, "qr") : null,
-        }
-      : {
-          phoneNumber: undefined,
-          qr: null,
-        },
+    defaultValues: {
+      phoneNumber: undefined,
+      qr: null,
+    },
     mode: "onSubmit",
     reValidateMode: "onChange",
   };
@@ -37,19 +37,37 @@ export default function ZelleConfFormContainer({ zellConf }: Props) {
     try {
       setIsLoading(true);
       setError(undefined);
-      const image = file ? await fileToBase64(file) : null;
+
       await updateZelleConf({
         phoneNumber,
-        qr: image,
+        qr: file ? await createSerializeFile(file) : null,
       });
+      openSnackBar("Zelle Conf actualizada con éxito", "success");
       await revalidateServerTags("zelle-conf");
     } catch (error) {
       console.log(error);
-      if (error instanceof Error) setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+        openSnackBar(error.message, "error");
+      }
     } finally {
       setIsLoading(false);
     }
   };
+
+  const updateForm = useCallback(
+    async (zelleConf: ZelleConf) => {
+      methods.reset({
+        phoneNumber: zelleConf.phoneNumber,
+        qr: await createFileFromUrl(zelleConf.qr, "qr"),
+      });
+    },
+    [methods]
+  );
+
+  useEffect(() => {
+    if (zelleConf) updateForm(zelleConf);
+  }, [zelleConf]);
 
   return (
     <FormProvider {...methods}>

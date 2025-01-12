@@ -1,6 +1,7 @@
 "use server";
 import { UpdateZelleConfDTO, ZelleConf } from "../types/zelleConf";
 import { fetchWithAuth } from "../utils/fetcher";
+import { createFormDataBody } from "../utils/request-body";
 
 const zelleConfPath = "zelle-conf";
 const zelleConfTag = "zelle-conf";
@@ -32,10 +33,7 @@ export const updateZelleConf = async (
     `${process.env.NEXT_PUBLIC_API_URL}${zelleConfPath}`,
     {
       method: "PUT",
-      body: JSON.stringify(zelleConf),
-      headers: {
-        "Content-Type": "application/json",
-      },
+      body: await createFormDataBody(zelleConf),
     }
   );
 

@@ -4,7 +4,7 @@ export async function createFormDataBody(data: Object): Promise<FormData> {
 
   Object.entries(data || {}).forEach(([key, value]) => {
     if (value) {
-      if (key === "image" && value) {
+      if (key === "image" || key === "qr") {
         const arrayBuffer = new Uint8Array(value.buffer).buffer;
         const blob = new Blob([arrayBuffer], { type: value.type });
         formData.append(key, blob, value.name);

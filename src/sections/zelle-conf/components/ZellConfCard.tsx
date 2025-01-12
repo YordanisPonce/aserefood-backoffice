@@ -30,7 +30,7 @@ export default function ZellConfCard({ zelleConf }: Props) {
           )}
           <SettingsSuggestIcon sx={{ height: "100px", width: "100px" }} />
         </Box>
-        <ZelleConfFormContainer zellConf={zelleConf} />
+        <ZelleConfFormContainer zelleConf={zelleConf} />
       </CardContent>
     </Card>
   );
