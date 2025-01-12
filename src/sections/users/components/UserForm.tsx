@@ -51,7 +51,11 @@ export const UserForm: FunctionComponent<UserFormProps> = ({
             multiline
           />
         </Box>
-        <RHFInputImageUpload name="image" placeholder="Foto de Pérfil" />
+        <RHFInputImageUpload
+          name="image"
+          placeholder="Foto de Pérfil"
+          description="Los formatos permitidos son: (jpg, png, gif), el avatar no debe de exceder los 2mb"
+        />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>

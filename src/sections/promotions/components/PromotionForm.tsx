@@ -124,6 +124,7 @@ export const PromotionForm: FunctionComponent<PromotionFormProps> = ({
         <RHFInputImageUpload
           name="image"
           placeholder="Imagen de la promoción"
+          description="Los formatos permitidos son: (jpg, png, gif), la imagen no debe de exceder los 2mb"
           required={true}
         />
       </Box>

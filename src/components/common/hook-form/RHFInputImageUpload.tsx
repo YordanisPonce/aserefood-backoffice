@@ -6,6 +6,7 @@ import InputImageUpload from "../input/InputImageUpload";
 type Props = {
   name: string;
   label?: string;
+  description?: string;
   placeholder?: string;
   required?: boolean;
   accept?: string;
@@ -15,6 +16,7 @@ type Props = {
 export default function RHFInputImageUpload({
   name,
   label,
+  description,
   required = false,
   placeholder = "Selecciona una imagen",
   accept = "image/*",
@@ -82,6 +84,7 @@ export default function RHFInputImageUpload({
           placeholder={placeholder}
           underLabel={underLabel}
           label={label}
+          description={description}
           required={required}
         />
       )}

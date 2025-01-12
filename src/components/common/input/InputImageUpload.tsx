@@ -5,6 +5,7 @@ import { FieldError } from "react-hook-form";
 import PreviewImage from "@/components/partials/PreviewImage/PreviewImage";
 type Props = {
   label?: string;
+  description?: string;
   placeholder?: string;
   required?: boolean;
   accept?: string;
@@ -23,6 +24,7 @@ type Props = {
 
 const InputImageUpload = ({
   label,
+  description,
   placeholder = "Selecciona una imagen",
   required = false,
   inputRef,
@@ -56,7 +58,9 @@ const InputImageUpload = ({
         onChange={handleFileChange(onChange)}
       />
     </Button>
-
+    <Typography sx={{ mt: 2 }} variant="inherit">
+      {description ? description : ""}
+    </Typography>
     {!isLoading ? (
       !errorUpload ? (
         preview ? (
