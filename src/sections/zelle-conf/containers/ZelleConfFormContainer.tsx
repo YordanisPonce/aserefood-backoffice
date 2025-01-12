@@ -24,7 +24,7 @@ export default function ZelleConfFormContainer({ zelleConf }: Props) {
   const formOptions: UseFormProps<UpdateZelleConf> = {
     resolver: zodResolver(updateZelleConfSchema()),
     defaultValues: {
-      phoneNumber: undefined,
+      phoneNumber: "",
       qr: null,
     },
     mode: "onSubmit",

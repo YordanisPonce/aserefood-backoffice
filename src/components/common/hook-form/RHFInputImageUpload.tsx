@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { fileMaxSizeMB } from "@/lib/utils/fileTransformers";
 import InputImageUpload from "../input/InputImageUpload";
 
@@ -59,6 +59,10 @@ export default function RHFInputImageUpload({
       inputRef.current.value = "";
     }
   };
+
+  useEffect(() => {
+    setPreview(getValues(name) ? URL.createObjectURL(getValues(name)) : null);
+  }, [getValues(name)]);
 
   return (
     <Controller
