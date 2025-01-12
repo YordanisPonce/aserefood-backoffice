@@ -1,4 +1,3 @@
-import { SerializableFile } from "../utils/fileTransformers";
 import { Category } from "./category";
 import { SearchParams } from "./pagination";
 import { Provider } from "./provider";

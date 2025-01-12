@@ -1,4 +1,3 @@
-import { SerializableFile } from "../utils/fileTransformers";
 import { SearchParams } from "./pagination";
 
 export interface Promotion {
