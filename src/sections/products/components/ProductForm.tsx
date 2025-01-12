@@ -67,10 +67,9 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
         />
         <RHFRadioGroup
           name="isService"
-          label="Estado del Producto"
           options={[
-            { label: "Con Servicio", value: StatesProducts.SERVICE },
-            { label: "Sin Servicio", value: StatesProducts.NOTSERVICE },
+            { label: "Servicio", value: StatesProducts.SERVICE },
+            { label: "Producto Físico", value: StatesProducts.NOTSERVICE },
           ]}
           direction="row"
         />

@@ -15,7 +15,7 @@ type Option = {
 
 type Props = {
   name: string;
-  label: string;
+  label?: string;
   options: Option[];
   disabled?: boolean;
   direction?: "row" | "column";
@@ -48,13 +48,19 @@ export default function RHFRadioGroup({
         control={control}
         render={({ field: { onChange, value }, fieldState: { error } }) => (
           <>
-            <Typography
-              component="label"
-              htmlFor={name}
-              sx={{ fontSize: "14px", fontWeight: 600, color: "text.primary" }}
-            >
-              {label}
-            </Typography>
+            {label && (
+              <Typography
+                component="label"
+                htmlFor={name}
+                sx={{
+                  fontSize: "14px",
+                  fontWeight: 600,
+                  color: "text.primary",
+                }}
+              >
+                {label}
+              </Typography>
+            )}
 
             <RadioGroup
               row={direction === "row"}
