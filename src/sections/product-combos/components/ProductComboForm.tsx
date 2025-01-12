@@ -70,7 +70,7 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
         <RHFInputImageUpload
           name="image"
           placeholder="Imagen del Combo"
-          description="Los formatos permitidos son: (jpg, png, gif), la imagen no debe de exceder los 2mb"
+          description="Los formatos permitidos son: (jpg, png, gif)"
           required={true}
         />
       </Box>

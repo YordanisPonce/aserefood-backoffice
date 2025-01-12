@@ -75,7 +75,7 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
         />
         <RHFInputImageUpload
           name="image"
-          description="Los formatos permitidos son: (jpg, png, gif), la imagen no debe de exceder los 2mb"
+          description="Los formatos permitidos son: (jpg, png, gif)"
           placeholder="Imagen del Producto"
           required={true}
         />
