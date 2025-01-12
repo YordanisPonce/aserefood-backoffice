@@ -124,6 +124,7 @@ export const PromotionForm: FunctionComponent<PromotionFormProps> = ({
         <RHFInputImageUpload
           name="image"
           placeholder="Imagen de la promoción"
+          required={true}
         />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>

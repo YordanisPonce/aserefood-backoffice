@@ -67,7 +67,7 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
           noDataText="Inserte Articulos como parte del Combo"
           propertyMap={{ product: "Producto", amount: "Importe" }}
         />
-        <RHFInputImageUpload name="image" placeholder="Imagen del Combo" />
+        <RHFInputImageUpload name="image" placeholder="Imagen del Combo" required={true} />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>

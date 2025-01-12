@@ -74,7 +74,11 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
           ]}
           direction="row"
         />
-        <RHFInputImageUpload name="image" placeholder="Imagen del Producto" />
+        <RHFInputImageUpload
+          name="image"
+          placeholder="Imagen del Producto"
+          required={true}
+        />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>

@@ -44,14 +44,17 @@ export const createProductComboSchema = () =>
       .min(1, { message: "Debe agregar al menos un artículo" }),
     image: z
       .custom<File>((value) => {
-        return !value || value instanceof File;
-      }, "Debe seleccionar una imagen")
-      .refine((file) => !file || file.type.startsWith("image/"), {
-        message: "El archivo debe ser una imagen válida (jpg, png, gif, etc.)",
-      })
-      .refine((file) => !file || file.size <= fileMaxSizeMB * 1024 * 1024, {
+        return value instanceof File;
+      }, "Debe seleccionar una Imagen para el combo de producto")
+      .refine(
+        (file) => file instanceof File && file.type.startsWith("image/"),
+        {
+          message:
+            "El archivo debe ser una imagen válida (jpg, png, gif, etc.)",
+        }
+      )
+      .refine((file) => file.size <= fileMaxSizeMB * 1024 * 1024, {
         message:
           "El tamaño de la imagen no debe exceder los " + fileMaxSizeMB + " MB",
-      })
-      .optional(),
+      }),
   });
