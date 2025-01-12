@@ -3,7 +3,7 @@ export async function createFormDataBody(data: Object): Promise<FormData> {
   const formData = new FormData();
 
   Object.entries(data || {}).forEach(([key, value]) => {
-    if (value) {
+    if (value !== undefined && value !== null) {
       if (key === "image" || key === "qr") {
         const arrayBuffer = new Uint8Array(value.buffer).buffer;
         const blob = new Blob([arrayBuffer], { type: value.type });
