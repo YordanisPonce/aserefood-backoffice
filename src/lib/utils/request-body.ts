@@ -1,5 +1,5 @@
 "use server";
-export async function createFormDataBody(data: Object): Promise<FormData> {
+export async function createFormDataBody(data: object): Promise<FormData> {
   const formData = new FormData();
 
   Object.entries(data || {}).forEach(([key, value]) => {

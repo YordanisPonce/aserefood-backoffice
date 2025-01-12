@@ -17,14 +17,16 @@ export default function useCategoriesAncestors({ categories }: Props) {
       const categoriesAncestors: Category[] = [];
       await Promise.all(
         categories.map(async (category) => {
-          (await getCategoryAncestors(category.id)).forEach((categoryFetch) => {
-            if (
-              !categoriesAncestors.find(
-                (category) => category.id === categoryFetch.id
+          (await getCategoryAncestors(category.id.toString())).forEach(
+            (categoryFetch) => {
+              if (
+                !categoriesAncestors.find(
+                  (category) => category.id === categoryFetch.id
+                )
               )
-            )
-              categoriesAncestors.push(categoryFetch);
-          });
+                categoriesAncestors.push(categoryFetch);
+            }
+          );
         })
       );
       setAscestors(categoriesAncestors);
@@ -34,7 +36,7 @@ export default function useCategoriesAncestors({ categories }: Props) {
     } finally {
       setLoadingData(false);
     }
-  }, []);
+  }, [categories]);
   useEffect(() => {
     fetchCategoriesAncestors();
   }, [fetchCategoriesAncestors]);

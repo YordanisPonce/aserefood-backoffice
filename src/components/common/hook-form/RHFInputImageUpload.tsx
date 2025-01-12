@@ -23,8 +23,9 @@ export default function RHFInputImageUpload({
   underLabel,
 }: Props) {
   const { control, getValues } = useFormContext();
+  const value = getValues(name);
   const [preview, setPreview] = useState<string | null>(
-    getValues(name) ? URL.createObjectURL(getValues(name)) : null
+    value ? URL.createObjectURL(value) : null
   );
   const [isLoading, setLoading] = useState(false);
   const [errorUpload, setErrorUpload] = useState<string | undefined>(undefined);
@@ -63,8 +64,8 @@ export default function RHFInputImageUpload({
   };
 
   useEffect(() => {
-    setPreview(getValues(name) ? URL.createObjectURL(getValues(name)) : null);
-  }, [getValues(name)]);
+    setPreview(value ? URL.createObjectURL(value) : null);
+  }, [value, getValues, name]);
 
   return (
     <Controller

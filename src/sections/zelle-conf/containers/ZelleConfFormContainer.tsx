@@ -67,7 +67,7 @@ export default function ZelleConfFormContainer({ zelleConf }: Props) {
 
   useEffect(() => {
     if (zelleConf) updateForm(zelleConf);
-  }, [zelleConf]);
+  }, [zelleConf, updateForm]);
 
   return (
     <FormProvider {...methods}>

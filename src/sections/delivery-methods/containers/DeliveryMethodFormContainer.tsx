@@ -131,7 +131,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
     if (error && contentRef.current) {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [error]);
+  }, [error, contentRef]);
 
   return (
     <FormProvider {...methods}>

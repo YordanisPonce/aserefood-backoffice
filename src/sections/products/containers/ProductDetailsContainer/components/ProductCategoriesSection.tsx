@@ -2,7 +2,6 @@
 import SectionFetchingDataError from "@/components/partials/Modal/components/SectionFetchingDataError";
 import { Category } from "@/lib/types/category";
 import useCategoriesAncestors from "@/sections/categories/hooks/useCategoriesAncestors";
-import useCategoryAncestors from "@/sections/categories/hooks/useCategoryAncestors";
 import { Category as CategoryIcon } from "@mui/icons-material";
 import { Box, Chip, CircularProgress, Typography } from "@mui/material";
 import React from "react";
