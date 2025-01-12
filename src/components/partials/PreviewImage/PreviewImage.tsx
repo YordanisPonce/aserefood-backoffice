@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, Card, Dialog } from "@mui/material";
+import { Box, Card, CardMedia, Dialog } from "@mui/material";
 import React from "react";
 import Image from "next/image";
 import useDialogPreviewImage from "./hooks/useDialogPreviewImage";
@@ -15,38 +15,28 @@ export default function PreviewImage({ preview }: Props) {
 
   return (
     <>
-      <Card
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Image
-          src={preview}
-          alt="Vista previa"
-          width={600}
-          height={400}
-          style={{
+      <Card>
+        <CardMedia
+          component={"div"}
+          sx={{
+            width: "100%",
+            height: "100%",
             objectFit: "fill",
             cursor: "pointer",
           }}
-          onClick={handleOpenDialog}
-        />
-      </Card>
-
-      <Dialog open={openFullView} onClose={handleCloseDialog} maxWidth="lg">
-        <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+        >
           <Image
             src={preview}
             alt="Vista previa"
-            width={1000}
-            height={600}
-            style={{
-              objectFit: "fill",
-              cursor: "pointer",
-            }}
+            width={600}
+            height={240}
+            onClick={handleOpenDialog}
           />
+        </CardMedia>
+      </Card>
+      <Dialog open={openFullView} onClose={handleCloseDialog} maxWidth="lg">
+        <Box display="flex" justifyContent="center" alignItems="center" p={2}>
+          <Image src={preview} alt="Vista previa" width={1000} height={600} />
         </Box>
       </Dialog>
     </>
