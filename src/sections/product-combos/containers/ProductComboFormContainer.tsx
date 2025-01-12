@@ -1,9 +1,14 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import {
+  FunctionComponent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { revalidateServerTags } from "@/lib/utils/cache";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import {
   CreateProductCombo,
@@ -22,10 +27,14 @@ import {
   createFileFromUrl,
   createSerializeFile,
 } from "@/lib/utils/fileTransformers";
-
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const ProductComboFormContainer: FunctionComponent = () => {
-  const { entityId: productComboId, handleCloseModal } = useModal();
+  const {
+    entityId: productComboId,
+    contentRef,
+    handleCloseModal,
+  } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
@@ -143,6 +152,12 @@ export const ProductComboFormContainer: FunctionComponent = () => {
   useEffect(() => {
     if (productComboId) updateForm(productComboId);
   }, [productComboId, updateForm]);
+
+  useEffect(() => {
+    if (error && contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [error]);
 
   return (
     <FormProvider {...methods}>

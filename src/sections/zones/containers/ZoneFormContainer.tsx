@@ -1,18 +1,28 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import {
+  FunctionComponent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { revalidateServerTags } from "@/lib/utils/cache";
 import { createZoneSchema } from "../utils/schema";
 import { CreateZone, CreateZoneDTO } from "@/lib/types/zone";
 import { createZone, getZone, updateZone } from "@/lib/services/zones";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import { ZoneForm } from "../components/ZoneForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const ZoneFormContainer: FunctionComponent = () => {
-  const { entityId: zoneId, handleCloseModal } = useModal();
+  const {
+    entityId: zoneId,
+    contentRef,
+    handleCloseModal,
+  } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
@@ -88,6 +98,12 @@ export const ZoneFormContainer: FunctionComponent = () => {
   useEffect(() => {
     if (zoneId) updateForm(zoneId);
   }, [zoneId, updateForm]);
+
+  useEffect(() => {
+    if (error && contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [error]);
 
   return (
     <FormProvider {...methods}>

@@ -1,7 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import {
+  FunctionComponent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { revalidateServerTags } from "@/lib/utils/cache";
 import { CreateProvider, CreateProviderDTO } from "@/lib/types/provider";
@@ -12,12 +18,16 @@ import {
 } from "@/lib/services/providers";
 import { createProviderSchema } from "../utils/schema";
 import { ProviderForm } from "../components/ProviderForm";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const ProviderFormContainer: FunctionComponent = () => {
-  const { entityId: providerId, handleCloseModal } = useModal();
+  const {
+    entityId: providerId,
+    contentRef,
+    handleCloseModal,
+  } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
@@ -80,6 +90,12 @@ export const ProviderFormContainer: FunctionComponent = () => {
   useEffect(() => {
     if (providerId) updateForm(providerId);
   }, [providerId, updateForm]);
+
+  useEffect(() => {
+    if (error && contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [error]);
 
   return (
     <FormProvider {...methods}>

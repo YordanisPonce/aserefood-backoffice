@@ -1,7 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FunctionComponent, useCallback, useEffect, useState } from "react";
+import {
+  FunctionComponent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { revalidateServerTags } from "@/lib/utils/cache";
 import { createProvinceSchema } from "../utils/schema";
@@ -12,14 +18,18 @@ import {
   updateProvince,
 } from "@/lib/services/provinces";
 import { ProvinceForm } from "../components/ProvinceForm";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const ProvinceFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
-  const { entityId: provinceId, handleCloseModal } = useModal();
+  const {
+    entityId: provinceId,
+    contentRef,
+    handleCloseModal,
+  } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
   const [error, setError] = useState<string | undefined>(undefined);
 
@@ -82,6 +92,12 @@ export const ProvinceFormContainer: FunctionComponent = () => {
   useEffect(() => {
     if (provinceId) updateForm(provinceId);
   }, [provinceId, updateForm]);
+
+  useEffect(() => {
+    if (error && contentRef.current) {
+      contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [error]);
 
   return (
     <FormProvider {...methods}>

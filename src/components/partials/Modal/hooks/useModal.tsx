@@ -1,12 +1,14 @@
 "use client";
 import useUrlParams, { UrlParamsType } from "@/lib/hooks/useUrlParams";
 import { useSearchParams } from "next/navigation";
+import { useRef } from "react";
 
 export default function useModal() {
   const { updateSearchParams } = useUrlParams();
   const params = useSearchParams();
   const currentModal = params.get("currentModal");
   const entityId = params.get("entityId");
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const handleOpenModal = (modalName: string, entityId?: string) => {
     const params: UrlParamsType | UrlParamsType[] = {
@@ -37,5 +39,5 @@ export default function useModal() {
       },
     });
   };
-  return { entityId, handleCloseModal, currentModal, handleOpenModal };
+  return { entityId, handleCloseModal, currentModal, handleOpenModal, contentRef };
 }
