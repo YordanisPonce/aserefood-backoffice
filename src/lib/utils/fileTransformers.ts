@@ -75,7 +75,7 @@ export async function compressImage(
   const options = {
     maxSizeMB: maxSizeMB,
     maxWidthOrHeight: maxWidthOrHeight,
-    useWebWorker: true,
+    useWebWorker: false,
   };
   const compressedBlob = await imageCompression(file, options);
 
