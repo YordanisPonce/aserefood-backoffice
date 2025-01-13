@@ -12,7 +12,7 @@ export const createProductSchema = () =>
     description: z
       .string({ required_error: "La descipción es requerida" })
       .min(1, { message: "La descipción es requerida" }),
-    isService: z.string(),
+    isService: z.boolean(),
     providers: z
       .array(
         z.object({

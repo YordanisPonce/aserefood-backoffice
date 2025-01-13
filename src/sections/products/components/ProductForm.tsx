@@ -1,4 +1,5 @@
 import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
+import RHFCheckboxWithLabel from "@/components/common/hook-form/RHFCheckboxWithLabel";
 import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
@@ -65,14 +66,9 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
           type="text"
           multiline
         />
-        <RHFRadioGroup
-          name="isService"
-          options={[
-            { label: "Servicio", value: StatesProducts.SERVICE },
-            { label: "Producto Físico", value: StatesProducts.NOTSERVICE },
-          ]}
-          direction="row"
-        />
+
+        <RHFCheckboxWithLabel label="¿Servicio?" name="isService" />
+
         <RHFInputImageUpload
           name="image"
           description="Los formatos permitidos son: (jpg, png, gif)"

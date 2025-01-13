@@ -25,7 +25,7 @@ export interface CreateProduct {
   description: string;
   shortDescription: string;
   image: File | null;
-  isService: StatesProducts;
+  isService: boolean;
   categories: {
     id: number;
     name: string;

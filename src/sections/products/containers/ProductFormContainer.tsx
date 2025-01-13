@@ -23,10 +23,7 @@ import { revalidateServerTags } from "@/lib/utils/cache";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import { ProductForm } from "../components/ProductForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
-import {
-  base64ToFile,
-  fileToBase64,
-} from "@/lib/utils/fileTransformers";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const ProductFormContainer: FunctionComponent = () => {
@@ -47,7 +44,7 @@ export const ProductFormContainer: FunctionComponent = () => {
       description: undefined,
       name: undefined,
       image: null,
-      isService: StatesProducts.SERVICE,
+      isService: false,
       providers: [],
       shortDescription: undefined,
     },
@@ -62,7 +59,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     description,
     image: file,
     categories,
-    isService: state,
+    isService,
     providers,
     shortDescription,
   }: CreateProduct) => {
@@ -72,7 +69,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     const createProductDto: CreateProductDTO = {
       categoryIds: categories.map((category) => category.id),
       description,
-      isService: state === StatesProducts.SERVICE ? true : false,
+      isService,
       image: file ? await fileToBase64(file) : null,
       name,
       shortDescription,
@@ -112,14 +109,12 @@ export const ProductFormContainer: FunctionComponent = () => {
           description: product.description,
           name: product.name,
           image: base64ToFile(product.image, product.name),
-          isService: product.isService
-            ? StatesProducts.SERVICE
-            : StatesProducts.NOTSERVICE,
+          isService: product.isService,
           shortDescription: product.shortDescription,
           providers: product.providers,
           categories: product.categories,
         });
-      } catch(error) {
+      } catch (error) {
         console.log(error);
       } finally {
         setLoadingData(false);

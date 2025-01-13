@@ -9,7 +9,6 @@ type Props = {
   disabled?: boolean;
   required?: boolean;
   size?: "small" | "medium";
-  width?: CSSProperties["width"];
   dataTest?: string;
 };
 
@@ -20,7 +19,6 @@ export default function RHFCheckboxWithLabel({
   disabled,
   required,
   size = "medium",
-  width = "100%",
   dataTest,
 }: Props) {
   const { control } = useFormContext();
@@ -28,7 +26,6 @@ export default function RHFCheckboxWithLabel({
   return (
     <Box
       sx={{
-        width,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
