@@ -25,7 +25,6 @@ import { ProductForm } from "../components/ProductForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import {
   base64ToFile,
-  createFileFromUrl,
   fileToBase64,
 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
