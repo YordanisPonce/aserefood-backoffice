@@ -6,6 +6,7 @@ import { CreateProductDTO, Product, ProductDetails } from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
+import { fileToBase64, getFile } from "./s3";
 
 const productsTag = "products";
 
@@ -58,8 +59,11 @@ export const getProduct = async (
     console.log(response);
     throw new Error("Error fetching products");
   }
+  const product: ProductDetails = await response.json();
+  const file = await getFile(product.image, product.name);
+  product.image = await fileToBase64(file);
 
-  return await response.json();
+  return product;
 };
 
 export const createProduct = async (

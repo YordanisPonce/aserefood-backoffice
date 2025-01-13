@@ -24,6 +24,7 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import { ProductForm } from "../components/ProductForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import {
+  base64ToFile,
   createFileFromUrl,
   fileToBase64,
 } from "@/lib/utils/fileTransformers";
@@ -111,7 +112,7 @@ export const ProductFormContainer: FunctionComponent = () => {
         methods.reset({
           description: product.description,
           name: product.name,
-          image: await createFileFromUrl(product.image, product.name),
+          image: base64ToFile(product.image, product.name),
           isService: product.isService
             ? StatesProducts.SERVICE
             : StatesProducts.NOTSERVICE,
@@ -119,8 +120,8 @@ export const ProductFormContainer: FunctionComponent = () => {
           providers: product.providers,
           categories: product.categories,
         });
-      } catch {
-        console.log("error");
+      } catch(error) {
+        console.log(error);
       } finally {
         setLoadingData(false);
       }
