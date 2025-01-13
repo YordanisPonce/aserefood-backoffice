@@ -2,6 +2,7 @@
 import { UpdateZelleConfDTO, ZelleConf } from "../types/zelleConf";
 import { fetchWithAuth } from "../utils/fetcher";
 import { createFormDataBody } from "../utils/request-body";
+import { fileToBase64, getFile } from "./s3";
 
 const zelleConfPath = "zelle-conf";
 const zelleConfTag = "zelle-conf";
@@ -23,7 +24,13 @@ export const getZelleConf = async (): Promise<ZelleConf | undefined> => {
     } else throw new Error("Error fetching zelle conf");
   }
 
-  return await response.json();
+  const zelleConf: ZelleConf = await response.json();
+  if (zelleConf.qr)
+    zelleConf.qr = await fileToBase64(
+      await getFile(zelleConf.qr, zelleConf.phoneNumber)
+    );
+
+  return zelleConf;
 };
 
 export const updateZelleConf = async (

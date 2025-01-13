@@ -6,6 +6,7 @@ import { CreateUserDTO, UpdateUserDTO, User } from "../types/users";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
+import { fileToBase64, getFile } from "./s3";
 
 const usersTag = "users";
 
@@ -58,7 +59,11 @@ export const getUser = async (userId: string): Promise<User> => {
     throw new Error("Error fetching user");
   }
 
-  return await response.json();
+  const user: User = await response.json();
+  if (user.image)
+    user.image = await fileToBase64(await getFile(user.image, user.name));
+
+  return user;
 };
 
 export const createUser = async (

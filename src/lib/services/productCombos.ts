@@ -11,6 +11,7 @@ import {
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
+import { fileToBase64, getFile } from "./s3";
 
 const productCombosTag = "product-combos";
 
@@ -65,7 +66,13 @@ export const getProductCombo = async (
     throw new Error("Error fetching product combo");
   }
 
-  return await response.json();
+  const productCombo: ProductComboDetails = await response.json();
+  if (productCombo.image)
+    productCombo.image = await fileToBase64(
+      await getFile(productCombo.image, productCombo.name)
+    );
+
+  return productCombo;
 };
 
 export const createProductCombo = async (

@@ -1,5 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import {
   compressImage,
   fileMaxSizeMB,
@@ -28,9 +28,7 @@ export default function RHFInputImageUpload({
 }: Props) {
   const { control, getValues } = useFormContext();
   const value = getValues(name);
-  const [preview, setPreview] = useState<string | null>(
-    value ? URL.createObjectURL(value) : null
-  );
+  const [preview, setPreview] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(false);
   const [errorUpload, setErrorUpload] = useState<string | undefined>(undefined);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -45,8 +43,6 @@ export default function RHFInputImageUpload({
         const file = await compressImage(files[0], 1, 1600);
 
         if (file.size <= fileMaxSizeMB * 1024 * 1024) {
-          const previewURL = await fileToBase64(file);
-          setPreview(previewURL);
           onChange(file);
         } else {
           setErrorUpload(
@@ -67,13 +63,15 @@ export default function RHFInputImageUpload({
       inputRef.current.value = "";
     }
   };
-
+  const convertImage = useCallback(
+    async (file: File) => {
+      setPreview(await fileToBase64(file));
+    },
+    []
+  );
   useEffect(() => {
-    const convertImage = async () => {
-      setPreview(value ? await fileToBase64(value) : null);
-    };
-    convertImage();
-  }, [value, getValues, name]);
+    if (value) convertImage(value);
+  }, [value, getValues, name, convertImage]);
 
   return (
     <Controller

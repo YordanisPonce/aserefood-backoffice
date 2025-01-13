@@ -3,10 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { updateZelleConfSchema } from "../utils/schema";
 import { revalidateServerTags } from "@/lib/utils/cache";
-import {
-  createFileFromUrl,
-  createSerializeFile,
-} from "@/lib/utils/fileTransformers";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { UpdateZelleConf, ZelleConf } from "@/lib/types/zelleConf";
 import { useCallback, useEffect, useState } from "react";
 import { updateZelleConf } from "@/lib/services/zelleConf";
@@ -40,7 +37,7 @@ export default function ZelleConfFormContainer({ zelleConf }: Props) {
 
       await updateZelleConf({
         phoneNumber,
-        qr: file ? await createSerializeFile(file) : null,
+        qr: file ? await fileToBase64(file) : null,
       });
       openSnackBar("Zelle Conf actualizada con éxito", "success");
       await revalidateServerTags("zelle-conf");
@@ -59,7 +56,7 @@ export default function ZelleConfFormContainer({ zelleConf }: Props) {
     async (zelleConf: ZelleConf) => {
       methods.reset({
         phoneNumber: zelleConf.phoneNumber,
-        qr: await createFileFromUrl(zelleConf.qr, "qr"),
+        qr: base64ToFile(zelleConf.qr, "qr"),
       });
     },
     [methods]

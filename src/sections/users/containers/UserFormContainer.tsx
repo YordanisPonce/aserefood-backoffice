@@ -15,10 +15,7 @@ import { createUser, getUser, updateUser } from "@/lib/services/user";
 import { UserForm } from "../components/UserForm";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
-import {
-  createFileFromUrl,
-  fileToBase64,
-} from "@/lib/utils/fileTransformers";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const UserFormContainer: FunctionComponent = () => {
@@ -128,9 +125,7 @@ export const UserFormContainer: FunctionComponent = () => {
           email: user.email,
           phoneNumber: user.phoneNumber,
           username: user.username,
-          image: user.image
-            ? await createFileFromUrl(user.image, user.username)
-            : null,
+          image: user.image ? base64ToFile(user.image, user.username) : null,
         });
       } catch {
         console.log("error");

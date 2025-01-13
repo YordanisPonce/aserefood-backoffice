@@ -23,10 +23,7 @@ import {
 } from "@/lib/services/productCombos";
 import { ProductComboForm } from "../components/ProductComboForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
-import {
-  createFileFromUrl,
-  fileToBase64,
-} from "@/lib/utils/fileTransformers";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const ProductComboFormContainer: FunctionComponent = () => {
@@ -117,7 +114,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
           name: productCombo.name,
           description: productCombo.description,
           image: productCombo.image
-            ? await createFileFromUrl(productCombo.image, productCombo.name)
+            ? base64ToFile(productCombo.image, productCombo.name)
             : null,
           isActive: productCombo.isActive
             ? StatesProductCombos.ACTIVE

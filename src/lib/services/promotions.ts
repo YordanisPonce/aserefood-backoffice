@@ -11,6 +11,7 @@ import {
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
+import { fileToBase64, getFile } from "./s3";
 
 const promotionsTag = "promotions";
 const promotionsPath = "promotions";
@@ -53,7 +54,12 @@ export const getPromotion = async (
     throw new Error("Error fetching promotion");
   }
 
-  return await response.json();
+  const promotion: PromotionDetails = await response.json();
+  if (promotion.image)
+    promotion.image = await fileToBase64(
+      await getFile(promotion.image, promotion.name)
+    );
+  return promotion;
 };
 
 export const createPromotion = async (

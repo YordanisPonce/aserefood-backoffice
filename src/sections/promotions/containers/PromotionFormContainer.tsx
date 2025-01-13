@@ -27,7 +27,7 @@ import {
 import { PromotionForm } from "../components/PromotionForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import {
-  createFileFromUrl,
+  base64ToFile,
   fileToBase64,
 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
@@ -148,7 +148,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
           endDate: promotion.endDate,
           startDate: promotion.startDate,
           image: promotion.image
-            ? await createFileFromUrl(promotion.image, promotion.name)
+            ? base64ToFile(promotion.image, promotion.name)
             : null,
           isActive: promotion.isActive
             ? StatesPromotions.ACTIVA

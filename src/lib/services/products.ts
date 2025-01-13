@@ -60,8 +60,10 @@ export const getProduct = async (
     throw new Error("Error fetching products");
   }
   const product: ProductDetails = await response.json();
-  const file = await getFile(product.image, product.name);
-  product.image = await fileToBase64(file);
+  if (product.image)
+    product.image = await fileToBase64(
+      await getFile(product.image, product.name)
+    );
 
   return product;
 };
