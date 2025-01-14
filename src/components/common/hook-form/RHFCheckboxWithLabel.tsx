@@ -1,6 +1,5 @@
 import { Controller, useFormContext } from "react-hook-form";
 import { Checkbox, Typography, Box } from "@mui/material";
-import { CSSProperties } from "react";
 
 type Props = {
   name: string;

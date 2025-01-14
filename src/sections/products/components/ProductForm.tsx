@@ -2,10 +2,9 @@ import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocomplet
 import RHFCheckboxWithLabel from "@/components/common/hook-form/RHFCheckboxWithLabel";
 import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
-import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
 import { getAllCategories } from "@/lib/services/categories";
 import { getAllProviders } from "@/lib/services/providers";
-import { StatesProducts } from "@/lib/types/products";
+
 import {
   Alert,
   Box,
