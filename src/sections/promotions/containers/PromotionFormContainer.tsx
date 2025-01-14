@@ -26,10 +26,7 @@ import {
 } from "@/lib/services/promotions";
 import { PromotionForm } from "../components/PromotionForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
-import {
-  base64ToFile,
-  fileToBase64,
-} from "@/lib/utils/fileTransformers";
+import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export const PromotionFormContainer: FunctionComponent = () => {
@@ -74,7 +71,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
     }
   >(formOptions);
   const {
-    formState: { errors },
+    formState: { errors, isValid },
   } = methods;
   const onSubmit = async ({
     name,
@@ -175,6 +172,17 @@ export const PromotionFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>

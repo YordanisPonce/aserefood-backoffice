@@ -69,6 +69,9 @@ export const CategoryFormContainer: FunctionComponent = () => {
   };
 
   const methods = useForm<CreateCategory | CreateSubCategory>(formOptions);
+  const {
+    formState: { errors, isValid },
+  } = methods;
 
   const onSubmit = async (category: CreateCategory | CreateSubCategory) => {
     setIsLoading(true);
@@ -157,6 +160,17 @@ export const CategoryFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>

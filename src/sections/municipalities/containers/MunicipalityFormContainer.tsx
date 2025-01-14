@@ -45,6 +45,9 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
     reValidateMode: "onChange",
   };
   const methods = useForm<CreateMunicipality>(formOptions);
+  const {
+    formState: { errors, isValid },
+  } = methods;
 
   const onSubmit = async ({ name, province }: CreateMunicipality) => {
     setIsLoading(true);
@@ -107,6 +110,17 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>

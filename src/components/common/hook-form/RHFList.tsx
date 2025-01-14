@@ -24,7 +24,7 @@ export default function RHFList<T extends Record<string, unknown>>({
 }: RHFListProps<T>) {
   const { control, formState } = useFormContext();
   const { errors } = formState;
-  console.log(errors);
+  
   const { fields, append, remove } = useFieldArray({
     control,
     name,

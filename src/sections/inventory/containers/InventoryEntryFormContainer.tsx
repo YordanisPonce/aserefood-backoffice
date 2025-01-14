@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FunctionComponent,
@@ -65,6 +64,10 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
   const methods = useForm<CreateInventoryEntry | UpdateInventoryEntry>(
     formOptions
   );
+
+  const {
+    formState: { errors, isValid },
+  } = methods;
 
   const onSubmit = async (
     inventoryEntry: CreateInventoryEntry | UpdateInventoryEntry
@@ -132,6 +135,17 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>

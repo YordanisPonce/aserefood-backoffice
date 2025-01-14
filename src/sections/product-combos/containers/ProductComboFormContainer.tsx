@@ -48,10 +48,13 @@ export const ProductComboFormContainer: FunctionComponent = () => {
       shortDescription: undefined,
       zone: null,
     },
-    mode: "onSubmit",
+    mode: "onChange",
     reValidateMode: "onChange",
   };
   const methods = useForm<CreateProductCombo>(formOptions);
+  const {
+    formState: { errors, isValid },
+  } = methods;
 
   const onSubmit = async ({
     name,
@@ -155,6 +158,17 @@ export const ProductComboFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {   
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>

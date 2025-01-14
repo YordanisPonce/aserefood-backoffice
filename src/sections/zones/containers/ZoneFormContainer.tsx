@@ -39,6 +39,9 @@ export const ZoneFormContainer: FunctionComponent = () => {
     reValidateMode: "onChange",
   };
   const methods = useForm<CreateZone>(formOptions);
+  const {
+    formState: { errors, isValid },
+  } = methods;
 
   const onSubmit = async ({
     name,
@@ -104,6 +107,17 @@ export const ZoneFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>

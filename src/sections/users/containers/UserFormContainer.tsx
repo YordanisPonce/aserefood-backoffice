@@ -52,6 +52,9 @@ export const UserFormContainer: FunctionComponent = () => {
     reValidateMode: "onChange",
   };
   const methods = useForm<CreateUser | UpdateUser>(formOptions);
+  const {
+    formState: { errors, isValid },
+  } = methods;
 
   const onSubmit = async (user: CreateUser | UpdateUser) => {
     setIsLoading(true);
@@ -145,6 +148,17 @@ export const UserFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>

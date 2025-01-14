@@ -1,9 +1,5 @@
 "use client";
-import {
-  CreateProduct,
-  CreateProductDTO,
-  StatesProducts,
-} from "@/lib/types/products";
+import { CreateProduct, CreateProductDTO } from "@/lib/types/products";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   FunctionComponent,
@@ -53,6 +49,9 @@ export const ProductFormContainer: FunctionComponent = () => {
   };
 
   const methods = useForm<CreateProduct>(formOptions);
+  const {
+    formState: { errors, isValid },
+  } = methods;
 
   const onSubmit = async ({
     name,
@@ -132,6 +131,17 @@ export const ProductFormContainer: FunctionComponent = () => {
       contentRef.current.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [error, contentRef]);
+
+  useEffect(() => {
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
+      setError(undefined);
+      setTimeout(() => {
+        setError("El formulario presenta errores. Por favor revise");
+      }, 0);
+    } else {
+      setError(undefined);
+    }
+  }, [isValid, errors]);
 
   return (
     <FormProvider {...methods}>
