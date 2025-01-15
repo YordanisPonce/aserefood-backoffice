@@ -21,6 +21,10 @@ import { ProductForm } from "../components/ProductForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiErrors } from "@/lib/types/errors";
+import { routes } from "@/lib/config/routes";
+import { signOut } from "next-auth/react";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
 
 export const ProductFormContainer: FunctionComponent = () => {
   const {
@@ -29,6 +33,7 @@ export const ProductFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -91,8 +96,14 @@ export const ProductFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error.message === ApiErrors.UNAUTHORIZEDERROR) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path })
+          })
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

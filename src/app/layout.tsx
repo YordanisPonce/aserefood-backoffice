@@ -5,6 +5,7 @@ import ClientThemeProvider from "@/components/providers/ClientThemeProvider";
 import { GlobalProvider } from "@/stores/global";
 import AuthProvider from "@/components/providers/AuthProvider";
 import AutohideSnackbar from "@/components/partials/SnackBar/SnackBar";
+import AlertDialog from "@/components/partials/AlertDialog/AlertDialog";
 
 const geistSans = localFont({
   src: "../lib/config/fonts/GeistVF.woff",
@@ -35,6 +36,7 @@ export default function RootLayout({
             <ClientThemeProvider>
               {children}
               <AutohideSnackbar />
+              <AlertDialog />
             </ClientThemeProvider>
           </GlobalProvider>
         </AuthProvider>

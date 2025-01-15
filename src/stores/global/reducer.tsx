@@ -17,6 +17,13 @@ const reducer = (state: IGlobalState, action: TAction): IGlobalState => {
       };
     }
 
+    case "ALERTDIALOG_OPEN": {
+      return {
+        ...state,
+        alertDialogOpen: action.payload,
+      };
+    }
+
     default:
       return state;
   }

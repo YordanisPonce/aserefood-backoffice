@@ -7,6 +7,7 @@ import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
 import { fileToBase64, getFile } from "./s3";
+import { ApiErrors } from "../types/errors";
 
 const productsTag = "products";
 
@@ -90,9 +91,11 @@ export const createProduct = async (
         statusCode: number;
       } = await response.json();
       throw new Error(error.message);
-    } else throw new Error("Error creating product");
+    } else if (response.status === 401)
+      throw new Error(ApiErrors.UNAUTHORIZEDERROR);
+    else throw new Error("Error creating product");
   }
-
+  console.log("Entre despues del redirect");
   return await response.json();
 };
 
