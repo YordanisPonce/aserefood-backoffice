@@ -115,7 +115,7 @@ export const updatePromotion = async (
 
 export const deletePromotion = async (promotionId: string): Promise<void> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}${promotionsPath}/` + promotionId,
+    `${process.env.NEXT_PUBLIC_API_URL}${promotionsPath}/` + promotionId,
     {
       method: "DELETE",
       headers: {
