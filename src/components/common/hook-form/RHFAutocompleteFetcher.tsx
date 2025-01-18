@@ -51,7 +51,7 @@ export default function RHFAutocompleteFetcher<
       const res = await onFetch();
       setOptions((prev) => {
         if (res) {
-          return prev.concat(res);
+          return res;
         } else return prev;
       });
     } catch (err) {
@@ -59,7 +59,7 @@ export default function RHFAutocompleteFetcher<
     } finally {
       setIsLoading(false);
     }
-  }, [onFetch]) 
+  }, [onFetch]);
 
   useEffect(() => {
     void loadDataAsync();
