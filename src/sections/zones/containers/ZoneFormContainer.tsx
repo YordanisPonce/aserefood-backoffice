@@ -13,7 +13,7 @@ import { createZoneSchema } from "../utils/schema";
 import { CreateZone, CreateZoneDTO } from "@/lib/types/zone";
 import { createZone, getZone, updateZone } from "@/lib/services/zones";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
-import { ZoneForm } from "../components/ZoneForm";
+import { ZoneForm } from "../components/ZoneForm/ZoneForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";

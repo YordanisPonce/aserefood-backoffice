@@ -1,6 +1,4 @@
-import RHFAutocompleteFetcher from "@/components/common/hook-form/RHFAutocompleteFetcher";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
-import { getAvaliablesMunicipalities } from "@/lib/services/municipalities";
 import {
   Alert,
   Box,
@@ -9,6 +7,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { FunctionComponent } from "react";
+import SelectMunicipalityInput from "./components/SelectMunicipalityInput/SelectMunicipalityInput";
 
 type ZoneFormProps = {
   isLoading: boolean;
@@ -26,22 +25,15 @@ export const ZoneForm: FunctionComponent<ZoneFormProps> = ({
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {error && <Alert severity="error">{error}</Alert>}
         <RHFInputWithLabel name="name" label="Nombre" type="text" />
-        <RHFAutocompleteFetcher
-          fullWidth
-          name="municipalities"
-          label="Municipios"
-          multiple={true}
-          onFetch={getAvaliablesMunicipalities}
-          getOptionLabel={(opt) => opt.name}
-          getOptionKey={(opt) => opt.id}
-          size="small"
-        />
+
         <RHFInputWithLabel
           name="description"
           label="Descripción"
           type="text"
           multiline
         />
+
+        <SelectMunicipalityInput />
       </Box>
       <DialogActions sx={{ px: 0, pb: 0, pt: 2, gap: 2 }}>
         <Button type="reset">Cancelar</Button>

@@ -22,6 +22,7 @@ export interface CreateZone {
   municipalities: {
     id: number;
     name: string;
+    provinceId: number;
   }[];
 }
 

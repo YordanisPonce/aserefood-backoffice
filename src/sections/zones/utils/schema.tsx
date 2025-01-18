@@ -13,6 +13,7 @@ export const createZoneSchema = () =>
         z.object({
           id: z.number(),
           name: z.string(),
+          provinceId: z.number()
         })
       )
       .min(1, { message: "Debe incluir al menos un municipio" })

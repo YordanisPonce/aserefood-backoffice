@@ -6,6 +6,8 @@ import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { ApiError, ErrorMessages } from "../types/errors";
+import { redirect } from "next/navigation";
+import { routes } from "../config/routes";
 
 const municipalitiesTag = "municipalities";
 
@@ -63,15 +65,25 @@ export const getAllMunicipalities = async (): Promise<Municipality[]> => {
   return await response.json();
 };
 
-export const getAvaliablesMunicipalities = async (): Promise<
-  Municipality[]
-> => {
+export const getAvaliablesMunicipalities = async (
+  provinceId?: number
+): Promise<Municipality[]> => {
+  const params = new URLSearchParams();
+  if (provinceId) {
+    params.append("provinceId", provinceId.toString());
+  }
+
   const response = await fetchWithAuth(
-    new URL(`${process.env.NEXT_PUBLIC_API_URL}municipalities/available`)
+    new URL(
+      `${process.env.NEXT_PUBLIC_API_URL}municipalities/available?` + params
+    )
   );
 
   if (!response.ok) {
     console.log(response);
+    if (response.status === 401) {
+      redirect(routes.login.path);
+    }
     throw new Error("Error fetching municipalities");
   }
 
