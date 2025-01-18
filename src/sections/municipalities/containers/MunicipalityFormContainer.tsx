@@ -23,6 +23,11 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import { MunicipalityForm } from "../components/MunicipalityForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
 
 export const MunicipalityFormContainer: FunctionComponent = () => {
   const {
@@ -31,6 +36,7 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -53,15 +59,21 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
     try {
+      let response: ApiError;
       const createMunicipaliyDTO: CreateMunicipalityDTO = {
         name,
         provinceId: province?.id ?? 0,
       };
       if (!municipalityId) {
-        await createMunicipality(createMunicipaliyDTO);
+        response = await createMunicipality(createMunicipaliyDTO);
+        errorClientHandling(response);
         openSnackBar("Municipio creado con éxito", "success");
       } else {
-        await updateMunicipality(municipalityId, createMunicipaliyDTO);
+        response = await updateMunicipality(
+          municipalityId,
+          createMunicipaliyDTO
+        );
+        errorClientHandling(response);
         openSnackBar(
           `Municipio con identificador ${municipalityId} actualizado con éxito`,
           "success"
@@ -72,8 +84,14 @@ export const MunicipalityFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

@@ -9,6 +9,11 @@ import { useCallback, useEffect, useState } from "react";
 import { updateZelleConf } from "@/lib/services/zelleConf";
 import ZelleConfForm from "../components/ZelleConfForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
 
 interface Props {
   zelleConf: ZelleConf | undefined;
@@ -16,6 +21,7 @@ interface Props {
 
 export default function ZelleConfFormContainer({ zelleConf }: Props) {
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<UpdateZelleConf> = {
@@ -35,17 +41,24 @@ export default function ZelleConfFormContainer({ zelleConf }: Props) {
       setIsLoading(true);
       setError(undefined);
 
-      await updateZelleConf({
+      const response: ApiError = await updateZelleConf({
         phoneNumber,
         qr: file ? await fileToBase64(file) : null,
       });
+      errorClientHandling(response);
       openSnackBar("Zelle Conf actualizada con éxito", "success");
       await revalidateServerTags("zelle-conf");
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

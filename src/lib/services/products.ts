@@ -7,7 +7,7 @@ import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
 import { fileToBase64, getFile } from "./s3";
-import { ApiErrors } from "../types/errors";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const productsTag = "products";
 
@@ -71,7 +71,7 @@ export const getProduct = async (
 
 export const createProduct = async (
   product: CreateProductDTO
-): Promise<Paginated<Product>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}products`,
     {
@@ -83,26 +83,29 @@ export const createProduct = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un producto con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un producto con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
     } else if (response.status === 401)
-      throw new Error(ApiErrors.UNAUTHORIZEDERROR);
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     else throw new Error("Error creating product");
   }
-  console.log("Entre despues del redirect");
-  return await response.json();
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateProduct = async (
   productId: string,
   product: CreateProductDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}products/` + productId,
     {
@@ -114,19 +117,26 @@ export const updateProduct = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un producto con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un producto con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
-    } else throw new Error("Error updating product");
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401)
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
+    else throw new Error("Error updating product");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
-export const deleteProduct = async (productId: string): Promise<void> => {
+export const deleteProduct = async (productId: string): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}products/` + productId,
     {
@@ -145,8 +155,12 @@ export const deleteProduct = async (productId: string): Promise<void> => {
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
-    } else throw new Error("Error deleting product");
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401)
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
+    else throw new Error("Error deleting product");
   }
   revalidateTag(productsTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

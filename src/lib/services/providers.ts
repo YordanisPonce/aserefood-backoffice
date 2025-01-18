@@ -6,6 +6,7 @@ import { Paginated, SearchParams } from "../types/pagination";
 import { CreateProviderDTO, Provider } from "../types/provider";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const providersTag = "providers";
 
@@ -63,7 +64,7 @@ export const getProvider = async (providerId: string): Promise<Provider> => {
 
 export const createProvider = async (
   provider: CreateProviderDTO
-): Promise<Paginated<Provider>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}providers`,
     {
@@ -78,24 +79,29 @@ export const createProvider = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un proveedor con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un proveedor con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating provider");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateProvider = async (
   providerId: string,
   provider: CreateProviderDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}providers/` + providerId,
     {
@@ -110,19 +116,26 @@ export const updateProvider = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un proveedor con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un proveedor con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating provider");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
-export const deleteProvider = async (providerId: string): Promise<void> => {
+export const deleteProvider = async (providerId: string): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}providers/` + providerId,
     {
@@ -141,8 +154,12 @@ export const deleteProvider = async (providerId: string): Promise<void> => {
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting provider");
   }
   revalidateTag(providersTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

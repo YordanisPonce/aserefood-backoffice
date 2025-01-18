@@ -17,6 +17,11 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export const UserFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -27,6 +32,7 @@ export const UserFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [error, setError] = useState<string | undefined>(undefined);
   const formOptions: UseFormProps<CreateUser | UpdateUser> = {
     resolver: zodResolver(!userId ? createUserSchema() : updateUserSchema()),
@@ -60,6 +66,7 @@ export const UserFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
     try {
+      let response: ApiError;
       if (!userId) {
         const {
           username,
@@ -70,7 +77,7 @@ export const UserFormContainer: FunctionComponent = () => {
           phoneNumber,
           image: file,
         } = user as CreateUser;
-        await createUser({
+        response = await createUser({
           name,
           lastnames,
           username,
@@ -80,6 +87,7 @@ export const UserFormContainer: FunctionComponent = () => {
           email,
           image: file ? await fileToBase64(file) : null,
         });
+        errorClientHandling(response);
         openSnackBar("Usuario creado con éxito", "success");
       } else {
         const {
@@ -90,7 +98,7 @@ export const UserFormContainer: FunctionComponent = () => {
           phoneNumber,
           image: file,
         } = user as UpdateUser;
-        await updateUser(userId, {
+        response = await updateUser(userId, {
           name,
           lastnames,
           username,
@@ -99,6 +107,7 @@ export const UserFormContainer: FunctionComponent = () => {
           email,
           image: file ? await fileToBase64(file) : null,
         });
+        errorClientHandling(response);
         openSnackBar(
           `Usuario con identificador ${userId} actualizado con éxito`,
           "success"
@@ -109,8 +118,14 @@ export const UserFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

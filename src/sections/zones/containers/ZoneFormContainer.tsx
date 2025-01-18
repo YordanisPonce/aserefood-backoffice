@@ -16,6 +16,11 @@ import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import { ZoneForm } from "../components/ZoneForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
 
 export const ZoneFormContainer: FunctionComponent = () => {
   const {
@@ -24,6 +29,7 @@ export const ZoneFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -51,16 +57,19 @@ export const ZoneFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
     try {
+      let response: ApiError;
       const createZoneDto: CreateZoneDTO = {
         name,
         description,
         municipalityIds: municipalities.map((municipality) => municipality.id),
       };
       if (!zoneId) {
-        await createZone(createZoneDto);
+        response = await createZone(createZoneDto);
+        errorClientHandling(response);
         openSnackBar("Zona creada con éxito", "success");
       } else {
-        await updateZone(zoneId, createZoneDto);
+        response = await updateZone(zoneId, createZoneDto);
+        errorClientHandling(response);
         openSnackBar(
           `Zona con identificador ${zoneId} actualizada con éxito`,
           "success"
@@ -71,8 +80,14 @@ export const ZoneFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

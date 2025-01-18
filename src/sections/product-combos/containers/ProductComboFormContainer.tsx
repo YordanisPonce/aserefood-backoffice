@@ -25,6 +25,11 @@ import { ProductComboForm } from "../components/ProductComboForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { signOut } from "next-auth/react";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { routes } from "@/lib/config/routes";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export const ProductComboFormContainer: FunctionComponent = () => {
   const {
@@ -33,6 +38,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -85,11 +91,17 @@ export const ProductComboFormContainer: FunctionComponent = () => {
       zoneId: zone?.id ?? 0,
     };
     try {
+      let response: ApiError;
       if (!productComboId) {
-        await createProductCombo(createProductComboDTO);
+        response = await createProductCombo(createProductComboDTO);
+        errorClientHandling(response);
         openSnackBar("Combo de producto creado con éxito", "success");
       } else {
-        await updateProductCombo(productComboId, createProductComboDTO);
+        response = await updateProductCombo(
+          productComboId,
+          createProductComboDTO
+        );
+        errorClientHandling(response);
         openSnackBar(
           `Combo de producto con identificador ${productComboId} actualizado con éxito`,
           "success"
@@ -100,8 +112,14 @@ export const ProductComboFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);
@@ -160,7 +178,7 @@ export const ProductComboFormContainer: FunctionComponent = () => {
   }, [error, contentRef]);
 
   useEffect(() => {
-    if (errors && Object.keys(errors).length > 0 && !isValid) {   
+    if (errors && Object.keys(errors).length > 0 && !isValid) {
       setError(undefined);
       setTimeout(() => {
         setError("El formulario presenta errores. Por favor revise");

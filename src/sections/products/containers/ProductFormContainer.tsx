@@ -21,10 +21,14 @@ import { ProductForm } from "../components/ProductForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
-import { ApiErrors } from "@/lib/types/errors";
+import {
+  ApiError,
+  UnauthorizedClientError,
+} from "@/lib/types/errors";
 import { routes } from "@/lib/config/routes";
 import { signOut } from "next-auth/react";
 import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export const ProductFormContainer: FunctionComponent = () => {
   const {
@@ -81,11 +85,14 @@ export const ProductFormContainer: FunctionComponent = () => {
     };
 
     try {
+      let response: ApiError;
       if (!productId) {
-        await createProduct(createProductDto);
+        response = await createProduct(createProductDto);
+        errorClientHandling(response);
         openSnackBar("Producto creado con éxito", "success");
       } else {
-        await updateProduct(productId, createProductDto);
+        response = await updateProduct(productId, createProductDto);
+        errorClientHandling(response);
         openSnackBar(
           `Producto con identificador ${productId} actualizado con éxito`,
           "success"
@@ -96,10 +103,10 @@ export const ProductFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        if (error.message === ApiErrors.UNAUTHORIZEDERROR) {
+        if (error instanceof UnauthorizedClientError) {
           openAlertDialog(error.message, "error", () => {
-            signOut({ redirect: true, callbackUrl: routes.login.path })
-          })
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
         } else {
           setError(error.message);
           openSnackBar(error.message, "error");

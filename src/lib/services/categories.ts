@@ -10,6 +10,7 @@ import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const categoriesTag = "categories";
 
@@ -88,7 +89,7 @@ export const getCategoryAncestors = async (
 
 export const createCategory = async (
   category: CreateCategoryDTO
-): Promise<Paginated<Category>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}categories`,
     {
@@ -103,24 +104,29 @@ export const createCategory = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe una categoría con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe una categoría con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating category");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateCategory = async (
   categoryId: string,
   category: CreateCategoryDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}categories/` + categoryId,
     {
@@ -135,19 +141,26 @@ export const updateCategory = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe una categoría con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe una categoría con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating category");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
-export const deleteCategory = async (categoryId: string): Promise<void> => {
+export const deleteCategory = async (categoryId: string): Promise<ApiError> => {
   // aqui se espera a que la api responda
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}categories/` + categoryId,
@@ -167,9 +180,13 @@ export const deleteCategory = async (categoryId: string): Promise<void> => {
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting category");
   }
 
   revalidateTag(categoriesTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

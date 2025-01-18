@@ -28,6 +28,11 @@ import { PromotionForm } from "../components/PromotionForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export const PromotionFormContainer: FunctionComponent = () => {
   const {
@@ -36,6 +41,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -88,6 +94,7 @@ export const PromotionFormContainer: FunctionComponent = () => {
   }: CreatePromotion) => {
     setIsLoading(true);
     try {
+      let response: ApiError;
       const discountOptionValue =
         invertedPromotionsDiscountOptionMap.get(discountOption);
 
@@ -107,10 +114,12 @@ export const PromotionFormContainer: FunctionComponent = () => {
         productIds: products.map((product) => product.id),
       };
       if (!promotionId) {
-        await createPromotion(createPromotionDTO);
+        response = await createPromotion(createPromotionDTO);
+        errorClientHandling(response);
         openSnackBar("Promoción creada con éxito", "success");
       } else {
-        await updatePromotion(promotionId, createPromotionDTO);
+        response = await updatePromotion(promotionId, createPromotionDTO);
+        errorClientHandling(response);
         openSnackBar(
           `Promoción con identificador ${promotionId} actualizada con éxito`,
           "success"
@@ -119,11 +128,17 @@ export const PromotionFormContainer: FunctionComponent = () => {
       await revalidateServerTags("promotions");
       handleCloseModal();
     } catch (error) {
-      if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
-      }
       console.log(error);
+      if (error instanceof Error) {
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
+      }
     } finally {
       setIsLoading(false);
     }

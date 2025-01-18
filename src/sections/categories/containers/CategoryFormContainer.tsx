@@ -22,6 +22,11 @@ import { CategoryForm } from "../components/CategoryForm";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export enum CategoryFormModality {
   CreateCategory = 0,
@@ -37,6 +42,7 @@ export const CategoryFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -77,32 +83,36 @@ export const CategoryFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
     try {
+      let response: ApiError;
       if (!categoryId) {
         const { name, description, parent } = category as CreateCategory;
-        await createCategory({
+        response = await createCategory({
           name,
           description,
           parentId: parent?.id ?? null,
         });
+        errorClientHandling(response);
         openSnackBar("Categoría creada con éxito", "success");
       } else if (formModality === CategoryFormModality.UpdateCategory) {
         const { name, description, parent } = category as CreateCategory;
-        await updateCategory(categoryId, {
+        response = await updateCategory(categoryId, {
           name,
           description,
           parentId: parent?.id ?? null,
         });
+        errorClientHandling(response);
         openSnackBar(
           `Categoría con identificador ${categoryId} actualizada con éxito`,
           "success"
         );
       } else {
         const { name, description } = category as CreateSubCategory;
-        await createCategory({
+        response = await createCategory({
           name,
           description,
           parentId: +categoryId,
         });
+        errorClientHandling(response);
         openSnackBar("Categoría creada con éxito", "success");
       }
       await revalidateServerTags("categories");
@@ -110,8 +120,14 @@ export const CategoryFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

@@ -27,6 +27,11 @@ import {
 import { InventoryEntryForm } from "../components/InventoryEntryForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export const InventoryEntryFormContainer: FunctionComponent = () => {
   const {
@@ -35,6 +40,7 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -75,10 +81,11 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
     try {
+      let response: ApiError;
       if (!inventoryEntryId) {
         const { price, product, quantity, zone } =
           inventoryEntry as CreateInventoryEntry;
-        await createInventoryEntry([
+        response = await createInventoryEntry([
           {
             price,
             quantity,
@@ -86,10 +93,15 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
             zoneId: zone?.id ?? 0,
           },
         ]);
+        errorClientHandling(response);
         openSnackBar("Entrada de inventario creada con éxito", "success");
       } else {
         const { price, quantity } = inventoryEntry as UpdateInventoryEntry;
-        await updateInventoryEntry(inventoryEntryId, { price, quantity });
+        response = await updateInventoryEntry(inventoryEntryId, {
+          price,
+          quantity,
+        });
+        errorClientHandling(response);
         openSnackBar(
           `Entrada de inventario con identificador ${inventoryEntryId} actualizada con éxito`,
           "success"
@@ -100,8 +112,14 @@ export const InventoryEntryFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

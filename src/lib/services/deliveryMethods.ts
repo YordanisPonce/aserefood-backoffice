@@ -9,6 +9,7 @@ import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const deliveryMethodsPath = "delivery-methods";
 const deliveryMethodsTag = "delivery-methods";
@@ -69,7 +70,7 @@ export const getDeliveryMethod = async (
 
 export const createDeliveryMethod = async (
   deliveryMethod: CreateDeliveryMethodDTO
-): Promise<Paginated<DeliveryMethod>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${deliveryMethodsPath}`,
     {
@@ -84,24 +85,29 @@ export const createDeliveryMethod = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un método de entrega con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un método de entrega con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating delivery method");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateDeliveryMethod = async (
   deliveryMethodId: string,
   deliveryMethod: CreateDeliveryMethodDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${deliveryMethodsPath}/` +
       deliveryMethodId,
@@ -117,21 +123,28 @@ export const updateDeliveryMethod = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un método de entrega con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un método de entrega con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating delivery method");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const deleteDeliveryMethod = async (
   deliveryMethodId: string
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_APP_API_URL}${deliveryMethodsPath}/` + deliveryMethodId,
     {
@@ -150,8 +163,12 @@ export const deleteDeliveryMethod = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting delivery method");
   }
   revalidateTag(deliveryMethodsTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

@@ -12,6 +12,7 @@ import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
 import { fileToBase64, getFile } from "./s3";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const productCombosTag = "product-combos";
 
@@ -77,7 +78,7 @@ export const getProductCombo = async (
 
 export const createProductCombo = async (
   productCombo: CreateProductComboDTO
-): Promise<Paginated<ProductCombo>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}product-combos`,
     {
@@ -89,24 +90,29 @@ export const createProductCombo = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un combo con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un combo con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating product combo");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateProductCombo = async (
   productComboId: string,
   productCombo: CreateProductComboDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}product-combos/` + productComboId,
     {
@@ -118,21 +124,28 @@ export const updateProductCombo = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un combo con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un combo con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating product combo");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const deleteProductCombo = async (
   productComboId: string
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}product-combos/` + productComboId,
     {
@@ -151,8 +164,12 @@ export const deleteProductCombo = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting product combo");
   }
   revalidateTag(productCombosTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

@@ -12,6 +12,7 @@ import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
 import { fileToBase64, getFile } from "./s3";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const promotionsTag = "promotions";
 const promotionsPath = "promotions";
@@ -64,7 +65,7 @@ export const getPromotion = async (
 
 export const createPromotion = async (
   promotion: CreatePromotionDTO
-): Promise<Paginated<Promotion>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${promotionsPath}`,
     {
@@ -81,17 +82,19 @@ export const createPromotion = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating promotions");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updatePromotion = async (
   promotionId: string,
   promotion: CreatePromotionDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${promotionsPath}/` + promotionId,
     {
@@ -108,12 +111,18 @@ export const updatePromotion = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating promotions");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
-export const deletePromotion = async (promotionId: string): Promise<void> => {
+export const deletePromotion = async (
+  promotionId: string
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${promotionsPath}/` + promotionId,
     {
@@ -132,8 +141,12 @@ export const deletePromotion = async (promotionId: string): Promise<void> => {
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting promotion");
   }
   revalidateTag(promotionsTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

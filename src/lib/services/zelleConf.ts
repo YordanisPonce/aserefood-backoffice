@@ -1,8 +1,11 @@
 "use server";
+import { ApiError, ErrorMessages } from "../types/errors";
 import { UpdateZelleConfDTO, ZelleConf } from "../types/zelleConf";
 import { fetchWithAuth } from "../utils/fetcher";
 import { createFormDataBody } from "../utils/request-body";
 import { fileToBase64, getFile } from "./s3";
+import { redirect } from "next/navigation";
+import { routes } from "../config/routes";
 
 const zelleConfPath = "zelle-conf";
 const zelleConfTag = "zelle-conf";
@@ -19,7 +22,9 @@ export const getZelleConf = async (): Promise<ZelleConf | undefined> => {
 
   if (!response.ok) {
     console.log(response);
-    if (response.status === 404) {
+    if (response.status === 401) {
+      redirect(routes.login.path);
+    } else if (response.status === 404) {
       return undefined;
     } else throw new Error("Error fetching zelle conf");
   }
@@ -35,7 +40,7 @@ export const getZelleConf = async (): Promise<ZelleConf | undefined> => {
 
 export const updateZelleConf = async (
   zelleConf: UpdateZelleConfDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}${zelleConfPath}`,
     {
@@ -53,7 +58,11 @@ export const updateZelleConf = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating zelle conf");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };

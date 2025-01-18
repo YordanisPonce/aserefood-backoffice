@@ -6,6 +6,7 @@ import { Paginated, SearchParams } from "../types/pagination";
 import { CreateZoneDTO, Zone, ZoneDetails } from "../types/zone";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const zonesTag = "zones";
 
@@ -61,9 +62,7 @@ export const getZone = async (zoneId: string): Promise<ZoneDetails> => {
   return await response.json();
 };
 
-export const createZone = async (
-  zone: CreateZoneDTO
-): Promise<Paginated<Zone>> => {
+export const createZone = async (zone: CreateZoneDTO): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}zones`,
     {
@@ -78,24 +77,29 @@ export const createZone = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe una zona con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe una zona con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating zone");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateZone = async (
   zoneId: string,
   zone: CreateZoneDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}zones/` + zoneId,
     {
@@ -110,19 +114,26 @@ export const updateZone = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe una zona con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe una zona con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating zone");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
-export const deleteZone = async (zoneId: string): Promise<void> => {
+export const deleteZone = async (zoneId: string): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}zones/` + zoneId,
     {
@@ -141,8 +152,11 @@ export const deleteZone = async (zoneId: string): Promise<void> => {
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting zone");
   }
   revalidateTag(zonesTag);
+  return { status: 201, message: ErrorMessages.OK };
 };

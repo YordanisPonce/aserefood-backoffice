@@ -21,6 +21,11 @@ import { ProvinceForm } from "../components/ProvinceForm";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export const ProvinceFormContainer: FunctionComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +36,7 @@ export const ProvinceFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [error, setError] = useState<string | undefined>(undefined);
 
   const formOptions: UseFormProps<CreateProvince> = {
@@ -50,14 +56,17 @@ export const ProvinceFormContainer: FunctionComponent = () => {
     setIsLoading(true);
     setError(undefined);
     try {
+      let response: ApiError;
       const createProvinceDto: CreateProvinceDTO = {
         name: name,
       };
       if (!provinceId) {
-        await createProvince(createProvinceDto);
+        response = await createProvince(createProvinceDto);
+        errorClientHandling(response);
         openSnackBar("Provincia creada con éxito", "success");
       } else {
-        await updateProvince(provinceId, createProvinceDto);
+        response = await updateProvince(provinceId, createProvinceDto);
+        errorClientHandling(response);
         openSnackBar(
           `Provincia con identificador ${provinceId} actualizada con éxito`,
           "success"
@@ -69,8 +78,14 @@ export const ProvinceFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);

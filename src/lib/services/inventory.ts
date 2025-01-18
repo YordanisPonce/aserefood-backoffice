@@ -11,6 +11,7 @@ import {
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const inventoryTag = "inventory-entries";
 
@@ -57,7 +58,7 @@ export const getInventoryEntry = async (
 
 export const createInventoryEntry = async (
   inventoryEntries: CreateInventoryEntryDTO[]
-): Promise<Paginated<InventoryEntry>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}inventory-entries`,
     {
@@ -77,17 +78,19 @@ export const createInventoryEntry = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating inventory entries");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateInventoryEntry = async (
   inventoryEntryId: string,
   inventoryEntry: UpdateInventoryEntryDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}inventory-entries/` + inventoryEntryId,
     {
@@ -107,14 +110,18 @@ export const updateInventoryEntry = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating inventory entry");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const deleteInventoryEntry = async (
   inventoryEntryId: string
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}inventory-entries/` + inventoryEntryId,
     {
@@ -133,8 +140,12 @@ export const deleteInventoryEntry = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting inventory entry");
   }
   revalidateTag(inventoryTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

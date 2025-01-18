@@ -5,6 +5,7 @@ import { CreateMunicipalityDTO, Municipality } from "../types/municipality";
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const municipalitiesTag = "municipalities";
 
@@ -79,7 +80,7 @@ export const getAvaliablesMunicipalities = async (): Promise<
 
 export const createMunicipality = async (
   municipality: CreateMunicipalityDTO
-): Promise<Paginated<Municipality>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}municipalities`,
     {
@@ -94,24 +95,29 @@ export const createMunicipality = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un municipio con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un municipio con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating municipality");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateMunicipality = async (
   municipalityId: string,
   municipality: CreateMunicipalityDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}municipalities/` + municipalityId,
     {
@@ -126,21 +132,28 @@ export const updateMunicipality = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe un municipio con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe un municipio con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating municipality");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const deleteMunicipality = async (
   municiplalityId: string
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}municipalities/` + municiplalityId,
     {
@@ -159,8 +172,12 @@ export const deleteMunicipality = async (
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting municipality");
   }
   revalidateTag(municipalitiesTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

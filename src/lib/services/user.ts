@@ -7,6 +7,9 @@ import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
 import { fileToBase64, getFile } from "./s3";
+import { ApiError, ErrorMessages } from "../types/errors";
+import { redirect } from "next/navigation";
+import { routes } from "../config/routes";
 
 const usersTag = "users";
 
@@ -27,7 +30,9 @@ export const getUsers = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error fetching users");
+    if (response.status === 401) {
+      redirect(routes.login.path);
+    } else throw new Error("Error fetching users");
   }
 
   return await response.json();
@@ -40,7 +45,9 @@ export const getAllUsers = async (): Promise<User[]> => {
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error fetching users");
+    if (response.status === 401) {
+      redirect(routes.login.path);
+    } else throw new Error("Error fetching users");
   }
 
   return await response.json();
@@ -56,7 +63,9 @@ export const getUser = async (userId: string): Promise<User> => {
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error fetching user");
+    if (response.status === 401) {
+      redirect(routes.login.path);
+    } else throw new Error("Error fetching user");
   }
 
   const user: User = await response.json();
@@ -66,9 +75,7 @@ export const getUser = async (userId: string): Promise<User> => {
   return user;
 };
 
-export const createUser = async (
-  user: CreateUserDTO
-): Promise<Paginated<User>> => {
+export const createUser = async (user: CreateUserDTO): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}users`,
     {
@@ -80,26 +87,30 @@ export const createUser = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error(
-        "Ya existe un usuario que comparte el mismo nombre de usuario o email"
-      );
+      return {
+        status: response.status,
+        message:
+          "Ya existe un usuario que comparte el mismo nombre de usuario o email",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating user");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateUser = async (
   userId: string,
   user: UpdateUserDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}users/` + userId,
     {
@@ -111,21 +122,27 @@ export const updateUser = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error(
-        "Ya existe un usuario que comparte el mismo nombre de usuario o email"
-      );
+      return {
+        status: response.status,
+        message:
+          "Ya existe un usuario que comparte el mismo nombre de usuario o email",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating user");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
-export const deleteUser = async (userId: string): Promise<void> => {
+export const deleteUser = async (userId: string): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}users/` + userId,
     {
@@ -144,8 +161,12 @@ export const deleteUser = async (userId: string): Promise<void> => {
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting user");
   }
   revalidateTag(usersTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

@@ -5,6 +5,7 @@ import { Paginated, SearchParams } from "../types/pagination";
 import { CreateProvinceDTO, Province } from "../types/province";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { ApiError, ErrorMessages } from "../types/errors";
 
 const provincesTag = "provinces";
 
@@ -62,7 +63,7 @@ export const getAllProvinces = async (): Promise<Province[]> => {
 
 export const createProvince = async (
   province: CreateProvinceDTO
-): Promise<Paginated<Province>> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}provinces`,
     {
@@ -77,24 +78,29 @@ export const createProvince = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe una provincia con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe una provincia con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error creating province");
   }
 
-  return await response.json();
+  return { status: 201, message: ErrorMessages.OK };
 };
 
 export const updateProvince = async (
   provinceId: string,
   province: CreateProvinceDTO
-): Promise<void> => {
+): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}provinces/` + provinceId,
     {
@@ -109,19 +115,26 @@ export const updateProvince = async (
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
-      throw new Error("Ya existe una provincia con el mismo nombre");
+      return {
+        status: response.status,
+        message: "Ya existe una provincia con el mismo nombre",
+      };
     else if (response.status === 400) {
       const error: {
         message: string;
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error updating province");
   }
+
+  return { status: 201, message: ErrorMessages.OK };
 };
 
-export const deleteProvince = async (provinceId: string): Promise<void> => {
+export const deleteProvince = async (provinceId: string): Promise<ApiError> => {
   const response = await fetchWithAuth(
     `${process.env.NEXT_PUBLIC_API_URL}provinces/` + provinceId,
     {
@@ -140,8 +153,12 @@ export const deleteProvince = async (provinceId: string): Promise<void> => {
         error: string;
         statusCode: number;
       } = await response.json();
-      throw new Error(error.message);
+      return { status: response.status, message: error.message };
+    } else if (response.status === 401) {
+      return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
     } else throw new Error("Error deleting province");
   }
   revalidateTag(provincesTag);
+
+  return { status: 201, message: ErrorMessages.OK };
 };

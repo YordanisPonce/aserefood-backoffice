@@ -4,6 +4,8 @@ import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
+import { redirect } from "next/navigation";
+import { routes } from "../config/routes";
 
 const contactInfosPath = "contact-infos";
 const contactInfosSearchPath = "/search";
@@ -30,7 +32,9 @@ export const getContactInfos = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error fetching contact infos");
+    if (response.status === 401) {
+      redirect(routes.login.path);
+    } else throw new Error("Error fetching contact infos");
   }
 
   return await response.json();
@@ -50,7 +54,9 @@ export const getContactInfo = async (
 
   if (!response.ok) {
     console.log(response);
-    throw new Error("Error fetching contact info");
+    if (response.status === 401) {
+      redirect(routes.login.path);
+    } else throw new Error("Error fetching contact info");
   }
 
   return await response.json();

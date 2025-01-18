@@ -24,6 +24,11 @@ import {
 import { DeliveryMethodForm } from "../components/DeliveryMethodForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
+import { signOut } from "next-auth/react";
+import { routes } from "@/lib/config/routes";
+import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
+import { errorClientHandling } from "@/lib/utils/errorClientHandling";
 
 export const DeliveryMethodFormContainer: FunctionComponent = () => {
   const {
@@ -32,6 +37,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
     handleCloseModal,
   } = useContext(ModalContext);
   const { openSnackBar } = useSnackBar();
+  const { openAlertDialog } = useAlertDialog();
   const [isLoading, setIsLoading] = useState(false);
   const [loadingData, setLoadingData] = useState(false);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -65,6 +71,7 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
   }: CreateDeliveryMethod) => {
     setIsLoading(true);
     try {
+      let response: ApiError;
       const createDeliveryMethodDTO: CreateDeliveryMethodDTO = {
         name: name,
         cost,
@@ -75,10 +82,15 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
         pickUpDirection,
       };
       if (!deliveryMethodId) {
-        await createDeliveryMethod(createDeliveryMethodDTO);
+        response = await createDeliveryMethod(createDeliveryMethodDTO);
+        errorClientHandling(response);
         openSnackBar("Método de entrega creado con éxito", "success");
       } else {
-        await updateDeliveryMethod(deliveryMethodId, createDeliveryMethodDTO);
+        response = await updateDeliveryMethod(
+          deliveryMethodId,
+          createDeliveryMethodDTO
+        );
+        errorClientHandling(response);
         openSnackBar(
           `Método de entrega con identificador ${deliveryMethodId} actualizado con éxito`,
           "success"
@@ -90,8 +102,14 @@ export const DeliveryMethodFormContainer: FunctionComponent = () => {
     } catch (error) {
       console.log(error);
       if (error instanceof Error) {
-        setError(error.message);
-        openSnackBar(error.message, "error");
+        if (error instanceof UnauthorizedClientError) {
+          openAlertDialog(error.message, "error", () => {
+            signOut({ redirect: true, callbackUrl: routes.login.path });
+          });
+        } else {
+          setError(error.message);
+          openSnackBar(error.message, "error");
+        }
       }
     } finally {
       setIsLoading(false);
