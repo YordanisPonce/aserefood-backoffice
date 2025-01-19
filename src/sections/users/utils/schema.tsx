@@ -43,6 +43,14 @@ export const createUserSchema = () =>
           "El tamaño de la imagen no debe exceder los " + fileMaxSizeMB + " MB",
       })
       .optional(),
+    role: z
+      .object({
+        value: z.string(),
+        name: z.string(),
+      })
+      .refine((obj) => obj !== null, {
+        message: "Es necesario seleccionar un rol",
+      }),
   });
 
 export const updateUserSchema = () =>
@@ -78,4 +86,22 @@ export const updateUserSchema = () =>
       .optional(),
     isActive: z.boolean().optional(),
     isConfirmed: z.boolean().optional(),
+    role: z
+      .object({
+        value: z.string(),
+        name: z.string(),
+      })
+      .refine((obj) => obj !== null, {
+        message: "Es necesario seleccionar un rol",
+      }),
   });
+
+export const roles: Item[] = [
+  { value: "customer", name: "Cliente" },
+  { value: "admin", name: "Administrador" },
+];
+
+export type Item = {
+  value: string;
+  name: string;
+};

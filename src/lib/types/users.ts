@@ -1,3 +1,4 @@
+import { Item } from "@/sections/users/utils/schema";
 import { SearchParams } from "./pagination";
 
 export interface User {
@@ -21,6 +22,7 @@ export interface CreateUser {
   phoneNumber: string;
   password: string;
   image: File | null;
+  role: Item | string;
 }
 
 export interface UpdateUser {
@@ -32,6 +34,7 @@ export interface UpdateUser {
   image: File | null;
   isActive?: boolean;
   isConfirmed?: boolean;
+  role: string;
 }
 export interface CreateUserDTO {
   name: string;

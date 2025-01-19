@@ -1,3 +1,4 @@
+import RHFAutocomplete from "@/components/common/hook-form/RHFAutocomplete";
 import RHFCheckboxWithLabel from "@/components/common/hook-form/RHFCheckboxWithLabel";
 import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
@@ -9,6 +10,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { FunctionComponent } from "react";
+import { roles } from "../utils/schema";
 
 type UserFormProps = {
   isLoading: boolean;
@@ -53,12 +55,27 @@ export const UserForm: FunctionComponent<UserFormProps> = ({
           />
         </Box>
         <Box sx={{ display: "flex", gap: 2 }}>
-          <RHFCheckboxWithLabel name="isActive" label="Activo" size="small" />
-          <RHFCheckboxWithLabel
-            name="isConfirmed"
-            label="Confirmado"
+          <RHFAutocomplete
+            name="role"
+            label="Roles"
+            options={roles}
+            getOptionKey={(opt) => (typeof opt === "string" ? opt : opt.value)}
+            getOptionLabel={(opt) => (typeof opt === "string" ? opt : opt.name)}
+            defaultValue={roles[0]}
+            disableClearable
             size="small"
+            fullWidth
           />
+        </Box>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <RHFCheckboxWithLabel name="isActive" label="Activo" size="small" />
+          {isUpdate && (
+            <RHFCheckboxWithLabel
+              name="isConfirmed"
+              label="Confirmado"
+              size="small"
+            />
+          )}
         </Box>
         <RHFInputImageUpload
           name="image"

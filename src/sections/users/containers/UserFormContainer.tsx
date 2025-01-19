@@ -9,7 +9,12 @@ import {
 } from "react";
 import { FormProvider, useForm, UseFormProps } from "react-hook-form";
 import { revalidateServerTags } from "@/lib/utils/cache";
-import { createUserSchema, updateUserSchema } from "../utils/schema";
+import {
+  createUserSchema,
+  Item,
+  roles,
+  updateUserSchema,
+} from "../utils/schema";
 import { CreateUser, UpdateUser } from "@/lib/types/users";
 import { createUser, getUser, updateUser } from "@/lib/services/user";
 import { UserForm } from "../components/UserForm";
@@ -78,13 +83,15 @@ export const UserFormContainer: FunctionComponent = () => {
           lastnames,
           phoneNumber,
           image: file,
+          role,
         } = user as CreateUser;
+
         response = await createUser({
           name,
           lastnames,
           username,
           password,
-          role: "customer",
+          role: (role as unknown as Item).value,
           phoneNumber,
           email,
           image: file ? await fileToBase64(file) : null,
@@ -101,12 +108,13 @@ export const UserFormContainer: FunctionComponent = () => {
           image: file,
           isActive,
           isConfirmed,
+          role,
         } = user as UpdateUser;
         response = await updateUser(userId, {
           name,
           lastnames,
           username,
-          role: "customer", // defualt value
+          role: (role as unknown as Item).value,
           phoneNumber,
           email,
           image: file ? await fileToBase64(file) : null,
@@ -152,6 +160,7 @@ export const UserFormContainer: FunctionComponent = () => {
           image: user.image ? base64ToFile(user.image, user.username) : null,
           isActive: user.isActive,
           isConfirmed: user.isConfirmed,
+          role: roles.find((role) => role.value === user.role),
         });
       } catch {
         console.log("error");
