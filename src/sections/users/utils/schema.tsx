@@ -76,4 +76,6 @@ export const updateUserSchema = () =>
           "El tamaño de la imagen no debe exceder los " + fileMaxSizeMB + " MB",
       })
       .optional(),
+    isActive: z.boolean().optional(),
+    isConfirmed: z.boolean().optional(),
   });

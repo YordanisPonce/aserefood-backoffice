@@ -1,3 +1,4 @@
+import RHFCheckboxWithLabel from "@/components/common/hook-form/RHFCheckboxWithLabel";
 import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import {
@@ -28,7 +29,7 @@ export const UserForm: FunctionComponent<UserFormProps> = ({
           <RHFInputWithLabel name="name" label="Nombre" type="text" />
           <RHFInputWithLabel name="lastnames" label="Apellidos" type="text" />
         </Box>
-        <Box sx={{ display: "flex", gap: 2 }}>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
           <RHFInputWithLabel
             name="username"
             label="Nombre de Usuario"
@@ -49,6 +50,14 @@ export const UserForm: FunctionComponent<UserFormProps> = ({
             label="Número Telefónico"
             type="text"
             multiline
+          />
+        </Box>
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <RHFCheckboxWithLabel name="isActive" label="Activo" size="small" />
+          <RHFCheckboxWithLabel
+            name="isConfirmed"
+            label="Confirmado"
+            size="small"
           />
         </Box>
         <RHFInputImageUpload

@@ -44,7 +44,7 @@ function ModalContent({ children, formPath, titleModal }: ModalContentProps) {
       >
         <DialogTitle id="alert-dialog-title">{titleModal}</DialogTitle>
         <CloseIcon
-          sx={{ mr: 2, "&:hover": { color: "error.main" } }}
+          sx={{ mr: 2, "&:hover": { color: "error.main" }, cursor: "pointer" }}
           onClick={() => handleCloseModal()}
         />
       </Box>

@@ -53,6 +53,8 @@ export const UserFormContainer: FunctionComponent = () => {
           phoneNumber: undefined,
           username: undefined,
           image: null,
+          isActive: undefined,
+          isConfirmed: undefined,
         },
     mode: "onSubmit",
     reValidateMode: "onChange",
@@ -82,7 +84,7 @@ export const UserFormContainer: FunctionComponent = () => {
           lastnames,
           username,
           password,
-          role: "customer", // defualt value
+          role: "customer",
           phoneNumber,
           email,
           image: file ? await fileToBase64(file) : null,
@@ -97,6 +99,8 @@ export const UserFormContainer: FunctionComponent = () => {
           lastnames,
           phoneNumber,
           image: file,
+          isActive,
+          isConfirmed,
         } = user as UpdateUser;
         response = await updateUser(userId, {
           name,
@@ -106,6 +110,8 @@ export const UserFormContainer: FunctionComponent = () => {
           phoneNumber,
           email,
           image: file ? await fileToBase64(file) : null,
+          isActive,
+          isConfirmed,
         });
         errorClientHandling(response);
         openSnackBar(
@@ -144,6 +150,8 @@ export const UserFormContainer: FunctionComponent = () => {
           phoneNumber: user.phoneNumber,
           username: user.username,
           image: user.image ? base64ToFile(user.image, user.username) : null,
+          isActive: user.isActive,
+          isConfirmed: user.isConfirmed,
         });
       } catch {
         console.log("error");

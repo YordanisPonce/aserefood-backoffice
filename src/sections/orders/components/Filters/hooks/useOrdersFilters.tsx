@@ -11,6 +11,7 @@ export default function useOrdersFilters() {
     deliveryMethodId: undefined,
     municipalityId: undefined,
     userId: undefined,
+    status: undefined,
   });
 
   async function handleChangeFilters(updatedFilters: OrdersFilters) {
@@ -31,6 +32,7 @@ export default function useOrdersFilters() {
       deliveryMethodId: undefined,
       municipalityId: undefined,
       userId: undefined,
+      status: undefined,
     };
     setFilters(filtersReset);
 

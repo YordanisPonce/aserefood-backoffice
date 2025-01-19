@@ -45,48 +45,36 @@ export default function useDeleteEntity({
           case modalTypes.products.delete.name:
             response = await deleteProduct(entityId);
             errorClientHandling(response);
-            openSnackBar(
-              `El Producto con identificador ${entityId} ha sido eliminado con éxito`,
-              "success"
-            );
+            openSnackBar(`El Producto ha sido eliminado con éxito`, "success");
             break;
           case modalTypes.productCombos.delete.name:
             response = await deleteProductCombo(entityId);
             errorClientHandling(response);
             openSnackBar(
-              `El Combo de producto con identificador ${entityId} ha sido eliminado con éxito`,
+              `El Combo de producto ha sido eliminado con éxito`,
               "success"
             );
             break;
           case modalTypes.providers.delete.name:
             response = await deleteProvider(entityId);
             errorClientHandling(response);
-            openSnackBar(
-              `El Proveedor con identificador ${entityId} ha sido eliminado con éxito`,
-              "success"
-            );
+            openSnackBar(`El Proveedor ha sido eliminado con éxito`, "success");
             break;
           case modalTypes.provinces.delete.name:
             response = await deleteProvince(entityId);
             errorClientHandling(response);
-            openSnackBar(
-              `La Provincia con identificador ${entityId} ha sido eliminada con éxito`,
-              "success"
-            );
+            openSnackBar(`La Provincia ha sido eliminada con éxito`, "success");
             break;
           case modalTypes.municipalities.delete.name:
             response = await deleteMunicipality(entityId);
             errorClientHandling(response);
-            openSnackBar(
-              `El Municipio con identificador ${entityId} ha sido eliminado con éxito`,
-              "success"
-            );
+            openSnackBar(`El Municipio ha sido eliminado con éxito`, "success");
             break;
           case modalTypes.inventory.delete.name:
             response = await deleteInventoryEntry(entityId);
             errorClientHandling(response);
             openSnackBar(
-              `La Entrada de inventario con identificador ${entityId} ha sido eliminada con éxito`,
+              `La Entrada de inventario ha sido eliminada con éxito`,
               "success"
             );
             break;
@@ -101,32 +89,23 @@ export default function useDeleteEntity({
           case modalTypes.users.delete.name:
             response = await deleteUser(entityId);
             errorClientHandling(response);
-            openSnackBar(
-              `El Usuario con identificador ${entityId} ha sido eliminado con éxito`,
-              "success"
-            );
+            openSnackBar(`El Usuario ha sido eliminado con éxito`, "success");
             break;
           case modalTypes.categories.delete.name:
             response = await deleteCategory(entityId);
             errorClientHandling(response);
-            openSnackBar(
-              `La Categoría con identificador ${entityId} ha sido eliminada con éxito`,
-              "success"
-            );
+            openSnackBar(`La Categoría ha sido eliminada con éxito`, "success");
             break;
           case modalTypes.promotions.delete.name:
             response = await deletePromotion(entityId);
             errorClientHandling(response);
-            openSnackBar(
-              `La Promoción con identificador ${entityId} ha sido eliminada con éxito`,
-              "success"
-            );
+            openSnackBar(`La Promoción ha sido eliminada con éxito`, "success");
             break;
           case modalTypes.deliveryMethods.delete.name:
             response = await deleteDeliveryMethod(entityId);
             errorClientHandling(response);
             openSnackBar(
-              `El Método de entrega con identificador ${entityId} ha sido eliminado con éxito`,
+              `El Método de entrega ha sido eliminado con éxito`,
               "success"
             );
             break;

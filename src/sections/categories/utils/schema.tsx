@@ -5,9 +5,7 @@ export const createCategorySchema = () =>
     name: z
       .string({ required_error: "El nombre es requerido" })
       .min(1, { message: "El nombre es requerido" }),
-    description: z
-      .string({ required_error: "La descipción es requerida" })
-      .min(1, { message: "La descipción es requerida" }),
+    description: z.string().optional(),
     parent: z
       .object({
         id: z.number(),
@@ -19,5 +17,5 @@ export const createCategorySchema = () =>
 export const createSubCategorySchema = () =>
   z.object({
     name: z.string().min(1, { message: "El nombre es requerido" }),
-    description: z.string().min(1, { message: "La descipción es requerida" }),
+    description: z.string().optional(),
   });

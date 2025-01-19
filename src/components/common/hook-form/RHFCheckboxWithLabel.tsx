@@ -26,7 +26,7 @@ export default function RHFCheckboxWithLabel({
     <Box
       sx={{
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         alignItems: "center",
         gap: 1,
       }}

@@ -30,6 +30,8 @@ export interface UpdateUser {
   username: string;
   phoneNumber: string;
   image: File | null;
+  isActive?: boolean;
+  isConfirmed?: boolean;
 }
 export interface CreateUserDTO {
   name: string;
@@ -50,6 +52,8 @@ export interface UpdateUserDTO {
   username: string;
   phoneNumber: string;
   image: string | null;
+  isActive?: boolean;
+  isConfirmed?: boolean;
 }
 
 export enum Role {

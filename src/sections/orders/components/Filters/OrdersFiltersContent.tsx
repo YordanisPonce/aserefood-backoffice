@@ -1,5 +1,6 @@
+import SelectInputFilter from "@/components/common/input/SelectInputFilter";
 import SelectInputFilterFetcher from "@/components/common/input/SelectInputFilterFetcher";
-import { OrdersFilters } from "@/lib/types/order";
+import { OrdersFilters, orderStatusArray } from "@/lib/types/order";
 import useAllDeliveryMethods from "@/sections/delivery-methods/hooks/useAllDeliveryMethods";
 import useAllMunicipalities from "@/sections/municipalities/hooks/useAllMunicipalities";
 import useAllUsers from "@/sections/users/hooks/useAllUsers";
@@ -77,7 +78,16 @@ export default function OrdersFiltersContent({
           })
         }
       />
-
+      <SelectInputFilter
+        value={filters.status}
+        label="Estado de la Orden"
+        options={orderStatusArray}
+        onChange={(e) =>
+          handleFilterChange({
+            status: e.target.value === "" ? undefined : Number(e.target.value),
+          })
+        }
+      />
       <TextField
         label="Código"
         value={filters.code ? filters.code : ""}

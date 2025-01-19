@@ -47,13 +47,21 @@ export enum OrderStatus {
   DELIVERED = 5,
   REFUNDED = 6,
 }
-
+export const orderStatusArray = [
+  { value: OrderStatus.PAYMENT_PENDING, name: "Pendiente de pago" },
+  { value: OrderStatus.PROCESSING_PAYMENT, name: "Procesando pago" },
+  { value: OrderStatus.PAYED, name: "Pagada" },
+  { value: OrderStatus.CANCELLED, name: "Anulada" },
+  { value: OrderStatus.DELIVERED, name: "Entregada" },
+  { value: OrderStatus.REFUNDED, name: "Reembolsada" },
+];
 // filters
 export interface OrdersFilters extends SearchParams {
   deliveryMethodId?: number;
   municipalityId?: number;
   userId?: number;
   code?: string;
+  status?: OrderStatus;
 }
 
 export enum PaymentSelection {

@@ -28,7 +28,7 @@ export const CategoryForm: FunctionComponent<CategoryFormProps> = ({
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {error && <Alert severity="error">{error}</Alert>}
-        <RHFInputWithLabel name="name" label="Name" type="text" />
+        <RHFInputWithLabel name="name" label="Nombre" type="text" required />
 
         {!(formModality === CategoryFormModality.CreateSubCategory) && (
           <RHFAutocompleteFetcher
