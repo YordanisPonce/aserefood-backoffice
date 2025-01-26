@@ -11,7 +11,7 @@ import {
 } from "@mui/x-data-grid";
 import { debounce } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import EmptyContent from "../empty-content/empty-content";
 import SearchItem from "../search/SearchItem";
 import { Pagination } from "@/lib/types/pagination";
@@ -41,6 +41,7 @@ const RootDataGrid: React.FC<Props> = ({
   ...other
 }) => {
   const [sortModel, setSortModel] = useState<GridSortModel>([]);
+  const [search, setSearch] = useState("");
 
   const { replace } = useRouter();
   const searchParams = useSearchParams();
@@ -67,6 +68,15 @@ const RootDataGrid: React.FC<Props> = ({
     replace(`${pathname}?${searchUrl.toString()}`);
   }, 500);
 
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    onSearch(value);
+  };
+
+  useEffect(() => {
+    setSearch(searchParams.get("search") || "");
+  }, [searchParams]);
+
   const dataGridContent = (
     <Stack sx={{ gap: 3 }}>
       <Box display={"flex"} gap={1} alignItems={"center"}>
@@ -79,7 +89,8 @@ const RootDataGrid: React.FC<Props> = ({
             }}
             placeholder={"Buscar"}
             size="small"
-            onSearch={onSearch}
+            onSearch={handleSearch}
+            value={search}
           />
         )}
         {filters && filters}

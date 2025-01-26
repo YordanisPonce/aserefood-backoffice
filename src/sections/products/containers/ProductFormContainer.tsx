@@ -21,10 +21,7 @@ import { ProductForm } from "../components/ProductForm";
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
 import { base64ToFile, fileToBase64 } from "@/lib/utils/fileTransformers";
 import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
-import {
-  ApiError,
-  UnauthorizedClientError,
-} from "@/lib/types/errors";
+import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
 import { routes } from "@/lib/config/routes";
 import { signOut } from "next-auth/react";
 import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
@@ -125,7 +122,7 @@ export const ProductFormContainer: FunctionComponent = () => {
         methods.reset({
           description: product.description,
           name: product.name,
-          image: base64ToFile(product.image, product.name),
+          image: base64ToFile(product?.image, product.name),
           isService: product.isService,
           shortDescription: product.shortDescription,
           providers: product.providers,

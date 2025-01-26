@@ -9,7 +9,7 @@ interface Props {
   size?: "small" | "medium";
   value?: string;
   sx?: SxProps<Theme>;
-  onClick?: MouseEventHandler<HTMLDivElement>
+  onClick?: MouseEventHandler<HTMLDivElement>;
 }
 
 const SearchItem = ({
