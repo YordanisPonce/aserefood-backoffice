@@ -1,14 +1,14 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Pagination } from "@/lib/types/pagination";
 import { Promotion, promotionsDiscountOptionMap } from "@/lib/types/promotion";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import PromotionsFilters from "./Filters/PromotionsFilters";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 type PromotionsListProps = {
   promotions: Promotion[];
@@ -19,7 +19,7 @@ export const PromotionsList: FunctionComponent<PromotionsListProps> = ({
   promotions,
   pagination,
 }) => {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
   const onViewDetails = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.promotions.details.name, params.row.id);
   };

@@ -1,13 +1,13 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import useModal from "@/components/partials/Modal/hooks/useModal";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { InventoryEntry } from "@/lib/types/inventory";
 import { Pagination } from "@/lib/types/pagination";
 import { Provider } from "@/lib/types/provider";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 
 type ProviderListProps = {
   providers: Provider[];
@@ -18,7 +18,7 @@ export const ProviderList: FunctionComponent<ProviderListProps> = ({
   providers,
   pagination,
 }) => {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
   const onDelete = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.providers.delete.name, params.row.id);
   };

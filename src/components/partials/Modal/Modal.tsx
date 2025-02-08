@@ -2,7 +2,7 @@
 import { Box, Dialog, DialogContent, DialogTitle } from "@mui/material";
 import React, { ReactNode, useContext } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { ModalContext, ModalProvider } from "./context/ModalContext";
+import { ModalContext } from "./context/ModalContext";
 interface ModalProps {
   formPath: string[];
   titleModal: string;
@@ -10,22 +10,6 @@ interface ModalProps {
 }
 
 export default function Modal({ formPath, children, titleModal }: ModalProps) {
-  return (
-    <ModalProvider>
-      <ModalContent formPath={formPath} titleModal={titleModal}>
-        {children}
-      </ModalContent>
-    </ModalProvider>
-  );
-}
-
-interface ModalContentProps {
-  formPath: string[];
-  titleModal: string;
-  children: ReactNode;
-}
-
-function ModalContent({ children, formPath, titleModal }: ModalContentProps) {
   const { currentModal, contentRef, handleCloseModal } =
     useContext(ModalContext);
   return (

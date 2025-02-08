@@ -1,7 +1,6 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import {
   Order,
@@ -12,8 +11,9 @@ import {
 import { Pagination } from "@/lib/types/pagination";
 import { Chip } from "@mui/material";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import OrdersFilters from "./Filters/OrdersFilters";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 type OrdersListProps = {
   orders: Order[];
@@ -24,7 +24,7 @@ export const OrdersList: FunctionComponent<OrdersListProps> = ({
   orders,
   pagination,
 }) => {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
   const onEdit = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.orders.form.name, params.row.id);
   };

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import {
   Typography,
   Divider,
@@ -10,12 +10,12 @@ import {
 } from "@mui/material";
 import { Category } from "@mui/icons-material";
 import useCategory from "../../hooks/useCategory";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export default function CategoryDetailsContainer() {
-  const { entityId: categoryId } = useModal();
+  const { entityId: categoryId } = useContext(ModalContext);
   const { category, error, fetchCategory, loadingData } = useCategory({
     categoryId,
   });

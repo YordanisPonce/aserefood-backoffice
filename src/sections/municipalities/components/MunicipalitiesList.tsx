@@ -1,13 +1,13 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Municipality } from "@/lib/types/municipality";
 import { Pagination } from "@/lib/types/pagination";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import MunicipalitiesFilters from "./Filters/MunicipalitiesFilters";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 type MunicipalitiesListProps = {
   municipalities: Municipality[];
@@ -18,7 +18,7 @@ export const MunicipalitiesList: FunctionComponent<MunicipalitiesListProps> = ({
   municipalities,
   pagination,
 }) => {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
   const onDelete = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.municipalities.delete.name, params.row.id);
   };

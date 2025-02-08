@@ -2,14 +2,14 @@
 
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Category } from "@/lib/types/category";
 import { Pagination } from "@/lib/types/pagination";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import CategoriesFilters from "./Filters/CategoriesFilters";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 interface Props {
   categories: Category[];
@@ -19,7 +19,7 @@ interface Props {
 export default function CategoriesTableView({ categories, pagination }: Props) {
   const router = useRouter();
   const pathname = usePathname();
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
 
   useEffect(() => {
     const searchUrl = new URLSearchParams();

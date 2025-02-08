@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Typography,
@@ -10,15 +10,15 @@ import {
   Divider,
 } from "@mui/material";
 import { Description, ShoppingCart } from "@mui/icons-material";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import useProduct from "../../hooks/useProduct";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import ProductCategoriesSection from "./components/ProductCategoriesSection";
 import PreviewImage from "@/components/partials/PreviewImage/PreviewImage";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export default function ProductDetailsContainer() {
-  const { entityId } = useModal();
+  const { entityId } = useContext(ModalContext);
   const {
     product,
     loadingData: loadingDataProduct,
@@ -43,7 +43,7 @@ export default function ProductDetailsContainer() {
             <Box display={"flex"} justifyContent={"center"}>
               <PreviewImage
                 preview={
-                  product.image ? product.image : "images/place-holder.png"
+                  product.image ? product.image : "/images/place-holder.png"
                 }
               />
             </Box>

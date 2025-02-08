@@ -2,12 +2,12 @@
 import TreeItemsList, {
   DataTree,
 } from "@/components/common/tree-items-list/TreeItemsList";
-import useModal from "@/components/partials/Modal/hooks/useModal";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Category } from "@/lib/types/category";
 import { Pagination } from "@/lib/types/pagination";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 
 interface Props {
   categories: Category[];
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function CategoriesTreeView({ categories, pagination }: Props) {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
   const router = useRouter();
   const pathname = usePathname();
   useEffect(() => {

@@ -1,43 +1,27 @@
 "use client";
-import useUrlParams, { UrlParamsType } from "@/lib/hooks/useUrlParams";
-import { useSearchParams } from "next/navigation";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function useModal() {
-  const { updateSearchParams } = useUrlParams();
-  const params = useSearchParams();
-  const currentModal = params.get("currentModal");
-  const entityId = params.get("entityId");
+  const [currentModal, setCurrentModal] = useState<string | null>(null);
+  const [entityId, setEntityId] = useState<string | null>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
   const handleOpenModal = (modalName: string, entityId?: string) => {
-    const params: UrlParamsType | UrlParamsType[] = {
-      currentModal: {
-        action: "set",
-        value: modalName,
-      },
-      ...(entityId && {
-        entityId: {
-          action: "set",
-          value: entityId,
-        },
-      }),
-    };
-  
-    updateSearchParams(params);
+    setCurrentModal(modalName);
+    if (entityId) {
+      setEntityId(entityId);
+    }
   };
 
   const handleCloseModal = () => {
-    updateSearchParams({
-      currentModal: {
-        action: "delete",
-        value: "",
-      },
-      entityId: {
-        action: "delete",
-        value: "",
-      },
-    });
+    setCurrentModal(null);
+    setEntityId(null);
   };
-  return { entityId, handleCloseModal, currentModal, handleOpenModal, contentRef };
+  return {
+    entityId,
+    handleCloseModal,
+    currentModal,
+    handleOpenModal,
+    contentRef,
+  };
 }

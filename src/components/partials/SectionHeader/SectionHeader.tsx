@@ -1,9 +1,9 @@
 "use client";
 
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useContext } from "react";
 import { Add as AddIcon } from "@mui/icons-material";
-import useModal from "../Modal/hooks/useModal";
+import { ModalContext } from "../Modal/context/ModalContext";
 
 interface SectionHeaderProps {
   titleSection: string;
@@ -16,7 +16,7 @@ export default function SectionHeader({
   titleButton,
   createAction,
 }: SectionHeaderProps) {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
   const handleClick = () => {
     if (createAction) {
       handleOpenModal(createAction);

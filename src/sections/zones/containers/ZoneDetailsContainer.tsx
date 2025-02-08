@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Typography,
@@ -11,10 +11,10 @@ import {
   Divider,
 } from "@mui/material";
 import { LocationCity, Description, Public } from "@mui/icons-material";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import useZone from "../hooks/useZone";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export interface ZoneDetails {
   name: string;
@@ -25,7 +25,7 @@ export interface ZoneDetails {
 }
 
 export default function ZoneDetailsContainer() {
-  const { entityId } = useModal();
+  const { entityId } = useContext(ModalContext);
   const { zone, loadingData, error, fetchZone } = useZone({
     zoneId: entityId,
   });

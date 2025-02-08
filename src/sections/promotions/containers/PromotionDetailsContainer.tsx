@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Typography,
@@ -15,14 +15,14 @@ import {
   Description,
   CalendarMonth,
 } from "@mui/icons-material";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import usePromotion from "../hooks/usePromotion";
 import PreviewImage from "@/components/partials/PreviewImage/PreviewImage";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export default function PromotionDetailsContainer() {
-  const { entityId } = useModal();
+  const { entityId } = useContext(ModalContext);
   const { promotion, loadingData, error, fetchPromotion } = usePromotion({
     promotionId: entityId,
   });
@@ -42,7 +42,7 @@ export default function PromotionDetailsContainer() {
             <Box display={"flex"} justifyContent={"center"}>
               <PreviewImage
                 preview={
-                  promotion.image ? promotion.image : "images/place-holder.png"
+                  promotion.image ? promotion.image : "/images/place-holder.png"
                 }
               />
             </Box>

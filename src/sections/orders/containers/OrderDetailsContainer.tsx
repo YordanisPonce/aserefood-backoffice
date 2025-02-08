@@ -1,10 +1,10 @@
 "use client";
-
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import OrderDetails from "../components/OrderDetails/OrderDetails";
+import { useContext } from "react";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export default function OrderDetailsContainer() {
-  const { entityId } = useModal();
+  const { entityId } = useContext(ModalContext);
 
   return <OrderDetails orderId={entityId} />;
 }

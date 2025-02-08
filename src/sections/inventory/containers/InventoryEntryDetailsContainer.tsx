@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Typography,
@@ -16,13 +16,13 @@ import {
   AttachMoney,
   ShoppingCart,
 } from "@mui/icons-material";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import useInventoryEntry from "../hooks/useInventoryEntry";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export default function InventoryEntryDetailsContainer() {
-  const { entityId } = useModal();
+  const { entityId } = useContext(ModalContext);
   const { inventoryEntry, loadingData, error, fetchInventoryEntry } =
     useInventoryEntry({
       inventoryEntryId: entityId,

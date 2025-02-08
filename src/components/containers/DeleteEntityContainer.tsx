@@ -9,20 +9,17 @@ import {
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Warning } from "@mui/icons-material";
-import React from "react";
-import useModal from "../partials/Modal/hooks/useModal";
+import React, { useContext } from "react";
 import useDeleteEntity from "@/lib/hooks/useDeleteEntity";
+import { ModalContext } from "../partials/Modal/context/ModalContext";
 
 interface Props {
   title: string;
   message: string;
 }
 
-export default function DeleteEntityContainer({
-  message,
-  title,
-}: Props) {
-  const { entityId, handleCloseModal, currentModal } = useModal();
+export default function DeleteEntityContainer({ message, title }: Props) {
+  const { entityId, handleCloseModal, currentModal } = useContext(ModalContext);
   const { deleteAction, isLoading, error } = useDeleteEntity({
     entityId,
     handleCloseModal,

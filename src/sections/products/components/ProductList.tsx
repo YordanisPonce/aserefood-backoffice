@@ -1,13 +1,13 @@
 "use client";
 import { TableMenu } from "@/components/common/menu";
 import RootDataGrid from "@/components/common/tabel/RootDataGrid";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import { modalTypes } from "@/components/partials/Modal/types/modalTypes";
 import { Pagination } from "@/lib/types/pagination";
 import { Product } from "@/lib/types/products";
 import { GridColDef, GridRenderCellParams } from "@mui/x-data-grid";
-import { FunctionComponent } from "react";
+import { FunctionComponent, useContext } from "react";
 import ProductsFilters from "./Filters/ProductsFilters";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 type ProductListProps = {
   products: Product[];
@@ -18,7 +18,7 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
   products,
   pagination,
 }) => {
-  const { handleOpenModal } = useModal();
+  const { handleOpenModal } = useContext(ModalContext);
   const onViewDetails = (params: GridRenderCellParams) => () => {
     handleOpenModal(modalTypes.products.details.name, params.row.id);
   };

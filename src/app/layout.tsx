@@ -6,6 +6,7 @@ import { GlobalProvider } from "@/stores/global";
 import AuthProvider from "@/components/providers/AuthProvider";
 import AutohideSnackbar from "@/components/partials/SnackBar/SnackBar";
 import AlertDialog from "@/components/partials/AlertDialog/AlertDialog";
+import { ModalProvider } from "@/components/partials/Modal/context/ModalContext";
 
 const geistSans = localFont({
   src: "../lib/config/fonts/GeistVF.woff",
@@ -34,9 +35,11 @@ export default function RootLayout({
         <AuthProvider>
           <GlobalProvider>
             <ClientThemeProvider>
-              {children}
-              <AutohideSnackbar />
-              <AlertDialog />
+              <ModalProvider>
+                {children}
+                <AutohideSnackbar />
+                <AlertDialog />
+              </ModalProvider>
             </ClientThemeProvider>
           </GlobalProvider>
         </AuthProvider>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Typography,
@@ -16,14 +16,14 @@ import {
   AttachMoney,
   Place,
 } from "@mui/icons-material";
-import useModal from "@/components/partials/Modal/hooks/useModal";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
 import useProductCombo from "../hooks/useProductCombo";
 import PreviewImage from "@/components/partials/PreviewImage/PreviewImage";
+import { ModalContext } from "@/components/partials/Modal/context/ModalContext";
 
 export default function ProductComboDetailsContainer() {
-  const { entityId } = useModal();
+  const { entityId } = useContext(ModalContext);
   const { productCombo, loadingData, error, fetchProductCombo } =
     useProductCombo({
       productComboId: entityId,
@@ -46,7 +46,7 @@ export default function ProductComboDetailsContainer() {
                 preview={
                   productCombo.image
                     ? productCombo.image
-                    : "images/place-holder.png"
+                    : "/images/place-holder.png"
                 }
               />
             </Box>
