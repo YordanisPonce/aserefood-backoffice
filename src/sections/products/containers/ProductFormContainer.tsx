@@ -122,7 +122,7 @@ export const ProductFormContainer: FunctionComponent = () => {
         methods.reset({
           description: product.description,
           name: product.name,
-          image: base64ToFile(product?.image, product.name),
+          image: product.image ? base64ToFile(product.image, product.name) : null,
           isService: product.isService,
           shortDescription: product.shortDescription,
           providers: product.providers,

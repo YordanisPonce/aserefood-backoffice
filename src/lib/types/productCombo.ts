@@ -17,7 +17,7 @@ export interface ProductComboDetails {
   name: string;
   shortDescription: string;
   description: string;
-  image: string;
+  image: string | null;
   price: number;
   referencePrice: number;
   zoneId: number;

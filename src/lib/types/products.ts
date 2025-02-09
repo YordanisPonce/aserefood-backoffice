@@ -39,7 +39,7 @@ export interface CreateProduct {
 export interface ProductDetails {
   id: number;
   name: string;
-  image: string;
+  image: string | null;
   description: string;
   shortDescription: string;
   isService: boolean;
