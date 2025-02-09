@@ -24,8 +24,8 @@ export default function usePromotion({ promotionId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("promotionId undefined");
-  }, [promotionId]) 
+    }
+  }, [promotionId]);
   useEffect(() => {
     fetchPromotion();
   }, [fetchPromotion]);

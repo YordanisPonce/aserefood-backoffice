@@ -24,7 +24,7 @@ export default function useContactInfo({ contactInfoId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("contactInfoId undefined");
+    }
   }, [contactInfoId]);
   useEffect(() => {
     fetchContactInfo();

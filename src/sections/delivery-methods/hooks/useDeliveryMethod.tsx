@@ -24,7 +24,7 @@ export default function useDeliveryMethod({ deliveryMethodId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("deliveryMethodId undefined");
+    }
   }, [deliveryMethodId]);
   useEffect(() => {
     fetchDeliveryMethod();

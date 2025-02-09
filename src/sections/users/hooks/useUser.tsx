@@ -22,7 +22,7 @@ export default function useUser({ userId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("userId undefined");
+    }
   }, [userId]);
   useEffect(() => {
     fetchUser();

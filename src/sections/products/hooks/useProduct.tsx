@@ -22,7 +22,7 @@ export default function useProduct({ productId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("productId undefined");
+    }
   }, [productId]);
   useEffect(() => {
     fetchProduct();

@@ -44,7 +44,7 @@ export default function useContactInfos({ userId, filters }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("userId no está definido");
+    }
   }, [searchParams, setPagination, userId]);
 
   useEffect(() => {

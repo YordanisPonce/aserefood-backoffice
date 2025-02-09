@@ -24,7 +24,7 @@ export default function useCategory({ categoryId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("categoryId undefined");
+    }
   }, [categoryId]);
   useEffect(() => {
     fetchCategory();

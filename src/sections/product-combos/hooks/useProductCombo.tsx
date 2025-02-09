@@ -24,7 +24,7 @@ export default function useProductCombo({ productComboId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("productComboId undefined");
+    }
   }, [productComboId]);
   useEffect(() => {
     fetchProductCombo();

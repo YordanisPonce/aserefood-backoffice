@@ -22,7 +22,7 @@ export default function useZone({ zoneId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("zoneId undefined");
+    }
   }, [zoneId]);
   useEffect(() => {
     fetchZone();

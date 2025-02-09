@@ -22,7 +22,7 @@ export default function useOrder({ orderId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("orderId undefined");
+    }
   }, [orderId]);
   useEffect(() => {
     fetchOrder();

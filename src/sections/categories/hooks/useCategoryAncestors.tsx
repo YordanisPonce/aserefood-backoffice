@@ -22,7 +22,7 @@ export default function useCategoryAncestors({ categoryId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("categoryId undefined");
+    }
   }, [categoryId]);
   useEffect(() => {
     fetchCategoryAncestors();

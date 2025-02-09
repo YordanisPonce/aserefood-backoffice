@@ -24,7 +24,7 @@ export default function useInventoryEntry({ inventoryEntryId }: Props) {
       } finally {
         setLoadingData(false);
       }
-    } else throw new Error("inventoryEntryId undefined");
+    }
   }, [inventoryEntryId]);
   useEffect(() => {
     fetchInventoryEntry();
