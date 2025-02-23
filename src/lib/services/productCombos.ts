@@ -103,7 +103,7 @@ export const createProductCombo = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error creating product combo");
+    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -137,7 +137,7 @@ export const updateProductCombo = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error updating product combo");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -167,7 +167,7 @@ export const deleteProductCombo = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error deleting product combo");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(productCombosTag);
 

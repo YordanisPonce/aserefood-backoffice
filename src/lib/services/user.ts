@@ -101,7 +101,7 @@ export const createUser = async (user: CreateUserDTO): Promise<ApiError> => {
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error creating user");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -136,7 +136,7 @@ export const updateUser = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error updating user");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -164,7 +164,7 @@ export const deleteUser = async (userId: string): Promise<ApiError> => {
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error deleting user");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(usersTag);
 

@@ -30,13 +30,13 @@ export const authOptions: NextAuthOptions = {
           throw new Error(
             res.status === 401
               ? "Credenciales inválidas"
-              : "Ha ocurreido un error inesperado, intentelo mas tarde"
+              : "Ha ocurrido un error inesperado, intentélo mas tarde"
           );
         }
         const decodeToken = jwtDecode<JwtPayload>(user.accessToken);
 
         if (decodeToken.role !== "admin")
-          throw new Error("Credenciales inválidas");
+          return null
 
         return {
           id: user.id,

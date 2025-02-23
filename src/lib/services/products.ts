@@ -79,7 +79,7 @@ export const createProduct = async (
       body: await createFormDataBody(product),
     }
   );
-
+  console.log(response)
   if (!response.ok) {
     console.log(response);
     if (response.status === 409)
@@ -96,7 +96,7 @@ export const createProduct = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401)
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    else throw new Error("Error creating product");
+    else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -130,7 +130,7 @@ export const updateProduct = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401)
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    else throw new Error("Error updating product");
+    else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -158,7 +158,7 @@ export const deleteProduct = async (productId: string): Promise<ApiError> => {
       return { status: response.status, message: error.message };
     } else if (response.status === 401)
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    else throw new Error("Error deleting product");
+    else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(productsTag);
 

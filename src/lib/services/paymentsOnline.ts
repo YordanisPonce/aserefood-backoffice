@@ -3,6 +3,7 @@ import { PaymentOnline, PaymentOnlineErrors } from "../types/paymentOnline";
 import { fetchWithAuth } from "../utils/fetcher";
 import { redirect } from "next/navigation";
 import { routes } from "../config/routes";
+import { ErrorMessages } from "../types/errors";
 
 const paymentsOnlinePath = "payments/online/";
 
@@ -42,7 +43,7 @@ export const getPaymentOnline = async (
       redirect(routes.login.path);
     } else if (response.status === 404) {
       throw new Error(PaymentOnlineErrors.NOT_FOUND_PAYMENT_ORDER);
-    } else throw new Error("Error fetching payment");
+    } else throw new Error(ErrorMessages.UNEXPECTED);
   }
 
   return await response.json();

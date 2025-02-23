@@ -6,6 +6,7 @@ import {
 import { fetchWithAuth } from "../utils/fetcher";
 import { redirect } from "next/navigation";
 import { routes } from "../config/routes";
+import { ErrorMessages } from "../types/errors";
 
 const paymentsTransferPath = "payments/online/";
 
@@ -45,7 +46,7 @@ export const getPaymentTransfer = async (
       redirect(routes.login.path);
     } else if (response.status === 404) {
       throw new Error(PaymentTransferErrors.NOT_FOUND_PAYMENT_ORDER);
-    } else throw new Error("Error fetching payment");
+    } else throw new Error(ErrorMessages.UNEXPECTED);
   }
 
   return await response.json();

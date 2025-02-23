@@ -120,7 +120,7 @@ export const createMunicipality = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error creating municipality");
+    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -157,7 +157,7 @@ export const updateMunicipality = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error updating municipality");
+    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -187,7 +187,7 @@ export const deleteMunicipality = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error deleting municipality");
+    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(municipalitiesTag);
 

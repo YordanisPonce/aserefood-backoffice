@@ -91,7 +91,7 @@ export const createProvince = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error creating province");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -128,7 +128,7 @@ export const updateProvince = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error updating province");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -156,7 +156,7 @@ export const deleteProvince = async (provinceId: string): Promise<ApiError> => {
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error deleting province");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(provincesTag);
 

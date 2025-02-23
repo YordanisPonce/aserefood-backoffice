@@ -85,7 +85,7 @@ export const createPromotion = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error creating promotions");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -114,7 +114,7 @@ export const updatePromotion = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error updating promotions");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -144,7 +144,7 @@ export const deletePromotion = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else throw new Error("Error deleting promotion");
+    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(promotionsTag);
 
