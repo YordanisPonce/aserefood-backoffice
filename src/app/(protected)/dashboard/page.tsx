@@ -1,8 +1,9 @@
 
+import LineCharts from "@/sections/metrics/line-charts";
 import React from "react";
 
 export default function DashboardPage() {
-  return <div>Dashboard</div>;
+  return <LineCharts/>;
 }
 
 export const dynamic = 'force-dynamic'

@@ -45,7 +45,7 @@ export default function FetchingDataError() {
           variant="contained"
           onClick={() => window.location.reload()}
         >
-          Reinetntar
+          Reintentar
         </Button>
       </Box>
     </Stack>
