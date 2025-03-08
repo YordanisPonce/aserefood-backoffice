@@ -13,21 +13,20 @@ export default function useFiltersUrl() {
     () =>
       debounce((updatedFilters: SearchParams) => {
         const searchUrl = new URLSearchParams(searchParams);
+        
         Object.entries(updatedFilters).forEach(([key, value]) => {
-          if (value !== undefined) {
-            if (typeof value === "number") searchUrl.set(key, value.toString());
-            else if (typeof value === "boolean")
-              searchUrl.set(key, value ? "true" : "false");
-            else if (Array.isArray(value)) {
-              value.forEach(() => {
-                searchUrl.delete(key);
-              })
-              value.forEach((value) => {
-                searchUrl.append(key, value);
-              })
-            }
-            else searchUrl.set(key, value);
-          } else searchUrl.delete(key);
+          if (value === undefined || value === null || value === "") {
+            searchUrl.delete(key);
+          } else if (typeof value === "number") {
+            searchUrl.set(key, value.toString());
+          } else if (typeof value === "boolean") {
+            searchUrl.set(key, value ? "true" : "false");
+          } else if (Array.isArray(value)) {
+            searchUrl.delete(key); // Borra valores previos
+            value.forEach((val) => searchUrl.append(key, val.toString()));
+          } else {
+            searchUrl.set(key, value.toString());
+          }
         });
         replace(`${pathname}?${searchUrl.toString()}`);
       }, 300),

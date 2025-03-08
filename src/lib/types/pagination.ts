@@ -19,4 +19,7 @@ export type SearchParams = {
   page?: number;
   pageSize?: number;
   currentModal?: string;
+  startDate?: string;
+  endDate?: string;
+  quantity?: string;
 };
