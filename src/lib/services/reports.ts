@@ -6,7 +6,7 @@ import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 
 const reportsTag = "reports";
-const BASE_QUERY = 'reports/';
+const BASE_QUERY = "reports/";
 const BASE_SALES_QUERY = `${BASE_QUERY}sales/`;
 
 // /v1/reports/mostDemandedProductCombos
@@ -24,7 +24,6 @@ export const getmostDemandedProductCombos = async (
       tags: [reportsTag],
     },
   });
-
 
   if (!response.ok) {
     console.log(response);
@@ -49,7 +48,6 @@ export const getmostDemandedProducts = async (
     },
   });
 
-
   if (!response.ok) {
     console.log(response);
     throw new Error("Error fetching mostDemandedProducts");
@@ -58,23 +56,14 @@ export const getmostDemandedProducts = async (
   return await response.json();
 };
 
-
-
 // /v1/reports/sales/day
-export const getDaySales = async (
-  
-): Promise<Sales> => {
- 
- 
-  
-
-  const url =   `${process.env.NEXT_PUBLIC_API_URL}${BASE_SALES_QUERY}day`
+export const getDaySales = async (): Promise<Sales> => {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}${BASE_SALES_QUERY}day`;
   const response = await fetchWithAuth(url, {
     next: {
       tags: [reportsTag],
     },
   });
-
 
   if (!response.ok) {
     console.log(response);
@@ -84,18 +73,13 @@ export const getDaySales = async (
   return await response.json();
 };
 // /v1/reports/sales/month
-export const getMonthSales = async (
-  
-): Promise<Sales> => {
- 
-  
+export const getMonthSales = async (): Promise<Sales> => {
   const url = `${process.env.NEXT_PUBLIC_API_URL}${BASE_SALES_QUERY}month`;
   const response = await fetchWithAuth(url, {
     next: {
       tags: [reportsTag],
     },
   });
-
 
   if (!response.ok) {
     console.log(response);
@@ -106,20 +90,13 @@ export const getMonthSales = async (
 };
 
 // /v1/reports/sales/week
-export const getWeekSales = async (
-  
-): Promise<Sales> => {
- 
- 
-    
-  
-  const url =`${process.env.NEXT_PUBLIC_API_URL}${BASE_SALES_QUERY}week`
+export const getWeekSales = async (): Promise<Sales> => {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}${BASE_SALES_QUERY}week`;
   const response = await fetchWithAuth(url, {
     next: {
       tags: [reportsTag],
     },
   });
-
 
   if (!response.ok) {
     console.log(response);
@@ -129,20 +106,13 @@ export const getWeekSales = async (
   return await response.json();
 };
 // /v1/reports/sales/year
-export const getYearSales = async (
-  
-): Promise<Sales> => {
- 
- 
-   
-
-  const url =  `${process.env.NEXT_PUBLIC_API_URL}${BASE_SALES_QUERY}year`
+export const getYearSales = async (): Promise<Sales> => {
+  const url = `${process.env.NEXT_PUBLIC_API_URL}${BASE_SALES_QUERY}year`;
   const response = await fetchWithAuth(url, {
     next: {
       tags: [reportsTag],
     },
   });
-
 
   if (!response.ok) {
     console.log(response);
@@ -151,6 +121,3 @@ export const getYearSales = async (
 
   return await response.json();
 };
-
-
-
