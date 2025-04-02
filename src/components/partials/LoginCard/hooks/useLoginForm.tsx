@@ -40,7 +40,7 @@ export default function useLoginForm() {
           redirect: false,
         });
         if (res?.status === 401) {
-          setError("root", { message: "Credenciales invcalidas" });
+          setError("root", { message: "Credenciales inválidas" });
         } else if (res?.status === 200) {
           router.push(routes.products.path);
         }
