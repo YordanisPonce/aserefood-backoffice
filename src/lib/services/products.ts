@@ -2,7 +2,7 @@
 import { revalidateTag } from "next/cache";
 import { IQueryable } from "../types/filters";
 import { Paginated, SearchParams } from "../types/pagination";
-import { CreateProductDTO, Product, ProductDetails } from "../types/products";
+import { CreateProductDTO, Product, ProductDetails, ZoneProduct } from "../types/products";
 import { fetchWithAuth } from "../utils/fetcher";
 import { buildQueryParams, QueryParamsURLFactory } from "../utils/request";
 import { createFormDataBody } from "../utils/request-body";
@@ -37,6 +37,23 @@ export const getProducts = async (
 export const getAllProducts = async (): Promise<Product[]> => {
   const response = await fetchWithAuth(
     new URL(`${process.env.NEXT_PUBLIC_API_URL}products/all`)
+  );
+
+  if (!response.ok) {
+    console.log(response);
+    throw new Error("Error fetching products");
+  }
+
+  return await response.json();
+};
+
+export const getAvailableProductsByZone = async (
+  zoneId: string
+): Promise<ZoneProduct[]> => {
+  const response = await fetchWithAuth(
+    new URL(
+      `${process.env.NEXT_PUBLIC_API_URL}availability/products/zone/${zoneId}`
+    )
   );
 
   if (!response.ok) {

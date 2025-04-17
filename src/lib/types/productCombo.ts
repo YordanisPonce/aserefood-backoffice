@@ -1,4 +1,5 @@
 import { SearchParams } from "./pagination";
+import { ZoneProduct } from "./products";
 
 export interface ProductCombo {
   id: number;
@@ -46,10 +47,7 @@ export interface CreateProductCombo {
 }
 
 export interface CreateProductComboItem {
-  product: {
-    id: number;
-    name: string;
-  } | null;
+  product: ZoneProduct | null;
   amount: number;
 }
 

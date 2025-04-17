@@ -1,18 +1,20 @@
 "use client";
 
-import { Box, Button, Divider, IconButton, Typography } from "@mui/material";
-import React, { ReactNode } from "react";
+import { Box, Button, Chip, Divider, IconButton, Typography } from "@mui/material";
+import React, { ReactNode, useEffect } from "react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 import { Delete as DeleteIcon, Add as AddIcon } from "@mui/icons-material";
 import RHFInputWithLabel from "./RHFInputWithLabel";
 import RHFAutocompleteFetcher from "./RHFAutocompleteFetcher";
-import { getAllProducts } from "@/lib/services/products";
+import { ZoneDetails } from "@/lib/types/zone";
+import { getAvailableProductsByZone } from "@/lib/services/products";
 interface RHFListProps<T extends Record<string, unknown>> {
   name: string;
   titleList: string;
   titleButton: string;
   noDataText: string;
   propertyMap: Record<keyof T, string>;
+  zone?: ZoneDetails;
 }
 
 export default function RHFList<T extends Record<string, unknown>>({
@@ -21,6 +23,7 @@ export default function RHFList<T extends Record<string, unknown>>({
   noDataText,
   titleButton,
   propertyMap,
+  zone,
 }: RHFListProps<T>) {
   const { control, formState } = useFormContext();
   const { errors } = formState;
@@ -29,6 +32,12 @@ export default function RHFList<T extends Record<string, unknown>>({
     control,
     name,
   });
+
+  useEffect(() => {   
+    if (!zone) {
+      fields.splice(0, fields.length);
+    }
+  }, [zone, fields]);
 
   function bodyItemRendering(field: Record<"id", string>, index: number) {
     const renderingComponents: Array<ReactNode> = new Array<ReactNode>();
@@ -52,9 +61,40 @@ export default function RHFList<T extends Record<string, unknown>>({
               fullWidth
               name={name + "." + index + "." + key}
               label={key in propertyMap ? propertyMap[key] : ""}
-              onFetch={getAllProducts}
-              getOptionLabel={(opt) => opt.name}
-              getOptionKey={(opt) => opt.id}
+              onFetch={() =>
+                getAvailableProductsByZone(zone ? zone.id.toString() : "")
+              }
+              getOptionLabel={opt => {             
+                return opt.product.name;
+              }}
+              renderOption={(props, option) => {
+                const isOutOfStock =
+                  option.inventoryAmount === 0 || !option.isAvailable;
+
+                return (
+                  <Box
+                    component="li"
+                    {...props}
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    width="100%"
+                  >
+                    <Typography>{option.product.name}</Typography>
+                    {isOutOfStock && (
+                      <Chip
+                        label="Agotado"
+                        color="error"
+                        size="small"
+                        sx={{ ml: 1 }}
+                      />
+                    )}
+                  </Box>
+                );
+              }}
+              getOptionKey={opt => {              
+                return opt.product.id;
+              }}
               size="small"
             />
           );
@@ -104,6 +144,7 @@ export default function RHFList<T extends Record<string, unknown>>({
         onClick={() => {
           append({ product: null, amount: 1 });
         }}
+        disabled={Boolean(!zone)}
         variant="contained"
         startIcon={<AddIcon />}
       >

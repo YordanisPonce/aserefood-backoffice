@@ -5,14 +5,17 @@ import RHFList from "@/components/common/hook-form/RHFList";
 import RHFRadioGroup from "@/components/common/hook-form/RHFRadioGroup";
 import { getAllZones } from "@/lib/services/zones";
 import { StatesProductCombos } from "@/lib/types/productCombo";
+import { ZoneDetails } from "@/lib/types/zone";
 import {
   Alert,
   Box,
   Button,
   CircularProgress,
   DialogActions,
+  Typography,
 } from "@mui/material";
 import { FunctionComponent } from "react";
+import { useFormContext } from "react-hook-form";
 
 type ProductComboFormProps = {
   isLoading: boolean;
@@ -25,6 +28,9 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
   isUpdate,
   error,
 }) => {
+  const { watch } = useFormContext();
+  const zone = watch("zone");
+
   return (
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
@@ -60,12 +66,18 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
           ]}
           direction="row"
         />
+        {Boolean(!zone) && (
+          <Typography variant="body1" color="primary">
+            Seleccione una zona para ver los artículos disponibles
+          </Typography>
+        )}
         <RHFList<{ product: string; amount: string }>
           name="productComboItems"
           titleList="Artículos"
           titleButton="Agregar Artículo"
           noDataText="Inserte Articulos como parte del Combo"
           propertyMap={{ product: "Producto", amount: "Importe" }}
+          zone={zone as ZoneDetails}
         />
         <RHFInputImageUpload
           name="image"

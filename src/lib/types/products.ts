@@ -56,5 +56,12 @@ export enum StatesProducts {
 export interface ProductsFilters extends SearchParams {
   providerId?: number;
   isService?: boolean;
-  categoryIds?: number[]
+  categoryIds?: number[];
+}
+
+export interface ZoneProduct {
+  inventoryAmount: number;
+  isAvailable: boolean;
+  price: number;
+  product: Product;
 }

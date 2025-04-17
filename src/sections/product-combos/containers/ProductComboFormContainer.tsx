@@ -30,6 +30,8 @@ import { ApiError, UnauthorizedClientError } from "@/lib/types/errors";
 import { routes } from "@/lib/config/routes";
 import useAlertDialog from "@/components/partials/AlertDialog/hooks/useAlertDialog";
 import { errorClientHandling } from "@/lib/utils/errorClientHandling";
+import { getAvailableProductsByZone } from "@/lib/services/products";
+import { getProductsInComboWithAmount } from "../utils/helpers";
 
 export const ProductComboFormContainer: FunctionComponent = () => {
   const {
@@ -74,17 +76,17 @@ export const ProductComboFormContainer: FunctionComponent = () => {
   }: CreateProductCombo) => {
     setIsLoading(true);
     setError(undefined);
-
+    console.log("Product combos on submit", productComboItems);
     const createProductComboDTO: CreateProductComboDTO = {
       name: name,
       description,
       image: file ? await fileToBase64(file) : null,
       isActive: state === StatesProductCombos.ACTIVE ? true : false,
       price,
-      productComboItems: productComboItems.map((productCombo) => {
+      productComboItems: productComboItems.map(item => {
         return {
-          productId: productCombo.product?.id ?? 0,
-          amount: productCombo.amount,
+          productId: item.product?.product.id ?? 0,
+          amount: item.amount,
         };
       }),
       shortDescription,
@@ -131,6 +133,10 @@ export const ProductComboFormContainer: FunctionComponent = () => {
       setLoadingData(true);
       try {
         const productCombo = await getProductCombo(productComboId);
+        const zoneProducts = await getAvailableProductsByZone(
+          productCombo.zoneId.toString()
+        );
+
         methods.reset({
           name: productCombo.name,
           description: productCombo.description,
@@ -141,16 +147,9 @@ export const ProductComboFormContainer: FunctionComponent = () => {
             ? StatesProductCombos.ACTIVE
             : StatesProductCombos.INACTIVE,
           price: productCombo.price,
-          productComboItems: productCombo.productComboItems.map(
-            (productCombo) => {
-              return {
-                product: {
-                  id: productCombo.productId,
-                  name: productCombo.productName,
-                },
-                amount: productCombo.amount,
-              };
-            }
+          productComboItems: getProductsInComboWithAmount(
+            zoneProducts,
+            productCombo
           ),
           shortDescription: productCombo.shortDescription,
           zone: {
@@ -177,7 +176,11 @@ export const ProductComboFormContainer: FunctionComponent = () => {
     }
   }, [error, contentRef]);
 
+  const productsCombosItmes = methods.watch("productComboItems");
   useEffect(() => {
+
+    console.log("errors", errors);
+    console.log("errors - productsCombosItmes", productsCombosItmes);
     if (errors && Object.keys(errors).length > 0 && !isValid) {
       setError(undefined);
       setTimeout(() => {

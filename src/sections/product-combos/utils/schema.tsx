@@ -1,17 +1,33 @@
 import { fileMaxSizeMB } from "@/lib/utils/fileTransformers";
 import z from "zod";
 
+export const categorySchema = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
+export const productSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  image: z.string().url(),
+  isService: z.boolean(),
+  categories: z.array(categorySchema),
+  shortDescription: z.string(),
+  description: z.string(),
+});
+
+export const zoneProductSchema = z.object({
+  product: productSchema,
+  inventoryAmount: z.number(),
+  price: z.number(),
+  isAvailable: z.boolean(),
+});
+
 export const createProductComboItemSchema = () =>
   z.object({
-    product: z
-      .object({
-        id: z.number(),
-        name: z.string(),
-      })
-      .nullable()
-      .refine((obj) => obj !== null, {
-        message: "Es necesario seleccionar un producto",
-      }),
+    product: zoneProductSchema.nullable().refine(obj => obj !== null, {
+      message: "Es necesario seleccionar un producto",
+    }),
     amount: z.number().min(1, { message: "La cantidad es requerida" }),
   });
 
