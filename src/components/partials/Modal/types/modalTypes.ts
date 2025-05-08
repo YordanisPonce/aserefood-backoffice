@@ -89,7 +89,7 @@ export const modalTypes: ModalTypes = {
     },
     form: {
       name: "form-providers",
-      title: "Formualario de Proveedor",
+      title: "Formulario de Proveedor",
     },
     delete: {
       name: "delete-provider",
@@ -225,7 +225,7 @@ export const modalTypes: ModalTypes = {
     },
     form: {
       name: "form-delivery-method",
-      title: "Formualrio de Método de Entrega",
+      title: "Formulario de Método de Entrega",
     },
     delete: {
       name: "delete-delivery-method",
@@ -242,7 +242,7 @@ export const modalTypes: ModalTypes = {
     },
     form: {
       name: "form-order",
-      title: "Formualrio de Orden de Compra",
+      title: "Formulario de Orden de Compra",
     },
     delete: {
       name: "delete-order",
