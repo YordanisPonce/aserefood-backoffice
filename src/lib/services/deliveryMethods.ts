@@ -150,10 +150,7 @@ export const deleteDeliveryMethod = async (
   const response = await fetchWithAuth(
     `${process.env.NEXT_APP_API_URL}${deliveryMethodsPath}/` + deliveryMethodId,
     {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      method: "DELETE",     
     }
   );
 

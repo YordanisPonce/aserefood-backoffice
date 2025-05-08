@@ -114,6 +114,7 @@ export default function useDeleteEntity({
             break;
           case modalTypes.deliveryMethods.delete.name:
             response = await deleteDeliveryMethod(entityId);
+            console.log('ERROR', response)
             errorClientHandling(response);
             await revalidateServerTags("delivery-methods");
             openSnackBar(
