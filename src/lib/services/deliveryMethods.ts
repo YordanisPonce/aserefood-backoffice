@@ -98,7 +98,8 @@ export const createDeliveryMethod = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
+    } else
+      return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -136,7 +137,8 @@ export const updateDeliveryMethod = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
+    } else
+      return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -166,7 +168,8 @@ export const deleteDeliveryMethod = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
+    } else
+      return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(deliveryMethodsTag);
 

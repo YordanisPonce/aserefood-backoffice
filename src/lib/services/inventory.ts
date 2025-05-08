@@ -81,7 +81,8 @@ export const createInventoryEntry = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
+    } else
+      return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -113,7 +114,8 @@ export const updateInventoryEntry = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
+    } else
+      return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
   return { status: 201, message: ErrorMessages.OK };
@@ -143,7 +145,8 @@ export const deleteInventoryEntry = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
+    } else
+      return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
   revalidateTag(inventoryTag);
 
