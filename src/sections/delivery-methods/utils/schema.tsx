@@ -14,10 +14,8 @@ export const createDeliveryMethodSchema = () =>
       pickUpDirection: z
         .string({ required_error: "La dirección de envío es requerida" })
         .min(1, { message: "La dirección de envío es requerida" }),
-      cost: z.number().min(1, { message: "El costo debe ser positivo" }),
-      minimalDeliveryPrice: z.number().min(1, {
-        message: "El Precio mínimo de entrega debe ser positivo",
-      }),
+      cost: z.number(),
+      minimalDeliveryPrice: z.number(),
       municipality: z
         .object({
           id: z.number(),
