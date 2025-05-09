@@ -148,9 +148,10 @@ export const deleteDeliveryMethod = async (
   deliveryMethodId: string
 ): Promise<ApiError> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_APP_API_URL}${deliveryMethodsPath}/` + deliveryMethodId,
+    `${process.env.NEXT_PUBLIC_API_URL}${deliveryMethodsPath}/` +
+      deliveryMethodId,
     {
-      method: "DELETE",     
+      method: "DELETE",
     }
   );
 
