@@ -29,7 +29,7 @@ export const ProductForm: FunctionComponent<ProductFormProps> = ({
     <>
       <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         {error && <Alert severity="error">{error}</Alert>}
-        <RHFInputWithLabel name="name" label="Name" type="text" />
+        <RHFInputWithLabel name="name" label="Nombre" type="text" />
         <Box sx={{ display: "flex", gap: 2 }}>
           <RHFAutocompleteFetcher
             fullWidth
