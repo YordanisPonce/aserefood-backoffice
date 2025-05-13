@@ -33,8 +33,8 @@ export const InventoryEntryForm: FunctionComponent<InventoryEntryFormProps> = ({
               name="product"
               label="Producto"
               onFetch={getAllProducts}
-              getOptionLabel={opt => opt.name}
-              getOptionKey={opt => opt.id}
+              getOptionLabel={(opt) => opt.name}
+              getOptionKey={(opt) => opt.id}
               size="small"
             />
             <RHFAutocompleteFetcher
@@ -42,8 +42,8 @@ export const InventoryEntryForm: FunctionComponent<InventoryEntryFormProps> = ({
               name="zone"
               label="Zona"
               onFetch={getAllZones}
-              getOptionLabel={opt => opt.name}
-              getOptionKey={opt => opt.id}
+              getOptionLabel={(opt) => opt.name}
+              getOptionKey={(opt) => opt.id}
               size="small"
             />
           </Box>
@@ -52,13 +52,13 @@ export const InventoryEntryForm: FunctionComponent<InventoryEntryFormProps> = ({
           <RHFInputWithLabel
             name="price"
             label="Precio"
-            type="text"
+            type="number"
             isNotAccountant={false}
           />
           <RHFInputWithLabel
             name="quantity"
             label="Cantidad"
-            type="text"
+            type="number"
             isNotAccountant={false}
           />
         </Box>

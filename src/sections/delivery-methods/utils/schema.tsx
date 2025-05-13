@@ -21,13 +21,10 @@ export const createDeliveryMethodSchema = () =>
           id: z.number(),
           name: z.string(),
         })
-        .nullable()
-        .refine(obj => obj !== null, {
-          message: "Es necesario seleccionar un municipio",
-        }),
+        .nullable(),
     })
     .refine(
-      data =>
+      (data) =>
         data.isFree === StatesDeliveryMethods.FREE
           ? data.cost === 0
           : data.cost > 0,
@@ -36,4 +33,9 @@ export const createDeliveryMethodSchema = () =>
           "Si el método es gratuito, el costo debe ser cero. De lo contrario, debe ser mayor que uno.",
         path: ["cost"],
       }
-    );
+    )
+    .refine((data) => data.pickUpDirection || data.municipality !== null, {
+      message:
+        "Si no hay dirección de envío, es necesario seleccionar un municipio.",
+      path: ["municipality"],
+    });
