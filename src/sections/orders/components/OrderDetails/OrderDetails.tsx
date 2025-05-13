@@ -23,6 +23,9 @@ import DeliveryMethodDetails from "@/sections/delivery-methods/components/Delive
 import OrderDetailsContactInfoSection from "./components/OrderDetailsContactInfoSection";
 import OrderDetailsPaymentOnlineSection from "./components/OrderDetailsPaymentOnlineSection/OrderDetailsPaymentOnlineSection";
 import OrderDetailsPaymentTransferSection from "./components/OrderDetailsPaymentTransferSection/OrderDetailsPaymentTransferSection";
+import useDeliveryMethod from "@/sections/delivery-methods/hooks/useDeliveryMethod";
+import ExportButton from "@/components/common/export-to-pdf/export-button";
+// import PaymentScreenshotCard from "./components/PaymentScreenshot";
 
 interface Props {
   orderId: string | null;
@@ -37,6 +40,9 @@ export default function OrderDetails({ orderId }: Props) {
   } = useOrder({
     orderId: orderId,
   });
+  const deliveryMethodData = useDeliveryMethod({
+    deliveryMethodId: order?.deliveryMethodId.toString() ?? "",
+  });
   return (
     <>
       {!loadingDataOrder ? (
@@ -47,9 +53,10 @@ export default function OrderDetails({ orderId }: Props) {
               flexDirection: "column",
               overflow: "hidden",
             }}
+            id="exportable-component"
           >
             <Box sx={{ p: 3 }}>
-              <Box display="flex" alignItems="center" mb={2}>
+              <Box display="flex" alignItems="center" justifyContent='space-between' mb={2}>
                 <ShoppingCart
                   sx={{ fontSize: 40, mr: 2, color: "primary.main" }}
                 />
@@ -61,6 +68,10 @@ export default function OrderDetails({ orderId }: Props) {
                 >
                   Orden de Compra: {order.code}
                 </Typography>
+                <ExportButton
+                  elementId="exportable-component"
+                  filename={`Orden ${order.code}`}
+                />
               </Box>
               <Chip
                 label={orderStatusMap.get(order.status)}
@@ -95,8 +106,17 @@ export default function OrderDetails({ orderId }: Props) {
                 Método de pago:{" "}
                 {orderPaymentSelectionMap.get(order.paymentSelection)}
               </Typography>
+              {/* PRECIO */}
               <Typography variant="body2" sx={{ pl: 4 }}>
-                Monto total: ${order.totalAmount}
+                Subtotal: ${order.totalAmount}
+              </Typography>
+              <Typography variant="body2" sx={{ pl: 4 }}>
+                Precio de entrega: $
+                {deliveryMethodData.deliveryMethod?.cost ?? 0}
+              </Typography>
+              <Typography variant="body2" sx={{ pl: 4 }}>
+                Monto total: $
+                {(Number(order.totalAmount) + (deliveryMethodData.deliveryMethod?.cost ?? 0)).toFixed(2)}
               </Typography>
               <Divider sx={{ my: 2 }} />
               <Box display="flex" alignItems="center" mb={1} gap={1}>
@@ -107,21 +127,19 @@ export default function OrderDetails({ orderId }: Props) {
                   title="Información del Método de Entrega"
                 >
                   <DeliveryMethodDetails
-                    deliveryMethodId={order.deliveryMethodId.toString()}
+                    deliveryMethodData={deliveryMethodData}
                   />
                 </DialogSections>
               </Box>
-
               <OrderDetailsContactInfoSection
                 contactInfoId={order.contactInfoId.toString()}
               />
-
               {order.paymentSelection === PaymentSelection.Online ? (
                 <OrderDetailsPaymentOnlineSection orderId={orderId} />
               ) : (
                 <OrderDetailsPaymentTransferSection orderId={orderId} />
               )}
-
+         
               <Box sx={{ padding: 1 }}></Box>
               <Divider sx={{ my: 2 }} />
               <Typography variant="subtitle2" gutterBottom>
@@ -136,7 +154,8 @@ export default function OrderDetails({ orderId }: Props) {
                   mb: 2,
                 }}
               >
-                {order.orderItems.map((item) => (
+                {order.orderItems.map(item => (
+                  
                   <ListItem key={item.id}>
                     <ListItemText
                       primary={`ID del Producto: ${item.productId || "N/A"} ${

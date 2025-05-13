@@ -27,7 +27,7 @@ export default function OrderDetailsContactInfoSection({
          <Paper elevation={2} sx={{borderRadius: 2}}>
              <ContactInfoDetailsContent
             contactInfo={contactInfo}
-            isShowDetailsUser={true}
+            isShowDetailsUser={false}
           />
          </Paper>
         ) : (

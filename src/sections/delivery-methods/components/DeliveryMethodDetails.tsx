@@ -12,17 +12,25 @@ import {
 import { LocalShipping, LocationOn, AttachMoney } from "@mui/icons-material";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
-import useDeliveryMethod from "../hooks/useDeliveryMethod";
+import { DeliveryMethodDetails as DeliveryMethodDetailsType } from "@/lib/types/deliveryMethod";
 
 interface Props {
-  deliveryMethodId: string | null;
+  deliveryMethodData: {
+    deliveryMethod: DeliveryMethodDetailsType | undefined;
+    loadingData: boolean;
+    error: string | undefined;
+    fetchDeliveryMethod: () => Promise<void>;
+  };
 }
 
-export default function DeliveryMethodDetails({ deliveryMethodId }: Props) {
-  const { deliveryMethod, loadingData, error, fetchDeliveryMethod } =
-    useDeliveryMethod({
-      deliveryMethodId: deliveryMethodId,
-    });
+export default function DeliveryMethodDetails({
+  deliveryMethodData: {
+    deliveryMethod,
+    loadingData,
+    error,
+    fetchDeliveryMethod,
+  },
+}: Props) {
   return (
     <>
       {!loadingData ? (

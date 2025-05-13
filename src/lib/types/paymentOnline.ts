@@ -12,6 +12,7 @@ export interface PaymentOnline {
   state: string;
   city: string;
   postalCode: string;
+  screenshot: string;
 }
 
 export enum PaymentOnlineErrors {

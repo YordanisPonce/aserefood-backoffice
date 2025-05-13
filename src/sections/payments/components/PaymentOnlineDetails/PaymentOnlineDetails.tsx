@@ -26,6 +26,7 @@ import {
   Public,
   MarkAsUnread,
 } from "@mui/icons-material";
+import PaymentScreenshotCard from "@/sections/orders/components/OrderDetails/components/PaymentScreenshot";
 
 interface Props {
   paymentOnline: PaymentOnline;
@@ -172,6 +173,7 @@ export default function PaymentOnlineDetails({ paymentOnline }: Props) {
           </Box>
         </Stack>
       </CardContent>
+                 <PaymentScreenshotCard src={paymentOnline.screenshot} />
     </Card>
   );
 }

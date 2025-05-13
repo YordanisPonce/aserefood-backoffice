@@ -74,7 +74,7 @@ export default function ContactInfoDetailsContent({
       <Divider />
       <Box sx={{ p: 2, flexGrow: 1, display: "flex", flexDirection: "column" }}>
         <Typography variant="subtitle2" gutterBottom>
-          Observaciones
+          Información extra sobre la dirección
         </Typography>
         <Box sx={{ flexGrow: 1, overflow: "auto" }}>
           {contactInfo.observations ? (
