@@ -4,8 +4,6 @@ import {
   Typography,
   Chip,
   List,
-  ListItem,
-  ListItemText,
   Divider,
 } from "@mui/material";
 import { ShoppingCart, AttachMoney, LocalShipping } from "@mui/icons-material";
@@ -25,6 +23,7 @@ import OrderDetailsPaymentOnlineSection from "./components/OrderDetailsPaymentOn
 import OrderDetailsPaymentTransferSection from "./components/OrderDetailsPaymentTransferSection/OrderDetailsPaymentTransferSection";
 import useDeliveryMethod from "@/sections/delivery-methods/hooks/useDeliveryMethod";
 import ExportButton from "@/components/common/export-to-pdf/export-button";
+import ProductRow from "./components/OrderProductRow";
 // import PaymentScreenshotCard from "./components/PaymentScreenshot";
 
 interface Props {
@@ -43,6 +42,7 @@ export default function OrderDetails({ orderId }: Props) {
   const deliveryMethodData = useDeliveryMethod({
     deliveryMethodId: order?.deliveryMethodId.toString() ?? "",
   });
+  console.log("orderItesm", { order });
   return (
     <>
       {!loadingDataOrder ? (
@@ -56,7 +56,12 @@ export default function OrderDetails({ orderId }: Props) {
             id="exportable-component"
           >
             <Box sx={{ p: 3 }}>
-              <Box display="flex" alignItems="center" justifyContent='space-between' mb={2}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                mb={2}
+              >
                 <ShoppingCart
                   sx={{ fontSize: 40, mr: 2, color: "primary.main" }}
                 />
@@ -116,7 +121,10 @@ export default function OrderDetails({ orderId }: Props) {
               </Typography>
               <Typography variant="body2" sx={{ pl: 4 }}>
                 Monto total: $
-                {(Number(order.totalAmount) + (deliveryMethodData.deliveryMethod?.cost ?? 0)).toFixed(2)}
+                {(
+                  Number(order.totalAmount) +
+                  (deliveryMethodData.deliveryMethod?.cost ?? 0)
+                ).toFixed(2)}
               </Typography>
               <Divider sx={{ my: 2 }} />
               <Box display="flex" alignItems="center" mb={1} gap={1}>
@@ -139,7 +147,7 @@ export default function OrderDetails({ orderId }: Props) {
               ) : (
                 <OrderDetailsPaymentTransferSection orderId={orderId} />
               )}
-         
+
               <Box sx={{ padding: 1 }}></Box>
               <Divider sx={{ my: 2 }} />
               <Typography variant="subtitle2" gutterBottom>
@@ -155,17 +163,26 @@ export default function OrderDetails({ orderId }: Props) {
                 }}
               >
                 {order.orderItems.map(item => (
-                  
-                  <ListItem key={item.id}>
-                    <ListItemText
-                      primary={`ID del Producto: ${item.productId || "N/A"} ${
-                        item.productComboId
-                          ? `(Combo ID: ${item.productComboId})`
-                          : ""
-                      }`}
-                      secondary={`Cantidad: ${item.amount}`}
-                    />
-                  </ListItem>
+                  <>
+                    {item.product && (
+                      <ProductRow
+                        id={item.product.id.toString()}
+                        imageUrl={item.product.image as string}
+                        name={item.product.name}
+                        price={item.price}
+                        quantity={item.amount}
+                      />
+                    )}
+                    {item.productCombo && (
+                      <ProductRow
+                        id={item.productCombo.id.toString()}
+                        imageUrl={item.productCombo.image as string}
+                        name={item.productCombo.name}
+                        price={item.price}
+                        quantity={item.amount}
+                      />
+                    )}
+                  </>
                 ))}
               </List>
             </Box>
