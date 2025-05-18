@@ -81,7 +81,12 @@ const InputWithLabel = ({
         error={Boolean(errorAlert)}
         fullWidth
         disabled={disabled}
-        data-test={dataTest}
+        data-test={dataTest}      
+        inputProps={
+          type === "number"
+            ? { step: "any", inputMode: "decimal", min: "0" }
+            : undefined
+        }
         sx={{
           "& .MuiOutlinedInput-notchedOutline": {
             border: disabled ? "1px dashed rgba(145, 158, 171, 0.20)" : "",

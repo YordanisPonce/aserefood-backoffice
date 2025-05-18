@@ -26,6 +26,7 @@ export const getInventoryEntries = async (
   const url = queryObject.build();
   const response = await fetchWithAuth(url, {
     next: {
+      revalidate: 30,
       tags: [inventoryTag],
     },
   });
