@@ -52,8 +52,10 @@ export default function RHFInputWithLabel({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleNumberChange = (value: string, onChange: any) => {
-    if (!value.match(/^0\d*/)) {
-      onChange(+value);
+    // Permite números decimales y evita ceros a la izquierda innecesarios
+    const decimalValue = value.replace(/^0+(?=\d)/, "");
+    if (/^-?\d*\.?\d*$/.test(decimalValue)) {
+      onChange(decimalValue);
     }
   };
 
