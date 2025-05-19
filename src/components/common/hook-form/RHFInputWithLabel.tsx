@@ -17,6 +17,7 @@ type Props = TextFieldProps & {
   required?: boolean;
   dataTest?: string;
   isNotAccountant?: boolean;
+  decimal?: boolean;
 };
 
 export default function RHFInputWithLabel({
@@ -32,6 +33,7 @@ export default function RHFInputWithLabel({
   dataTest,
   autoComplete,
   isNotAccountant,
+  decimal = false,
   ...rest
 }: Props) {
   const { control } = useFormContext();
@@ -52,10 +54,19 @@ export default function RHFInputWithLabel({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleNumberChange = (value: string, onChange: any) => {
-    // Permite números decimales y evita ceros a la izquierda innecesarios
-    const decimalValue = value.replace(/^0+(?=\d)/, "");
-    if (/^-?\d*\.?\d*$/.test(decimalValue)) {
-      onChange(Number(decimalValue));
+    // Permite números decimales solo si decimal es true, si no solo enteros
+    const processedValue = value.replace(/^0+(?=\d)/, "");
+    const decimalRegex = /^-?\d*\.?\d*$/;
+    const integerRegex = /^-?\d*$/;
+
+    if (decimal) {
+      if (decimalRegex.test(processedValue)) {
+        onChange(Number(processedValue));
+      }
+    } else {
+      if (integerRegex.test(processedValue)) {
+        onChange(Number(processedValue));
+      }
     }
   };
 

@@ -55,6 +55,7 @@ export const DeliveryMethodForm: FunctionComponent<DeliveryMethodFormProps> = ({
             name="minimalDeliveryPrice"
             label="Precio mínimo de entrega"
             type="number"
+            decimal
           />
         </Box>
         <RHFRadioGroup

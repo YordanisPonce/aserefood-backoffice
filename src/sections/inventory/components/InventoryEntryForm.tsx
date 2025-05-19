@@ -53,6 +53,7 @@ export const InventoryEntryForm: FunctionComponent<InventoryEntryFormProps> = ({
             name="price"
             label="Precio"
             type="number"
+            decimal
             isNotAccountant={false}
           />
           <RHFInputWithLabel

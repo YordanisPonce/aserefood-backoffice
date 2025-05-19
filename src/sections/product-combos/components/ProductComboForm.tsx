@@ -55,7 +55,7 @@ export const ProductComboForm: FunctionComponent<ProductComboFormProps> = ({
             getOptionKey={(opt) => opt.id}
             size="small"
           />
-          <RHFInputWithLabel name="price" label="Precio" type="number" />
+          <RHFInputWithLabel name="price" decimal label="Precio" type="number" />
         </Box>
         <RHFRadioGroup
           name="isActive"

@@ -44,7 +44,7 @@ export const createProductComboSchema = () =>
       .min(1, { message: "La descripción es requerida" }),
     price: z
       .number()
-      .min(1, { message: "El precio debe ser un número positivo" }),
+      .min(0.1, { message: "El precio debe ser un número positivo" }),
     zone: z
       .object({
         id: z.number(),
