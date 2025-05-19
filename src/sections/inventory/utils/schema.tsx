@@ -4,10 +4,10 @@ export const createInventoryEntrySchema = () =>
   z.object({
     price: z
       .number()
-      .min(1, { message: "El precio tiene que ser un número positivo" }),
+      .min(0.1, { message: "El precio tiene que ser un número positivo" }),
     quantity: z
       .number()
-      .min(1, { message: "La cantidad tiene que ser un número positivo" }),
+      .min(0.1, { message: "La cantidad tiene que ser un número positivo" }),
     product: z
       .object({
         id: z.number(),
@@ -32,8 +32,8 @@ export const updateInventoryEntrySchema = () =>
   z.object({
     price: z
       .number()
-      .min(1, { message: "El precio tiene que ser un número positivo" }),
+      .min(0.1, { message: "El precio tiene que ser un número positivo" }),
     quantity: z
       .number()
-      .min(1, { message: "La cantidad tiene que ser un número positivo" }),
+      .min(0.1, { message: "La cantidad tiene que ser un número positivo" }),
   });

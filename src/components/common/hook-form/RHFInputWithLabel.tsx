@@ -55,7 +55,7 @@ export default function RHFInputWithLabel({
     // Permite números decimales y evita ceros a la izquierda innecesarios
     const decimalValue = value.replace(/^0+(?=\d)/, "");
     if (/^-?\d*\.?\d*$/.test(decimalValue)) {
-      onChange(decimalValue);
+      onChange(Number(decimalValue));
     }
   };
 
