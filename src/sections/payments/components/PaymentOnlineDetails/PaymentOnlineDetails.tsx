@@ -173,7 +173,9 @@ export default function PaymentOnlineDetails({ paymentOnline }: Props) {
           </Box>
         </Stack>
       </CardContent>
-                 <PaymentScreenshotCard src={paymentOnline.screenshot} />
+      {paymentOnline.screenshot && (
+        <PaymentScreenshotCard src={paymentOnline.screenshot} />
+      )}
     </Card>
   );
 }
