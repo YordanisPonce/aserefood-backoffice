@@ -79,6 +79,7 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
       pagination={pagination}
       disableSelection
       filters={<InventoryEntriesFilters />}
+      withoutSearch
     />
   );
 };
