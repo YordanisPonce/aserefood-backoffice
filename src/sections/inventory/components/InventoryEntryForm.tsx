@@ -60,7 +60,7 @@ export const InventoryEntryForm: FunctionComponent<InventoryEntryFormProps> = ({
             name="quantity"
             label="Cantidad"
             type="number"
-            isNotAccountant={false}
+          
           />
         </Box>
       </Box>
