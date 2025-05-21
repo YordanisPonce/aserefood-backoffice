@@ -1,13 +1,16 @@
-import { CSSProperties, ChangeEvent } from "react";
+import { CSSProperties, ChangeEvent, useState } from "react";
 import { FieldError } from "react-hook-form";
 
 import {
   Box,
+  IconButton,
+  InputAdornment,
   InputLabel,
   TextField,
   TextFieldProps,
   Typography,
 } from "@mui/material";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 
 type Props = {
   id: string;
@@ -44,63 +47,89 @@ const InputWithLabel = ({
   dataTest,
   autoComplete,
   ...rest
-}: Props) => (
-  <Box sx={{ width, display: "flex", flexDirection: "column", gap: 1 }}>
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        {label && (
-          <InputLabel
-            htmlFor={id}
-            sx={{ fontSize: "14px", fontWeight: 600, color: "text.primary" }}
-          >
-            {label}
-            {required && "*"}
-          </InputLabel>
-        )}
-        {underLabel && (
-          <Typography
-            fontWeight={400}
-            fontSize={10}
-            sx={{ color: "text.secondary" }}
-          >
-            {underLabel}
-          </Typography>
-        )}
-      </Box>
-      <TextField
-        {...rest}
-        autoComplete={autoComplete}
-        required={required}
-        type={type || "text"}
-        size={size}
-        id={id}
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        error={Boolean(errorAlert)}
-        fullWidth
-        disabled={disabled}
-        data-test={dataTest}      
-        inputProps={
-          type === "number"
-            ? { step: "any", inputMode: "decimal", min: "0" }
-            : undefined
-        }
-        sx={{
-          "& .MuiOutlinedInput-notchedOutline": {
-            border: disabled ? "1px dashed rgba(145, 158, 171, 0.20)" : "",
-          },
-        }}
-      />
-    </Box>
+}: Props) => {
+  const [showPassword, setShowPassword] = useState(false);
 
-    {errorAlert && (
-      <Typography fontSize="0.75em" sx={{ marginLeft: "12px" }} color={"error"}>
-        {errorAlert.message}
-      </Typography>
-    )}
-  </Box>
-);
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
+  };
+  return (
+    <Box sx={{ width, display: "flex", flexDirection: "column", gap: 1 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
+          {label && (
+            <InputLabel
+              htmlFor={id}
+              sx={{ fontSize: "14px", fontWeight: 600, color: "text.primary" }}
+            >
+              {label}
+              {required && "*"}
+            </InputLabel>
+          )}
+          {underLabel && (
+            <Typography
+              fontWeight={400}
+              fontSize={10}
+              sx={{ color: "text.secondary" }}
+            >
+              {underLabel}
+            </Typography>
+          )}
+        </Box>
+        <TextField
+          {...rest}
+          autoComplete={autoComplete}
+          required={required}
+          type={type || "text"}
+          size={size}
+          id={id}
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          error={Boolean(errorAlert)}
+          fullWidth
+          disabled={disabled}
+          data-test={dataTest}
+          slotProps={{
+            input: {
+              endAdornment:
+                type === "password" ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={togglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ) : undefined,
+            },
+          }}
+          inputProps={
+            type === "number"
+              ? { step: "any", inputMode: "decimal", min: "0" }
+              : undefined
+          }
+          sx={{
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: disabled ? "1px dashed rgba(145, 158, 171, 0.20)" : "",
+            },
+          }}
+        />
+      </Box>
+
+      {errorAlert && (
+        <Typography
+          fontSize="0.75em"
+          sx={{ marginLeft: "12px" }}
+          color={"error"}
+        >
+          {errorAlert.message}
+        </Typography>
+      )}
+    </Box>
+  );
+};
 
 export default InputWithLabel;

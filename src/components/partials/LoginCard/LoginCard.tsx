@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -10,10 +10,13 @@ import {
   Alert,
   Button,
   CircularProgress,
+  InputAdornment,
+  IconButton,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import useLoginForm from "./hooks/useLoginForm";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
   fontSize: 40,
@@ -26,7 +29,10 @@ const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
 
 export default function LoginCard() {
   const { register, handleSubmit, errors, loading } = useLoginForm();
-
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
+  };
   return (
     <Card
       sx={{
@@ -82,11 +88,22 @@ export default function LoginCard() {
               fullWidth
               id="password"
               label="Contraseña"
-              type="password"
+              type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               {...register("password")}
               error={!!errors.password}
               helperText={errors.password?.message}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
               sx={{ mb: 2 }}
             />
             <Button

@@ -1,18 +1,20 @@
 "use client";
-import React from "react";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import {
+  Alert,
+  Box,
+  Button,
   Card,
   CardContent,
+  IconButton,
+  InputAdornment,
   TextField,
   Typography,
-  Box,
-  Alert,
-  Button,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import useChangePasswordForm from "./hooks/useChangePasswordCard";
-
+import { VisibilityOff, Visibility } from "@mui/icons-material";
+import { useState } from "react";
 
 const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
   fontSize: 40,
@@ -23,8 +25,17 @@ const LockIcon = styled(LockOutlinedIcon)(({ theme }) => ({
   marginBottom: theme.spacing(1),
 }));
 
-export default function ChangePasswordCard () {
+export default function ChangePasswordCard() {
   const { register, handleSubmit, errors } = useChangePasswordForm();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prev => !prev);
+  };
+  const [confirmShowPassword, setConfirmShowPassword] = useState(false);
+  const toggleConfirmPasswordVisibility = () => {
+    setConfirmShowPassword(prev => !prev);
+  };
 
   return (
     <Card
@@ -68,10 +79,21 @@ export default function ChangePasswordCard () {
               fullWidth
               id="newPassword"
               label="Nueva Contraseña"
-              type="password"
+              type={showPassword ? "text" : "password"}
               autoComplete="new-password"
               {...register("newPassword")}
               error={!!errors.newPassword}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={togglePasswordVisibility} edge="end">
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
               helperText={errors.newPassword?.message}
               sx={{ mb: 2 }}
             />
@@ -81,19 +103,32 @@ export default function ChangePasswordCard () {
               fullWidth
               id="confirmPassword"
               label="Confirmar Nueva Contraseña"
-              type="password"
+              type={confirmShowPassword ? "text" : "password"}
               autoComplete="new-password"
               {...register("confirmPassword")}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={toggleConfirmPasswordVisibility}
+                        edge="end"
+                      >
+                        {confirmShowPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
               error={!!errors.confirmPassword}
               helperText={errors.confirmPassword?.message}
               sx={{ mb: 2 }}
             />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-            >
+            <Button type="submit" fullWidth variant="contained" color="primary">
               Cambiar Contraseña
             </Button>
           </Box>
@@ -101,7 +136,4 @@ export default function ChangePasswordCard () {
       </CardContent>
     </Card>
   );
-};
-
-
-
+}
