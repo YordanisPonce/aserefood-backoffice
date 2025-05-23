@@ -51,7 +51,7 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
       headerName: "Precio",
       sortable: false,
       flex: 1,
-      renderCell: (params) => fCurrency(Number(params.value)),
+      renderCell: params => fCurrency(Number(params.value)),
     },
     {
       field: "quantity",
@@ -62,7 +62,7 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
     {
       field: "id",
       headerName: "Acciones",
-      renderCell: (params) => (
+      renderCell: params => (
         <TableMenu
           onDelete={onDelete(params)}
           onEdit={onEdit(params)}
@@ -78,6 +78,15 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
       data={inventoryEntries}
       pagination={pagination}
       disableSelection
+      getRowClassName={params => {
+        return params.row.quantity == 0 ? "" : "row-inactive";
+      }}
+      sx={{
+        "& .row-inactive": {
+          backgroundColor: "#fff8e1",
+          color: "#b26a00",
+        },
+      }}
       filters={<InventoryEntriesFilters />}
       withoutSearch
     />
