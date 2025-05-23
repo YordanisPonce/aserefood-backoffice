@@ -37,6 +37,7 @@ export type IQueryable = {
   sorts?: ISort[];
   pagination?: IPagination;
   search?: string;
-  isFlat?: string
-  municipalityId?: string
-}
+  isFlat?: string;
+  municipalityId?: string;
+  orderDirection?: string;
+};

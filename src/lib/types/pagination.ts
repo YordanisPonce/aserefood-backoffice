@@ -22,4 +22,5 @@ export type SearchParams = {
   startDate?: string;
   endDate?: string;
   quantity?: string;
+  orderDirection?: string;
 };

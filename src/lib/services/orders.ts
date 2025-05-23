@@ -14,7 +14,10 @@ const ordersTag = "orders";
 export const getOrders = async (
   params: SearchParams
 ): Promise<Paginated<Order>> => {
-  const query: IQueryable = buildQueryParams(params);
+  const query: IQueryable = buildQueryParams({
+    ...params,
+    orderDirection: "DESC",
+  });
   const queryObject = new QueryParamsURLFactory(
     query,
     `${process.env.NEXT_PUBLIC_API_URL}${ordersPath}`

@@ -1,20 +1,20 @@
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
-
-
 /**
  * @description
  * Crea un PDF en formato A4 a partir de un solo elemento HTML.
- * @param {HTMLElement} element - Elemento HTML que se desea incluir en el PDF.
+ * @param {string} elementId - ID del elemento HTML que se desea incluir en el PDF.
  * @param {string} filename - Nombre del archivo PDF a generar.
  * @throws {Error} Si el elemento no se encuentra en el DOM.
  * @throws {Error} Si la imagen generada es muy pequeña o está corrupta.
  * @returns {Promise<void>}
  */
-export async function exportToPdf(elementId: string, filename: string): Promise<void> {
+export async function exportToPdf(
+  elementId: string,
+  filename: string
+): Promise<void> {
   const element = document.getElementById(elementId);
-  if (!element) return;
   if (!element) {
     throw new Error("El elemento HTML no se encuentra en el DOM.");
   }
@@ -59,7 +59,9 @@ export async function exportToPdf(elementId: string, filename: string): Promise<
     // Guardar el PDF
     pdf.save(`${filename}.pdf`);
   } catch (error) {
+    // Loguea el error para depuración
     console.error("Error al exportar el PDF:", error);
+    // Lanza el error para que el llamador pueda enterarse
+    throw error;
   }
 }
-
