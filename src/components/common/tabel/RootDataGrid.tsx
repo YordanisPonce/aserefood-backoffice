@@ -125,7 +125,7 @@ const RootDataGrid: React.FC<Props> = ({
         disableColumnMenu={true}
         hideFooter={hideFooter}
         rowHeight={rowHeight}
-        sx={{ minHeight: 450 }}
+        sx={{ ...other.sx, minHeight: 450 }}
       />
     </Stack>
   );

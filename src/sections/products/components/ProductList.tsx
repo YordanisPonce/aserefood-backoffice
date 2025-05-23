@@ -63,6 +63,15 @@ export const ProductList: FunctionComponent<ProductListProps> = ({
       pagination={pagination}
       disableSelection
       filters={<ProductsFilters />}
+      getRowClassName={(params) => {
+        return params.row.isInInventory ? "" : "row-inactive";
+      }}
+      sx={{
+        "& .row-inactive": {
+          backgroundColor: "#fff8e1",
+          color: "#b26a00",
+        },
+      }}
     />
   );
 };

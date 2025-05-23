@@ -8,6 +8,7 @@ export interface Product {
   description: string;
   shortDescription: string;
   isService: boolean;
+  isInInventory?: boolean;
 }
 
 export interface CreateProductDTO {
