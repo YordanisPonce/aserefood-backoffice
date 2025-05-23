@@ -79,12 +79,12 @@ export const InventoryList: FunctionComponent<InventoryListProps> = ({
       pagination={pagination}
       disableSelection
       getRowClassName={params => {
-        return params.row.quantity == 0 ? "" : "row-inactive";
+        return params.row.quantity != 0 ? "" : "row-inactive";
       }}
       sx={{
         "& .row-inactive": {
-          backgroundColor: "#fff8e1",
-          color: "#b26a00",
+          backgroundColor: "#ffebee", // light red
+          color: "#b71c1c", // dark red
         },
       }}
       filters={<InventoryEntriesFilters />}
