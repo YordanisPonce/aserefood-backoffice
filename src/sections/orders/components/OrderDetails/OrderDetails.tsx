@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Typography,
-  Chip,
-  List,
-  Divider,
-} from "@mui/material";
+import { Box, Typography, Chip, List, Divider } from "@mui/material";
 import { ShoppingCart, AttachMoney, LocalShipping } from "@mui/icons-material";
 import LoadingScreen from "@/components/common/loading/LoadingScreen";
 import ModalFetchingDataError from "@/components/partials/Modal/components/ModalFetchingDataError";
@@ -74,6 +68,8 @@ export default function OrderDetails({ orderId }: Props) {
                   Orden de Compra: {order.code}
                 </Typography>
                 <ExportButton
+                  orderDetails={order}
+                  contactInfo={order.contactInfo}
                   elementId="exportable-component"
                   filename={`Orden ${order.code}`}
                 />
@@ -162,7 +158,7 @@ export default function OrderDetails({ orderId }: Props) {
                   mb: 2,
                 }}
               >
-                {order.orderItems.map(item => (
+                {order.orderItems.map((item) => (
                   <>
                     {item.product && (
                       <ProductRow

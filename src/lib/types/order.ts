@@ -1,3 +1,4 @@
+import { ContactInfoDetails } from "./contactInfo";
 import { SearchParams } from "./pagination";
 import { ProductComboDetails } from "./productCombo";
 import { ProductDetails } from "./products";
@@ -27,13 +28,14 @@ export interface OrderDetails {
   deliveryMethodId: number;
   orderItems: {
     id: number;
-    product:ProductDetails | null;
+    product: ProductDetails | null;
     productCombo: ProductComboDetails | null;
     productId: number;
     productComboId: number;
     price: number;
     amount: number;
   }[];
+  contactInfo: ContactInfoDetails;
 }
 
 export interface UpdateOrder {

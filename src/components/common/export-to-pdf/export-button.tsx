@@ -1,21 +1,31 @@
 import useSnackBar from "@/components/partials/SnackBar/hooks/useSnackBar";
-import { exportToPdf } from "@/lib/utils/export-to-pdf";
+import { ContactInfoDetails } from "@/lib/types/contactInfo";
+import { OrderDetails } from "@/lib/types/order";
+import { generateOrderPdf } from "@/lib/utils/generateOrderPdf";
 import { Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
 
 interface ExportButtonProps {
   elementId: string;
   filename: string;
+  orderDetails: OrderDetails;
+  contactInfo: ContactInfoDetails;
 }
 
-const ExportButton: React.FC<ExportButtonProps> = ({ elementId, filename }) => {
+const ExportButton: React.FC<ExportButtonProps> = ({
+  orderDetails,
+  contactInfo,
+}) => {
   const [loading, setLoading] = useState(false);
   const { openSnackBar } = useSnackBar();
 
   const handleExport = async () => {
     setLoading(true);
     try {
-      await exportToPdf(elementId, filename);
+      console.log("orderDetails", orderDetails);
+      console.log("contactInfo", contactInfo);
+
+      await generateOrderPdf(orderDetails, contactInfo);
       openSnackBar(`PDF exportado correctamente`, "success");
     } catch (error) {
       openSnackBar(`Error al exportar PDF`, "warning");
