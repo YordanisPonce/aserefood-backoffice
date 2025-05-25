@@ -116,11 +116,7 @@ export default function OrderDetails({ orderId }: Props) {
                 {deliveryMethodData.deliveryMethod?.cost ?? 0}
               </Typography>
               <Typography variant="body2" sx={{ pl: 4 }}>
-                Monto total: $
-                {(
-                  Number(order.totalAmount) +
-                  (deliveryMethodData.deliveryMethod?.cost ?? 0)
-                ).toFixed(2)}
+                Monto total: ${Number(order.totalAmount).toFixed(2)}
               </Typography>
               <Divider sx={{ my: 2 }} />
               <Box display="flex" alignItems="center" mb={1} gap={1}>
@@ -158,7 +154,7 @@ export default function OrderDetails({ orderId }: Props) {
                   mb: 2,
                 }}
               >
-                {order.orderItems.map((item) => (
+                {order.orderItems.map(item => (
                   <>
                     {item.product && (
                       <ProductRow
