@@ -1,4 +1,3 @@
-import RHFInputImageUpload from "@/components/common/hook-form/RHFInputImageUpload";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { Alert, Box, Button, CircularProgress } from "@mui/material";
 import React from "react";
@@ -25,11 +24,11 @@ export default function ZelleConfForm({ error, isLoading }: Props) {
           label="Número Telefónico"
           type="text"
         />
-        <RHFInputImageUpload
+        {/*<RHFInputImageUpload
           name="qr"
           placeholder="Código QR"
           required={true}
-        />
+        />*/}
       </Box>
       <Button
         type="submit"
@@ -37,7 +36,7 @@ export default function ZelleConfForm({ error, isLoading }: Props) {
         startIcon={isLoading ? <CircularProgress size={20} /> : null}
         variant="contained"
       >
-        Actualizar Zelle Conf
+        Actualizar WhatsApp Conf
       </Button>
     </Box>
   );
