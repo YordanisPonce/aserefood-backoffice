@@ -89,7 +89,7 @@ export const sections: Section[] = [
     icon: <PeopleAltRoundedIcon />,
   },
   {
-    name: "Configuración de Zelle",
+    name: "Configuración de WhatsApp",
     path: routes.zelleConf.path,
     icon: <SettingsSuggestIcon />,
   },
