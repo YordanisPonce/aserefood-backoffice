@@ -1,21 +1,19 @@
 "use server";
 import { ApiError, ErrorMessages } from "../types/errors";
-import { UpdateZelleConfDTO, ZelleConf } from "../types/zelleConf";
+import { UpdateWhatsAppConfDTO, WhatsAppConf } from "../types/whatsappConf";
 import { fetchWithAuth } from "../utils/fetcher";
-import { createFormDataBody } from "../utils/request-body";
-import { fileToBase64, getFile } from "./s3";
 import { redirect } from "next/navigation";
 import { routes } from "../config/routes";
 
-const zelleConfPath = "zelle-conf";
-const zelleConfTag = "zelle-conf";
+const whatsappConfPath = "whatsapp-conf";
+const whatsappConfTag = "whatsapp-conf";
 
-export const getZelleConf = async (): Promise<ZelleConf | undefined> => {
+export const getWhatsAppConf = async (): Promise<WhatsAppConf | undefined> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}${zelleConfPath}`,
+    `${process.env.NEXT_PUBLIC_API_URL}${whatsappConfPath}`,
     {
       next: {
-        tags: [zelleConfTag],
+        tags: [whatsappConfTag],
       },
     }
   );
@@ -26,26 +24,24 @@ export const getZelleConf = async (): Promise<ZelleConf | undefined> => {
       redirect(routes.login.path);
     } else if (response.status === 404) {
       return undefined;
-    } else throw new Error("Error fetching zelle conf");
+    } else throw new Error("Error fetching WhatsApp configuration");
   }
 
-  const zelleConf: ZelleConf = await response.json();
-  if (zelleConf.qr)
-    zelleConf.qr = await fileToBase64(
-      await getFile(zelleConf.qr, zelleConf.phoneNumber)
-    );
-
-  return zelleConf;
+  const whatsappConf: WhatsAppConf = await response.json();
+  return whatsappConf;
 };
 
-export const updateZelleConf = async (
-  zelleConf: UpdateZelleConfDTO
+export const updateWhatsAppConf = async (
+  whatsappConf: UpdateWhatsAppConfDTO
 ): Promise<ApiError> => {
   const response = await fetchWithAuth(
-    `${process.env.NEXT_PUBLIC_API_URL}${zelleConfPath}`,
+    `${process.env.NEXT_PUBLIC_API_URL}${whatsappConfPath}`,
     {
       method: "PUT",
-      body: await createFormDataBody(zelleConf),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(whatsappConf),
     }
   );
 
@@ -61,8 +57,8 @@ export const updateZelleConf = async (
       return { status: response.status, message: error.message };
     } else if (response.status === 401) {
       return { status: response.status, message: ErrorMessages.UNAUTHORIZED };
-    } else  return { status: response.status, message: ErrorMessages.UNEXPECTED };
+    } else return { status: response.status, message: ErrorMessages.UNEXPECTED };
   }
 
-  return { status: 201, message: ErrorMessages.OK };
+  return { status: 200, message: ErrorMessages.OK };
 };
