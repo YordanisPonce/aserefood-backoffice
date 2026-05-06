@@ -1,3 +1,4 @@
+"use client";
 import RHFInputWithLabel from "@/components/common/hook-form/RHFInputWithLabel";
 import { Alert, Box, Button, CircularProgress } from "@mui/material";
 import React from "react";
@@ -7,7 +8,7 @@ interface Props {
   error: string | undefined;
 }
 
-export default function ZelleConfForm({ error, isLoading }: Props) {
+export default function WhatsAppConfForm({ error, isLoading }: Props) {
   return (
     <Box
       display={"flex"}
@@ -24,11 +25,6 @@ export default function ZelleConfForm({ error, isLoading }: Props) {
           label="Número Telefónico"
           type="text"
         />
-        {/*<RHFInputImageUpload
-          name="qr"
-          placeholder="Código QR"
-          required={true}
-        />*/}
       </Box>
       <Button
         type="submit"

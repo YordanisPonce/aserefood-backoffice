@@ -7,15 +7,15 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
-import { ZelleConf } from "@/lib/types/zelleConf";
-import ZelleConfFormContainer from "../containers/ZelleConfFormContainer";
+import { WhatsAppConf } from "@/lib/types/whatsappConf";
+import WhatsAppConfFormContainer from "../containers/WhatsAppConfFormContainer";
 import { WhatsApp } from "@mui/icons-material";
 
 interface Props {
-  zelleConf: ZelleConf | undefined;
+  whatsappConf: WhatsAppConf | undefined;
 }
 
-export default function ZellConfCard({ zelleConf }: Props) {
+export default function WhatsAppConfCard({ whatsappConf }: Props) {
   return (
     <Card sx={{ maxWidth: "1200px" }}>
       <CardContent sx={{ display: "flex", flexDirection: "column", gap: 4 }}>
@@ -23,14 +23,14 @@ export default function ZellConfCard({ zelleConf }: Props) {
           <Typography gutterBottom variant="h4" component="div">
             Configuración de WhatsApp
           </Typography>
-          {!zelleConf && (
+          {!whatsappConf && (
             <Alert severity="info">
-              Inserte por primera vez los datos de la configuración de Zelle
+              Inserte por primera vez los datos de la configuración de WhatsApp
             </Alert>
           )}
           <WhatsApp sx={{ height: "100px", width: "100px" }} />
         </Box>
-        <ZelleConfFormContainer zelleConf={zelleConf} />
+        <WhatsAppConfFormContainer whatsappConf={whatsappConf} />
       </CardContent>
     </Card>
   );

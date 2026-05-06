@@ -19,7 +19,7 @@ interface Routes {
   provinces: Route;
   users: Route;
   userForm: Route;
-  zelleConf: Route;
+  whatsappConf: Route;
 }
 export const routes: Routes = {
   home: { path: "/" },
@@ -38,5 +38,5 @@ export const routes: Routes = {
   provinces: { path: "/provinces" },
   users: { path: "/users" },
   userForm: { path: "/users/user-form" },
-  zelleConf: { path: "/zelle-conf" },
+  whatsappConf: { path: "/whatsapp-conf" },
 };

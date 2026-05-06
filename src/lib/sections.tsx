@@ -90,7 +90,7 @@ export const sections: Section[] = [
   },
   {
     name: "Configuración de WhatsApp",
-    path: routes.zelleConf.path,
+    path: routes.whatsappConf.path,
     icon: <SettingsSuggestIcon />,
   },
 ];
