@@ -1,6 +1,12 @@
 import { ApiError, UnauthorizedClientError } from "../types/errors";
-export function errorClientHandling(respose: ApiError) {
-  if (respose.status === 401)
-    throw new UnauthorizedClientError(respose.message);
-  else if (respose.status !== 201) throw new Error(respose.message);
+
+export function errorClientHandling(response: ApiError) {
+  if (response.status === 401) {
+    throw new UnauthorizedClientError(response.message);
+  }
+
+  else if (response.status < 200 || response.status >= 300) {
+    throw new Error(response.message);
+  }
+
 }
