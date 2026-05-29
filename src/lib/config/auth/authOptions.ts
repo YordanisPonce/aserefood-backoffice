@@ -44,6 +44,7 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           accessToken: user.accessToken,
           refreshToken: user.refreshToken,
+          role: decodeToken.role, 
         };
       },
     }),
@@ -56,6 +57,7 @@ export const authOptions: NextAuthOptions = {
         token.name = user.name;
         token.email = user.email;
         token.id = user.id;
+        token.role = user.role;
       }
       return token;
     },
@@ -66,6 +68,7 @@ export const authOptions: NextAuthOptions = {
         email: token.email || "",
         accessToken: token.accessToken as string,
         refreshToken: token.refreshToken as string,
+        role: token.role as string, 
       };
       session.accessToken = token.accessToken as string;
       session.refreshToken = token.refreshToken as string;

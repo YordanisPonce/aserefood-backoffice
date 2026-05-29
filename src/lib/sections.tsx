@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import {
-  MoveToInbox as InboxIcon,
+  /*MoveToInbox as InboxIcon,*/
   Inventory2Rounded as Inventory2RoundedIcon,
   PublicRounded as PublicRoundedIcon,
   FmdGoodRounded as FmdGoodRoundedIcon,
@@ -23,11 +23,11 @@ interface Section {
 }
 
 export const sections: Section[] = [
-  {
+  /*{
     name: "Dashboard",
     path: routes.dashboard.path,
     icon: <InboxIcon />,
-  },
+  }*/
   {
     name: "Órdenes de Compra",
     path: routes.orders.path,
